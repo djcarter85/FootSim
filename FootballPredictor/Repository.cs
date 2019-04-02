@@ -16,7 +16,7 @@
             this.data = ParseData(csvMatches);
         }
 
-        public IReadOnlyList<string> Teams => this.data.Teams;
+        public IReadOnlyList<string> TeamNames => this.data.TeamNames;
 
         public IReadOnlyList<Match> Matches => this.data.Matches;
 
@@ -37,12 +37,12 @@
                 .Select(csvMatch => new Match(csvMatch.HomeTeam, csvMatch.AwayTeam, csvMatch.FTHG, csvMatch.FTAG))
                 .ToList();
 
-            var teams = matches
-                .SelectMany(m => new[] { m.HomeTeam, m.AwayTeam })
+            var teamNames = matches
+                .SelectMany(m => new[] { m.HomeTeamName, m.AwayTeamName })
                 .Distinct()
                 .ToList();
 
-            return new Data(teams, matches);
+            return new Data(teamNames, matches);
         }
 
         private class CsvMatch
@@ -58,13 +58,13 @@
 
         private class Data
         {
-            public Data(IReadOnlyList<string> teams, IReadOnlyList<Match> matches)
+            public Data(IReadOnlyList<string> teamNames, IReadOnlyList<Match> matches)
             {
-                this.Teams = teams;
+                this.TeamNames = teamNames;
                 this.Matches = matches;
             }
 
-            public IReadOnlyList<string> Teams { get; }
+            public IReadOnlyList<string> TeamNames { get; }
 
             public IReadOnlyList<Match> Matches { get; }
         }

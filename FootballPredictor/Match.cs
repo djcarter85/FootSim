@@ -2,17 +2,17 @@
 {
     public class Match
     {
-        public Match(string homeTeam, string awayTeam, int homeScore, int awayScore)
+        public Match(string homeTeamName, string awayTeamName, int homeScore, int awayScore)
         {
-            this.HomeTeam = homeTeam;
-            this.AwayTeam = awayTeam;
+            this.HomeTeamName = homeTeamName;
+            this.AwayTeamName = awayTeamName;
             this.HomeScore = homeScore;
             this.AwayScore = awayScore;
         }
 
-        public string HomeTeam { get; }
+        public string HomeTeamName { get; }
 
-        public string AwayTeam { get; }
+        public string AwayTeamName { get; }
 
         public int HomeScore { get; }
 
