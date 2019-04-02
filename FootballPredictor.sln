@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballPredictor", "FootballPredictor\FootballPredictor.csproj", "{56E55451-F900-47CC-8485-5FE9CA91E23C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomness", "Randomness\Randomness.csproj", "{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{56E55451-F900-47CC-8485-5FE9CA91E23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56E55451-F900-47CC-8485-5FE9CA91E23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56E55451-F900-47CC-8485-5FE9CA91E23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
