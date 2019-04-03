@@ -17,7 +17,7 @@
 
         public double AveragePoints => this.Points.Average();
 
-        public double PositionPercentage(int position) =>
-            (double) this.Positions.Count(p => p == position) / this.Positions.Count;
+        public double PositionProportion(int position) =>
+            (double)this.Positions.Count(p => p == position) / this.Positions.Count;
     }
 }

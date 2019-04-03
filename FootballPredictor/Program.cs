@@ -57,8 +57,8 @@
 
             foreach (var position in Enumerable.Range(1, 20))
             {
-                var value = seasonSimulationResult.PositionPercentage(position);
-                var percentage = (value * 100).ToString("N1");
+                var proportion = seasonSimulationResult.PositionProportion(position);
+                var percentage = (proportion * 100).ToString("N1");
 
                 stringBuilder.Append($"{percentage,5} ");
             }
