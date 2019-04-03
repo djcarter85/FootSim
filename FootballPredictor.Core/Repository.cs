@@ -1,5 +1,6 @@
 ﻿namespace FootballPredictor.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -7,18 +8,23 @@
 
     public class Repository
     {
-        private readonly Data data;
+        private readonly Lazy<Data> dataLazy;
 
         public Repository()
         {
-            var csvMatches = GetCsvMatches();
-
-            this.data = ParseData(csvMatches);
+            this.dataLazy = new Lazy<Data>(FetchData);
         }
 
-        public IReadOnlyList<string> TeamNames => this.data.TeamNames;
+        public IReadOnlyList<string> TeamNames => this.dataLazy.Value.TeamNames;
 
-        public IReadOnlyList<PastMatch> Matches => this.data.Matches;
+        public IReadOnlyList<PastMatch> Matches => this.dataLazy.Value.Matches;
+
+        private static Data FetchData()
+        {
+            var csvMatches = GetCsvMatches();
+
+            return ParseData(csvMatches);
+        }
 
         private static IEnumerable<CsvMatch> GetCsvMatches()
         {
