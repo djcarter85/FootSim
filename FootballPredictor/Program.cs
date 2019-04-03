@@ -21,17 +21,14 @@
 
             stringBuilder.AppendLine($"{"#",2} {"Team",-15} {"GD",-3}  {"PTS",-3}");
 
-            int index = 1;
             foreach (var tablePlacing in season.Table)
             {
-                stringBuilder.AppendLine($"{index,2} {tablePlacing.TeamName,-15} {tablePlacing.GoalDifference,3}  {tablePlacing.Points,3}");
+                stringBuilder.AppendLine($"{tablePlacing.Position,2} {tablePlacing.TeamName,-15} {tablePlacing.GoalDifference,3}  {tablePlacing.Points,3}");
 
-                if (index == 4 || index == 17)
+                if (tablePlacing.Position == 4 || tablePlacing.Position == 17)
                 {
                     stringBuilder.AppendLine(new string('-', 27));
                 }
-
-                index++;
             }
 
             return stringBuilder.ToString();

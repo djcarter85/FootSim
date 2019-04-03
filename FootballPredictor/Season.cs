@@ -60,15 +60,14 @@
                 }
 
                 return tablePlacings
-                    .Select(kvp => kvp.Value.TablePlacing(kvp.Key))
-                    .OrderByDescending(tp => tp.Points)
-                    .ThenByDescending(tp => tp.GoalDifference)
-                    .ThenByDescending(tp => tp.GoalsFor)
-                    .ThenBy(tp => tp.TeamName)
+                    .OrderByDescending(kvp => kvp.Value.Points)
+                    .ThenByDescending(kvp => kvp.Value.GoalDifference)
+                    .ThenByDescending(kvp => kvp.Value.GoalsFor)
+                    .ThenBy(kvp => kvp.Key)
+                    .Select((kvp, pos) => kvp.Value.TablePlacing(pos + 1, kvp.Key))
                     .ToArray();
             }
         }
-
 
         private class SettableTablePlacing
         {
@@ -82,8 +81,12 @@
 
             public int GoalsAgainst { get; set; }
 
-            public TablePlacing TablePlacing(string teamName) =>
-                new TablePlacing(teamName, this.Won, this.Drawn, this.Lost, this.GoalsFor, this.GoalsAgainst);
+            public int GoalDifference => this.GoalsFor - this.GoalsAgainst;
+
+            public int Points => 3 * this.Won + this.Drawn;
+
+            public TablePlacing TablePlacing(int position, string teamName) =>
+                new TablePlacing(position, teamName, this.Won, this.Drawn, this.Lost, this.GoalsFor, this.GoalsAgainst, this.GoalDifference, this.Points);
         }
     }
 }
