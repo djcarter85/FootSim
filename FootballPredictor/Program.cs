@@ -40,7 +40,7 @@
 
         private static SeasonSimulator CreateSeasonSimulator()
         {
-            return new SeasonSimulator(new Repository(Constants.CsvFilePath));
+            return new SeasonSimulator(new Repository(Constants.CsvFilePath, Constants.Url));
         }
 
         private static string GetDescription(SeasonSimulationResult seasonSimulationResult)

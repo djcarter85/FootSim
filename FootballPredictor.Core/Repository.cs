@@ -4,15 +4,38 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net.Http;
+    using System.Threading.Tasks;
     using CsvHelper;
 
     public class Repository
     {
+        private readonly string csvFilePath;
+        private readonly string url;
+
         private readonly Lazy<Data> dataLazy;
 
-        public Repository(string csvFilePath)
+        public Repository(string csvFilePath, string url)
         {
+            this.csvFilePath = csvFilePath;
+            this.url = url;
+
             this.dataLazy = new Lazy<Data>(() => FetchData(csvFilePath));
+        }
+
+        public async Task RefreshFromWebAsync()
+        {
+            var csv = await this.GetCsvDataAsync();
+
+            await File.WriteAllTextAsync(this.csvFilePath, csv);
+        }
+
+        private async Task<string> GetCsvDataAsync()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                return await httpClient.GetStringAsync(this.url);
+            }
         }
 
         public IReadOnlyList<string> TeamNames => this.dataLazy.Value.TeamNames;
