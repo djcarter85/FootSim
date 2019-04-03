@@ -18,23 +18,9 @@
 
         public string AwayTeamName { get; }
 
-        public IDistribution<Score> ScoreDistribution => new FutureScoreDistribution(this.expectedScore);
-
-        private class FutureScoreDistribution : IDistribution<Score>
-        {
-            private readonly Poisson homeDistribution;
-            private readonly Poisson awayDistribution;
-
-            public FutureScoreDistribution(ExpectedScore expectedScore)
-            {
-                this.homeDistribution = Poisson.Distribution(expectedScore.Home);
-                this.awayDistribution = Poisson.Distribution(expectedScore.Away);
-            }
-
-            public Score Sample()
-            {
-                return new Score(this.homeDistribution.Sample(), this.awayDistribution.Sample());
-            }
-        }
+        public IDistribution<Score> ScoreDistribution =>
+            from homeGoals in Poisson.Distribution(this.expectedScore.Home)
+            from awayGoals in Poisson.Distribution(this.expectedScore.Away)
+            select new Score(homeGoals, awayGoals);
     }
 }

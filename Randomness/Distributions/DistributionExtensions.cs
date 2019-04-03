@@ -17,5 +17,13 @@
         {
             return Projected<A, R>.Distribution(distribution, projection);
         }
+
+        public static IDistribution<C> SelectMany<A, B, C>(
+            this IDistribution<A> prior,
+            Func<A, IDistribution<B>> likelihood,
+            Func<A, B, C> projection)
+        {
+            return Combined<A, B, C>.Distribution(prior, likelihood, projection);
+        }
     }
 }
