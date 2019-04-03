@@ -21,9 +21,8 @@
             double averageAwayGoals)
         {
             var expectedScore = Calculator.CalculateExpectedScore(
-                homeTeamName,
-                awayTeamName,
-                teams,
+                teams[homeTeamName],
+                teams[awayTeamName],
                 averageHomeGoals,
                 averageAwayGoals);
 

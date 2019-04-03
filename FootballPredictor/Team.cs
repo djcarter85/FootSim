@@ -4,13 +4,16 @@
 
     public class Team
     {
-        private Team(int goalsScored, int goalsConceded, double attackingStrength, double defensiveWeakness)
+        private Team(string name, int goalsScored, int goalsConceded, double attackingStrength, double defensiveWeakness)
         {
+            this.Name = name;
             this.GoalsScored = goalsScored;
             this.GoalsConceded = goalsConceded;
             this.AttackingStrength = attackingStrength;
             this.DefensiveWeakness = defensiveWeakness;
         }
+
+        public string Name { get; }
 
         public int GoalsScored { get; }
 
@@ -28,7 +31,7 @@
             var attackingStrength = goalsScored / averageGoalsScored;
             var defensiveWeakness = goalsConceded / averageGoalsScored;
 
-            return new Team(goalsScored, goalsConceded, attackingStrength, defensiveWeakness);
+            return new Team(teamName, goalsScored, goalsConceded, attackingStrength, defensiveWeakness);
         }
     }
 }

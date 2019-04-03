@@ -59,15 +59,11 @@
         }
 
         public static ExpectedScore CalculateExpectedScore(
-            string homeTeamName,
-            string awayTeamName,
-            IReadOnlyDictionary<string, Team> teams,
+            Team homeTeam,
+            Team awayTeam,
             double averageHomeGoals,
             double averageAwayGoals)
         {
-            var homeTeam = teams[homeTeamName];
-            var awayTeam = teams[awayTeamName];
-
             var expectedHomeGoals = averageHomeGoals * homeTeam.AttackingStrength * awayTeam.DefensiveWeakness;
             var expectedAwayGoals = averageAwayGoals * awayTeam.AttackingStrength * homeTeam.DefensiveWeakness;
 
