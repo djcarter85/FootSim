@@ -50,12 +50,12 @@
             return matches.Average(m => m.Score.Away);
         }
 
-        public static IReadOnlyDictionary<string, Team> GetTeams(IReadOnlyList<string> teamNames, IReadOnlyList<PastMatch> matches)
+        public static IReadOnlyList<Team> GetTeams(IReadOnlyList<string> teamNames, IReadOnlyList<PastMatch> matches)
         {
             var totalGoalsScored = CalculateTotalGoalsScored(matches);
             var averageGoalsScored = totalGoalsScored / teamNames.Count;
 
-            return teamNames.ToDictionary(t => t, t => Team.Create(t, matches, averageGoalsScored));
+            return teamNames.Select(t => Team.Create(t, matches, averageGoalsScored)).ToArray();
         }
 
         public static ExpectedScore CalculateExpectedScore(

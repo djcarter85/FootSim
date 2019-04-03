@@ -1,48 +1,40 @@
 ﻿namespace FootballPredictor
 {
     using System;
+    using System.Text;
 
     public static class Program
     {
         public static void Main(string[] args)
         {
-            var homeTeamName = "Wolves";
-            var awayTeamName = "Man United";
-            var simulations = 20;
+            var seasonDistribution = SeasonSimulator.CreateSeasonDistribution();
 
-            var simulationResult = MatchSimulator.Simulate(homeTeamName, awayTeamName, simulations);
-
-            Console.WriteLine($"{homeTeamName} v {awayTeamName}");
-            Console.WriteLine($"Expected: {simulationResult.ExpectedScore.Home:N2}-{simulationResult.ExpectedScore.Away:N2}");
-            Console.WriteLine();
-
-            Console.WriteLine("Simulated:");
-            foreach (var score in simulationResult.SampleScores)
+            do
             {
-                Console.WriteLine(GetScoreDescription(score));
-            }
-
-            Console.ReadLine();
+                Console.WriteLine(GetDescription(seasonDistribution.Sample()));
+            } while (string.IsNullOrEmpty(Console.ReadLine()));
         }
 
-        private static string GetScoreDescription(Score score)
+        private static string GetDescription(Season season)
         {
-            return $"{GetResultDescription(score.Result)} {score.Home}-{score.Away}";
-        }
+            var stringBuilder = new StringBuilder();
 
-        private static string GetResultDescription(Result result)
-        {
-            switch (result)
+            stringBuilder.AppendLine($"{"#",2} {"Team",-15} {"GD",-3}  {"PTS",-3}");
+
+            int index = 1;
+            foreach (var tablePlacing in season.Table)
             {
-                case Result.HomeWin:
-                    return "***    ";
-                case Result.Draw:
-                    return " *   * ";
-                case Result.AwayWin:
-                    return "    ***";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(result), result, null);
+                stringBuilder.AppendLine($"{index,2} {tablePlacing.TeamName,-15} {tablePlacing.GoalDifference,3}  {tablePlacing.Points,3}");
+
+                if (index == 4 || index == 17)
+                {
+                    stringBuilder.AppendLine(new string('-', 27));
+                }
+
+                index++;
             }
+
+            return stringBuilder.ToString();
         }
     }
 }
