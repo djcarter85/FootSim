@@ -7,20 +7,26 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using CsvHelper;
+    using NodaTime;
+    using NodaTime.Text;
 
     public class Repository
     {
+        private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
+
         private readonly string csvFilePath;
         private readonly string url;
+        private readonly LocalDate? lastDate;
 
         private readonly Lazy<Data> dataLazy;
 
-        public Repository(string csvFilePath, string url)
+        public Repository(string csvFilePath, string url, LocalDate? lastDate)
         {
             this.csvFilePath = csvFilePath;
             this.url = url;
+            this.lastDate = lastDate;
 
-            this.dataLazy = new Lazy<Data>(() => FetchData(csvFilePath));
+            this.dataLazy = new Lazy<Data>(this.FetchData);
         }
 
         public async Task RefreshFromWebAsync()
@@ -42,16 +48,16 @@
 
         public IReadOnlyList<PastMatch> Matches => this.dataLazy.Value.Matches;
 
-        private static Data FetchData(string csvFilePath)
+        private Data FetchData()
         {
-            var csvMatches = GetCsvMatches(csvFilePath);
+            var csvMatches = this.GetCsvMatches();
 
-            return ParseData(csvMatches);
+            return this.ParseData(csvMatches);
         }
 
-        private static IEnumerable<CsvMatch> GetCsvMatches(string csvFilePath)
+        private IEnumerable<CsvMatch> GetCsvMatches()
         {
-            using (var textReader = new StreamReader(csvFilePath))
+            using (var textReader = new StreamReader(this.csvFilePath))
             {
                 using (var csvReader = new CsvReader(textReader))
                 {
@@ -60,8 +66,13 @@
             }
         }
 
-        private static Data ParseData(IEnumerable<CsvMatch> csvMatches)
+        private Data ParseData(IEnumerable<CsvMatch> csvMatches)
         {
+            if (this.lastDate != null)
+            {
+                csvMatches = csvMatches.Where(cm => Pattern.Parse(cm.Date).GetValueOrThrow() <= this.lastDate);
+            }
+
             var matches = csvMatches
                 .Select(csvMatch => new PastMatch(csvMatch.HomeTeam, csvMatch.AwayTeam, new Score(csvMatch.FTHG, csvMatch.FTAG)))
                 .ToList();
@@ -76,6 +87,8 @@
 
         private class CsvMatch
         {
+            public string Date { get; set; }
+
             public string HomeTeam { get; set; }
 
             public string AwayTeam { get; set; }

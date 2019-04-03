@@ -11,7 +11,7 @@
     {
         public static async Task Main(string[] args)
         {
-            var repository = new Repository(Constants.CsvFilePath, Constants.Url);
+            var repository = new Repository(Constants.CsvFilePath, Constants.Url, lastDate: null);
 
             if (args.Contains("--refresh"))
             {
