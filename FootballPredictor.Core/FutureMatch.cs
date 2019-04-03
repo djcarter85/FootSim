@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor
+﻿namespace FootballPredictor.Core
 {
     using Randomness.Distributions;
     using Randomness.Distributions.Discrete;

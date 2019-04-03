@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballPredictor", "FootballPredictor\FootballPredictor.csproj", "{56E55451-F900-47CC-8485-5FE9CA91E23C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballPredictor", "FootballPredictor\FootballPredictor.csproj", "{56E55451-F900-47CC-8485-5FE9CA91E23C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomness", "Randomness\Randomness.csproj", "{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Randomness", "Randomness\Randomness.csproj", "{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballPredictor.Core", "FootballPredictor.Core\FootballPredictor.Core.csproj", "{4C92C1FC-5890-420C-8C21-19B8E794A2A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA494E82-B89D-4D41-8EE5-B2AA1449CA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C92C1FC-5890-420C-8C21-19B8E794A2A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C92C1FC-5890-420C-8C21-19B8E794A2A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C92C1FC-5890-420C-8C21-19B8E794A2A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C92C1FC-5890-420C-8C21-19B8E794A2A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

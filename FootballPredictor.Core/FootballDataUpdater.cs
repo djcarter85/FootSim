@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor
+﻿namespace FootballPredictor.Core
 {
     using System.IO;
     using System.Net.Http;

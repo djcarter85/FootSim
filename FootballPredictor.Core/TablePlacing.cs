@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor
+﻿namespace FootballPredictor.Core
 {
     public class TablePlacing
     {

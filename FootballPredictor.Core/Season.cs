@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor
+﻿namespace FootballPredictor.Core
 {
     using System;
     using System.Collections.Generic;

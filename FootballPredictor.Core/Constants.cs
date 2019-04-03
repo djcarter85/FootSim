@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor
+﻿namespace FootballPredictor.Core
 {
     public static class Constants
     {
