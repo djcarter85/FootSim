@@ -1,35 +1,72 @@
 ﻿namespace FootballPredictor
 {
     using System;
+    using System.Diagnostics;
+    using System.Linq;
     using System.Text;
 
     public static class Program
     {
         public static void Main(string[] args)
         {
-            var seasonDistribution = SeasonSimulator.CreateSeasonDistribution();
+            var simulations = 10_000;
 
-            do
+            Console.WriteLine($"Simulating {simulations} seasons ...");
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var results = SeasonSimulator.Simulate(simulations);
+
+            stopwatch.Stop();
+
+            Console.WriteLine();
+            Console.WriteLine(GetHeaderLine());
+
+            foreach (var keyValuePair in results.OrderByDescending(kvp => kvp.Value.AveragePoints))
             {
-                Console.WriteLine(GetDescription(seasonDistribution.Sample()));
-            } while (string.IsNullOrEmpty(Console.ReadLine()));
+                var teamName = keyValuePair.Key;
+
+                Console.WriteLine($"{teamName,-20} {GetDescription(keyValuePair.Value)}");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
+
+            Console.ReadLine();
         }
 
-        private static string GetDescription(Season season)
+        private static string GetDescription(SeasonSimulationResult seasonSimulationResult)
         {
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.AppendLine($"{"#",2} {"Team",-15} {"GD",-3}  {"PTS",-3}");
-
-            foreach (var tablePlacing in season.Table)
+            foreach (var position in Enumerable.Range(1, 20))
             {
-                stringBuilder.AppendLine($"{tablePlacing.Position,2} {tablePlacing.TeamName,-15} {tablePlacing.GoalDifference,3}  {tablePlacing.Points,3}");
+                var value = seasonSimulationResult.PositionPercentage(position);
+                var percentage = (value * 100).ToString("N1");
 
-                if (tablePlacing.Position == 4 || tablePlacing.Position == 17)
-                {
-                    stringBuilder.AppendLine(new string('-', 27));
-                }
+                stringBuilder.Append($"{percentage,5} ");
             }
+
+            var avgPts = seasonSimulationResult.AveragePoints.ToString("N1");
+            stringBuilder.Append($"{avgPts,8}");
+
+            return stringBuilder.ToString();
+        }
+
+        private static string GetHeaderLine()
+        {
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder.Append($"{"Name",-20} ");
+
+            foreach (var position in Enumerable.Range(1, 20))
+            {
+                var pos = $"#{position}";
+                stringBuilder.Append($"{pos,5} ");
+            }
+
+            stringBuilder.Append(" Avg Pts");
 
             return stringBuilder.ToString();
         }
