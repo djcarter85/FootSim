@@ -32,8 +32,8 @@
 
         public Score Sample()
         {
-            var simulatedHome = Poisson.Distribution(this.ExpectedScore.ExpectedHomeGoals).Sample();
-            var simulatedAway = Poisson.Distribution(this.ExpectedScore.ExpectedAwayGoals).Sample();
+            var simulatedHome = Poisson.Distribution(this.ExpectedScore.Home).Sample();
+            var simulatedAway = Poisson.Distribution(this.ExpectedScore.Away).Sample();
 
             return new Score(simulatedHome, simulatedAway);
         }

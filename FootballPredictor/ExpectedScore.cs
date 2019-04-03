@@ -2,14 +2,14 @@
 {
     public class ExpectedScore
     {
-        public ExpectedScore(double expectedHomeGoals, double expectedAwayGoals)
+        public ExpectedScore(double home, double away)
         {
-            this.ExpectedHomeGoals = expectedHomeGoals;
-            this.ExpectedAwayGoals = expectedAwayGoals;
+            this.Home = home;
+            this.Away = away;
         }
 
-        public double ExpectedHomeGoals { get; }
+        public double Home { get; }
 
-        public double ExpectedAwayGoals { get; }
+        public double Away { get; }
     }
 }

@@ -5,72 +5,52 @@
 
     public static class Calculator
     {
-        public static double CalculateAverageHomeScore(IReadOnlyList<Match> matches)
-        {
-            return matches.Select(m => m.HomeScore).Average();
-        }
-
-        public static double CalculateAverageAwayScore(IReadOnlyList<Match> matches)
-        {
-            return matches.Select(m => m.AwayScore).Average();
-        }
-
-        public static int GoalsScored(IReadOnlyList<Match> matches, string teamName)
+        public static int GoalsScored(IReadOnlyList<PastMatch> matches, string teamName)
         {
             var goalsScoredAtHome = matches
                 .Where(m => m.HomeTeamName == teamName)
-                .Sum(m => m.HomeScore);
+                .Sum(m => m.Score.Home);
 
             var goalsScoredAway = matches
                 .Where(m => m.AwayTeamName == teamName)
-                .Sum(m => m.AwayScore);
+                .Sum(m => m.Score.Away);
 
             return goalsScoredAtHome + goalsScoredAway;
         }
 
-        public static int GoalsConceded(IReadOnlyList<Match> matches, string teamName)
+        public static int GoalsConceded(IReadOnlyList<PastMatch> matches, string teamName)
         {
             var goalsConcededAtHome = matches
                 .Where(m => m.HomeTeamName == teamName)
-                .Sum(m => m.AwayScore);
+                .Sum(m => m.Score.Away);
 
             var goalsConcededAway = matches
                 .Where(m => m.AwayTeamName == teamName)
-                .Sum(m => m.HomeScore);
+                .Sum(m => m.Score.Home);
 
             return goalsConcededAtHome + goalsConcededAway;
         }
 
-        public static int CalculateTotalGoalsScored(IReadOnlyList<Match> matches)
+        public static int CalculateTotalGoalsScored(IReadOnlyList<PastMatch> matches)
         {
-            var goalsScoredAtHome = matches.Sum(m => m.HomeScore);
+            var goalsScoredAtHome = matches.Sum(m => m.Score.Home);
 
-            var goalsScoredAway = matches.Sum(m => m.AwayScore);
+            var goalsScoredAway = matches.Sum(m => m.Score.Away);
 
             return goalsScoredAtHome + goalsScoredAway;
         }
 
-        public static int HomeGoalsScored(IReadOnlyList<Match> matches)
+        public static double AverageHomeGoals(IReadOnlyList<PastMatch> matches)
         {
-            return matches.Sum(m => m.HomeScore);
+            return matches.Average(m => m.Score.Home);
         }
 
-        public static int AwayGoalsScored(IReadOnlyList<Match> matches)
+        public static double AverageAwayGoals(IReadOnlyList<PastMatch> matches)
         {
-            return matches.Sum(m => m.AwayScore);
+            return matches.Average(m => m.Score.Away);
         }
 
-        public static double AverageHomeGoals(IReadOnlyList<Match> matches)
-        {
-            return matches.Average(m => m.HomeScore);
-        }
-
-        public static double AverageAwayGoals(IReadOnlyList<Match> matches)
-        {
-            return matches.Average(m => m.AwayScore);
-        }
-
-        public static IReadOnlyDictionary<string, Team> GetTeams(IReadOnlyList<string> teamNames, IReadOnlyList<Match> matches)
+        public static IReadOnlyDictionary<string, Team> GetTeams(IReadOnlyList<string> teamNames, IReadOnlyList<PastMatch> matches)
         {
             var totalGoalsScored = CalculateTotalGoalsScored(matches);
             var averageGoalsScored = totalGoalsScored / teamNames.Count;

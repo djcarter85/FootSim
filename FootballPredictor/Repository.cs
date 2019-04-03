@@ -18,7 +18,7 @@
 
         public IReadOnlyList<string> TeamNames => this.data.TeamNames;
 
-        public IReadOnlyList<Match> Matches => this.data.Matches;
+        public IReadOnlyList<PastMatch> Matches => this.data.Matches;
 
         private static IEnumerable<CsvMatch> GetCsvMatches()
         {
@@ -34,7 +34,7 @@
         private static Data ParseData(IEnumerable<CsvMatch> csvMatches)
         {
             var matches = csvMatches
-                .Select(csvMatch => new Match(csvMatch.HomeTeam, csvMatch.AwayTeam, csvMatch.FTHG, csvMatch.FTAG))
+                .Select(csvMatch => new PastMatch(csvMatch.HomeTeam, csvMatch.AwayTeam, new Score(csvMatch.FTHG, csvMatch.FTAG)))
                 .ToList();
 
             var teamNames = matches
@@ -58,7 +58,7 @@
 
         private class Data
         {
-            public Data(IReadOnlyList<string> teamNames, IReadOnlyList<Match> matches)
+            public Data(IReadOnlyList<string> teamNames, IReadOnlyList<PastMatch> matches)
             {
                 this.TeamNames = teamNames;
                 this.Matches = matches;
@@ -66,7 +66,7 @@
 
             public IReadOnlyList<string> TeamNames { get; }
 
-            public IReadOnlyList<Match> Matches { get; }
+            public IReadOnlyList<PastMatch> Matches { get; }
         }
     }
 }

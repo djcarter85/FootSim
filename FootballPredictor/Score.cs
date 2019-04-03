@@ -2,20 +2,20 @@
 {
     public class Score
     {
-        public Score(int homeScore, int awayScore)
+        public Score(int home, int away)
         {
-            this.HomeScore = homeScore;
-            this.AwayScore = awayScore;
+            this.Home = home;
+            this.Away = away;
         }
 
-        public int HomeScore { get; }
+        public int Home { get; }
 
-        public int AwayScore { get; }
+        public int Away { get; }
 
         public Result Result =>
-            this.HomeScore > this.AwayScore ?
+            this.Home > this.Away ?
                 Result.HomeWin :
-                this.HomeScore < this.AwayScore ?
+                this.Home < this.Away ?
                     Result.AwayWin :
                     Result.Draw;
     }

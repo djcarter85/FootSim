@@ -6,14 +6,14 @@
     {
         public static void Main(string[] args)
         {
-            var homeTeamName = "Man City";
-            var awayTeamName = "Huddersfield";
+            var homeTeamName = "Wolves";
+            var awayTeamName = "Man United";
             var simulations = 20;
 
             var simulationResult = MatchSimulator.Simulate(homeTeamName, awayTeamName, simulations);
 
             Console.WriteLine($"{homeTeamName} v {awayTeamName}");
-            Console.WriteLine($"Expected: {simulationResult.ExpectedScore.ExpectedHomeGoals:N2}-{simulationResult.ExpectedScore.ExpectedAwayGoals:N2}");
+            Console.WriteLine($"Expected: {simulationResult.ExpectedScore.Home:N2}-{simulationResult.ExpectedScore.Away:N2}");
             Console.WriteLine();
 
             Console.WriteLine("Simulated:");
@@ -27,7 +27,7 @@
 
         private static string GetScoreDescription(Score score)
         {
-            return $"{GetResultDescription(score.Result)} {score.HomeScore}-{score.AwayScore}";
+            return $"{GetResultDescription(score.Result)} {score.Home}-{score.Away}";
         }
 
         private static string GetResultDescription(Result result)
