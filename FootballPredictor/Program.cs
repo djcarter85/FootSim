@@ -7,13 +7,22 @@
     using System.Threading.Tasks;
     using CommandLine;
     using FootballPredictor.Core;
+    using NodaTime;
+    using NodaTime.Text;
 
     public static class Program
     {
         private class Arguments
         {
+            private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
+
             [Option('r', "refresh", Required = false, HelpText = "Refresh the results from www.football-data.co.uk.")]
             public bool Refresh { get; set; }
+
+            [Option('u', "until", Required = false, HelpText = "Simulate the season up to and including matches played on the specified date. Format yyyy-MM-dd.")]
+            public string UntilString { get; set; }
+
+            public LocalDate? Until => string.IsNullOrEmpty(this.UntilString) ? (LocalDate?)null : Pattern.Parse(this.UntilString).GetValueOrThrow();
         }
 
         public static async Task Main(string[] args)
@@ -24,7 +33,7 @@
 
         private static async Task Run(Arguments arguments)
         {
-            var repository = new Repository(Constants.CsvFilePath, Constants.Url, lastDate: null);
+            var repository = new Repository(Constants.CsvFilePath, Constants.Url, lastDate: arguments.Until);
 
             if (arguments.Refresh)
             {
