@@ -10,25 +10,25 @@
     {
         private readonly Lazy<Data> dataLazy;
 
-        public Repository()
+        public Repository(string csvFilePath)
         {
-            this.dataLazy = new Lazy<Data>(FetchData);
+            this.dataLazy = new Lazy<Data>(() => FetchData(csvFilePath));
         }
 
         public IReadOnlyList<string> TeamNames => this.dataLazy.Value.TeamNames;
 
         public IReadOnlyList<PastMatch> Matches => this.dataLazy.Value.Matches;
 
-        private static Data FetchData()
+        private static Data FetchData(string csvFilePath)
         {
-            var csvMatches = GetCsvMatches();
+            var csvMatches = GetCsvMatches(csvFilePath);
 
             return ParseData(csvMatches);
         }
 
-        private static IEnumerable<CsvMatch> GetCsvMatches()
+        private static IEnumerable<CsvMatch> GetCsvMatches(string csvFilePath)
         {
-            using (var textReader = new StreamReader(Constants.CsvFilePath))
+            using (var textReader = new StreamReader(csvFilePath))
             {
                 using (var csvReader = new CsvReader(textReader))
                 {

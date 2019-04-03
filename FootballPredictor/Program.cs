@@ -17,7 +17,8 @@
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var results = SeasonSimulator.Simulate(simulations);
+            var seasonSimulator = CreateSeasonSimulator();
+            var results = seasonSimulator.Simulate(simulations);
 
             stopwatch.Stop();
 
@@ -35,6 +36,11 @@
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
 
             Console.ReadLine();
+        }
+
+        private static SeasonSimulator CreateSeasonSimulator()
+        {
+            return new SeasonSimulator(new Repository(Constants.CsvFilePath));
         }
 
         private static string GetDescription(SeasonSimulationResult seasonSimulationResult)

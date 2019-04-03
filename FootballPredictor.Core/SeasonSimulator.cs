@@ -4,16 +4,21 @@
     using System.Linq;
     using Randomness.Distributions;
 
-    public static class SeasonSimulator
+    public class SeasonSimulator
     {
-        public static IReadOnlyDictionary<string, SeasonSimulationResult> Simulate(int simulations)
-        {
-            var repository = new Repository();
+        private readonly Repository repository;
 
-            var teams = Calculator.GetTeams(repository.TeamNames, repository.Matches);
+        public SeasonSimulator(Repository repository)
+        {
+            this.repository = repository;
+        }
+
+        public IReadOnlyDictionary<string, SeasonSimulationResult> Simulate(int simulations)
+        {
+            var teams = Calculator.GetTeams(this.repository.TeamNames, this.repository.Matches);
 
             var distribution = SeasonDistribution.Create(
-                repository.Matches,
+                this.repository.Matches,
                 teams);
 
             var sampleSeasons = distribution
