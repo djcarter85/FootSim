@@ -5,15 +5,28 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using CommandLine;
     using FootballPredictor.Core;
 
     public static class Program
     {
+        private class Arguments
+        {
+            [Option('r', "refresh", Required = false, HelpText = "Refresh the results from www.football-data.co.uk.")]
+            public bool Refresh { get; set; }
+        }
+
         public static async Task Main(string[] args)
+        {
+            Parser.Default.ParseArguments<Arguments>(args)
+                .WithParsed(async o => { await Run(o); });
+        }
+
+        private static async Task Run(Arguments arguments)
         {
             var repository = new Repository(Constants.CsvFilePath, Constants.Url, lastDate: null);
 
-            if (args.Contains("--refresh"))
+            if (arguments.Refresh)
             {
                 await repository.RefreshFromWebAsync();
             }
