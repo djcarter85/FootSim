@@ -4,11 +4,26 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using FootballPredictor.Core;
 
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
+        {
+            var repository = new Repository(Constants.CsvFilePath, Constants.Url);
+
+            if (args.Contains("--refresh"))
+            {
+                await repository.RefreshFromWebAsync();
+            }
+
+            RunSimulations(repository);
+
+            Console.ReadLine();
+        }
+
+        private static void RunSimulations(Repository repository)
         {
             var simulations = 10_000;
 
@@ -17,7 +32,7 @@
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var seasonSimulator = CreateSeasonSimulator();
+            var seasonSimulator = new SeasonSimulator(repository);
             var results = seasonSimulator.Simulate(simulations);
 
             stopwatch.Stop();
@@ -34,13 +49,6 @@
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
-
-            Console.ReadLine();
-        }
-
-        private static SeasonSimulator CreateSeasonSimulator()
-        {
-            return new SeasonSimulator(new Repository(Constants.CsvFilePath, Constants.Url));
         }
 
         private static string GetDescription(SeasonSimulationResult seasonSimulationResult)
