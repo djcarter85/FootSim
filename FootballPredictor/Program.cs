@@ -49,7 +49,7 @@
         {
             var simulations = 10_000;
 
-            Console.WriteLine($"Simulating {simulations} seasons ...");
+            Console.WriteLine($"Simulating {simulations:N0} seasons ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -80,7 +80,7 @@
             foreach (var position in Enumerable.Range(1, 20))
             {
                 var proportion = seasonSimulationResult.PositionProportion(position);
-                var percentage = (proportion * 100).ToString("N1");
+                var percentage = proportion == 0 ? string.Empty : (proportion * 100).ToString(".0");
 
                 stringBuilder.Append($"{percentage,5} ");
             }
