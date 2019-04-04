@@ -7,7 +7,7 @@
     {
         public static async Task<int> RunAsync(UpdateOptions options)
         {
-            var repository = new Repository(Constants.CsvFilePath, Constants.Url, null);
+            var repository = new Repository(Constants.CsvFilePath, Constants.Url);
 
             await repository.RefreshFromWebAsync();
 

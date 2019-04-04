@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using NodaTime;
     using Randomness.Distributions;
 
     public class SeasonSimulator
@@ -13,12 +14,14 @@
             this.repository = repository;
         }
 
-        public IReadOnlyDictionary<string, SeasonSimulationResult> Simulate(int simulations)
+        public IReadOnlyDictionary<string, SeasonSimulationResult> Simulate(int simulations, LocalDate? lastDate)
         {
-            var teams = Calculator.GetTeams(this.repository.TeamNames, this.repository.Matches);
+            var matches = this.repository.Matches(lastDate);
+
+            var teams = Calculator.GetTeams(this.repository.TeamNames, matches);
 
             var distribution = SeasonDistribution.Create(
-                this.repository.Matches,
+                matches,
                 teams);
 
             var sampleSeasons = distribution

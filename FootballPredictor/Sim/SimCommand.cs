@@ -6,21 +6,22 @@
     using System.Text;
     using System.Threading.Tasks;
     using FootballPredictor.Core;
+    using NodaTime;
 
     public static class SimCommand
     {
         public static async Task<int> RunAsync(SimOptions options)
         {
-            var repository = new Repository(Constants.CsvFilePath, Constants.Url, lastDate: options.Until);
+            var repository = new Repository(Constants.CsvFilePath, Constants.Url);
 
-            RunSimulations(repository);
+            RunSimulations(repository, options.Until);
 
             Console.ReadLine();
 
             return 0;
         }
 
-        private static void RunSimulations(Repository repository)
+        private static void RunSimulations(Repository repository, LocalDate? lastDate)
         {
             var simulations = 10_000;
 
@@ -30,7 +31,7 @@
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var results = seasonSimulator.Simulate(simulations);
+            var results = seasonSimulator.Simulate(simulations, lastDate);
 
             stopwatch.Stop();
 

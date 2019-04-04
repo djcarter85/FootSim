@@ -16,15 +16,13 @@
 
         private readonly string csvFilePath;
         private readonly string url;
-        private readonly LocalDate? lastDate;
 
         private readonly Lazy<Data> dataLazy;
 
-        public Repository(string csvFilePath, string url, LocalDate? lastDate)
+        public Repository(string csvFilePath, string url)
         {
             this.csvFilePath = csvFilePath;
             this.url = url;
-            this.lastDate = lastDate;
 
             this.dataLazy = new Lazy<Data>(this.FetchData);
         }
@@ -46,7 +44,17 @@
 
         public IReadOnlyList<string> TeamNames => this.dataLazy.Value.TeamNames;
 
-        public IReadOnlyList<PastMatch> Matches => this.dataLazy.Value.Matches;
+        public IReadOnlyList<PastMatch> Matches(LocalDate? lastDate)
+        {
+            if (lastDate == null)
+            {
+                return this.dataLazy.Value.Matches;
+            }
+            else
+            {
+                return this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray();
+            }
+        }
 
         private Data FetchData()
         {
@@ -68,14 +76,13 @@
 
         private Data ParseData(IEnumerable<CsvMatch> csvMatches)
         {
-            if (this.lastDate != null)
-            {
-                csvMatches = csvMatches.Where(cm => Pattern.Parse(cm.Date).GetValueOrThrow() <= this.lastDate);
-            }
-
             var matches = csvMatches
-                .Select(csvMatch => new PastMatch(csvMatch.HomeTeam, csvMatch.AwayTeam, new Score(csvMatch.FTHG, csvMatch.FTAG)))
-                .ToList();
+                 .Select(csvMatch => new PastMatch(
+                     Pattern.Parse(csvMatch.Date).GetValueOrThrow(),
+                     csvMatch.HomeTeam,
+                     csvMatch.AwayTeam,
+                     new Score(csvMatch.FTHG, csvMatch.FTAG)))
+                 .ToList();
 
             var teamNames = matches
                 .SelectMany(m => new[] { m.HomeTeamName, m.AwayTeamName })
