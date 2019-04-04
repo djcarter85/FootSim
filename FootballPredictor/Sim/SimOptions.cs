@@ -9,9 +9,6 @@
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
-        [Option('r', "refresh", Required = false, HelpText = "Refresh the results from www.football-data.co.uk.")]
-        public bool Refresh { get; set; }
-
         [Option('u', "until", Required = false, HelpText = "Simulate the season up to and including matches played on the specified date. Format yyyy-MM-dd.")]
         public string UntilString { get; set; }
 

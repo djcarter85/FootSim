@@ -13,11 +13,6 @@
         {
             var repository = new Repository(Constants.CsvFilePath, Constants.Url, lastDate: options.Until);
 
-            if (options.Refresh)
-            {
-                await repository.RefreshFromWebAsync();
-            }
-
             RunSimulations(repository);
 
             Console.ReadLine();
