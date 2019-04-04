@@ -14,5 +14,7 @@
 
         public LocalDate? Until => string.IsNullOrEmpty(this.UntilString) ? (LocalDate?)null : Pattern.Parse(this.UntilString).GetValueOrThrow();
 
+        [Option('s', "simulations", Required = false, Default = 10_000, HelpText = "The number of simulations to run.")]
+        public int Simulations { get; set; }
     }
 }

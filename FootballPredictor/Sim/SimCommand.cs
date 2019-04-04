@@ -14,24 +14,13 @@
         {
             var repository = new Repository(Constants.CsvFilePath, Constants.Url);
 
-            RunSimulations(repository, options.Until);
-
-            Console.ReadLine();
-
-            return 0;
-        }
-
-        private static void RunSimulations(Repository repository, LocalDate? lastDate)
-        {
-            var simulations = 10_000;
-
-            Console.WriteLine($"Simulating {simulations:N0} seasons ...");
+            Console.WriteLine($"Simulating {options.Simulations:N0} seasons ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var results = seasonSimulator.Simulate(simulations, lastDate);
+            var results = seasonSimulator.Simulate(options.Simulations, options.Until);
 
             stopwatch.Stop();
 
@@ -47,6 +36,10 @@
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
+
+            Console.ReadLine();
+
+            return 0;
         }
 
         private static string GetDescription(SeasonSimulationResult seasonSimulationResult)
