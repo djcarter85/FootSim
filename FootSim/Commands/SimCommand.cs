@@ -13,10 +13,10 @@
     {
         public static async Task<ExitCode> RunAsync(SimOptions options)
         {
-            var repository = new Repository(options.Season, options.League.ForWeb());
+            var repository = new Repository(options.Season.ForWeb(), options.League.ForWeb());
 
             Console.WriteLine($"League: {options.League.ForDisplay()}");
-            Console.WriteLine($"Season: {options.Season}");
+            Console.WriteLine($"Season: {options.Season.ForDisplay()}");
             Console.WriteLine();
             Console.WriteLine($"Simulating {options.Times:N0} times ...");
 

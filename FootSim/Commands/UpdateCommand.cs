@@ -8,7 +8,7 @@
     {
         public static async Task<ExitCode> RunAsync(UpdateOptions options)
         {
-            var repository = new Repository(options.Season, options.League.ForWeb());
+            var repository = new Repository(options.Season.ForWeb(), options.League.ForWeb());
 
             await repository.RefreshFromWebAsync();
 
