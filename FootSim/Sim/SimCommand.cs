@@ -11,15 +11,15 @@
     {
         public static async Task<ExitCode> RunAsync(SimOptions options)
         {
-            var repository = new Repository(Constants.CsvFilePath, Constants.Url);
+            var repository = new Repository(options.Season);
 
-            Console.WriteLine($"Simulating {options.Simulations:N0} seasons ...");
+            Console.WriteLine($"Simulating the {options.Season} season {options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var results = seasonSimulator.Simulate(options.Simulations, options.Until);
+            var results = seasonSimulator.Simulate(options.Times, options.On);
 
             stopwatch.Stop();
 
