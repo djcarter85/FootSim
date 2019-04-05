@@ -6,7 +6,7 @@
         {
             var twoDigitSeason = season % 100;
 
-            return $"{twoDigitSeason}{twoDigitSeason + 1}";
+            return $"{twoDigitSeason:00}{twoDigitSeason + 1:00}";
         }
 
         public static string ForDisplay(this int season)
