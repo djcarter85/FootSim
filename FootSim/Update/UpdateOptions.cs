@@ -5,7 +5,7 @@
     [Verb("update", HelpText = "Update the results from www.football-data.co.uk.")]
     public class UpdateOptions
     {
-        [Option("season", Required = true, HelpText = "The season to run the simulation for, e.g. \"1819\".")]
+        [Option('s', "season", Required = true, HelpText = "The season to run the simulation for, e.g. \"1819\".")]
         public string Season { get; set; }
     }
 }

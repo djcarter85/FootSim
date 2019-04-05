@@ -9,15 +9,15 @@
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
-        [Option('u', "until", Required = false, HelpText = "Simulate the season up to and including matches played on the specified date. Format yyyy-MM-dd.")]
-        public string UntilString { get; set; }
+        [Option('o', "on", Required = false, HelpText = "Date on which to perform the simulation. Format yyyy-MM-dd.")]
+        public string OnString { get; set; }
 
-        public LocalDate? Until => string.IsNullOrEmpty(this.UntilString) ? (LocalDate?)null : Pattern.Parse(this.UntilString).GetValueOrThrow();
+        public LocalDate? On => string.IsNullOrEmpty(this.OnString) ? (LocalDate?)null : Pattern.Parse(this.OnString).GetValueOrThrow();
 
-        [Option('s', "simulations", Required = false, Default = 10_000, HelpText = "The number of simulations to run.")]
-        public int Simulations { get; set; }
+        [Option('t', "times", Required = false, Default = 10_000, HelpText = "The number of times to simulate the season.")]
+        public int Times { get; set; }
 
-        [Option("season", Required = true, HelpText = "The season to run the simulation for, e.g. \"1819\".")]
+        [Option('s', "season", Required = true, HelpText = "The season to run the simulation for, e.g. \"1819\".")]
         public string Season { get; set; }
     }
 }

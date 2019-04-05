@@ -13,13 +13,13 @@
         {
             var repository = new Repository(options.Season);
 
-            Console.WriteLine($"Simulating {options.Simulations:N0} seasons ...");
+            Console.WriteLine($"Simulating {options.Times:N0} seasons ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var results = seasonSimulator.Simulate(options.Simulations, options.Until);
+            var results = seasonSimulator.Simulate(options.Times, options.On);
 
             stopwatch.Stop();
 
