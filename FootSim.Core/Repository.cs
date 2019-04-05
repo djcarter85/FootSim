@@ -23,15 +23,15 @@
 
         private readonly Lazy<Data> dataLazy;
 
-        public Repository(string season)
+        public Repository(string season, string league)
         {
             this.csvFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "FootSim",
-                "epl",
+                league,
                 season,
                 "data.csv");
-            this.url = $"http://www.football-data.co.uk/mmz4281/{season}/E0.csv";
+            this.url = $"http://www.football-data.co.uk/mmz4281/{season}/{league}.csv";
 
             this.dataLazy = new Lazy<Data>(this.FetchData);
         }
