@@ -14,14 +14,12 @@
             this.repository = repository;
         }
 
-        public SeasonSimulationResult Simulate(int simulations, LocalDate? lastDate)
+        public SeasonSimulationResult Simulate(int simulations, Season seasonSoFar)
         {
-            var matches = this.repository.Matches(lastDate);
-
-            var teams = Calculator.GetTeams(this.repository.TeamNames, matches);
+            var teams = Calculator.GetTeams(this.repository.TeamNames, seasonSoFar);
 
             var distribution = SeasonDistribution.Create(
-                matches,
+                seasonSoFar,
                 teams);
 
             var sampleSeasons = distribution
@@ -49,7 +47,7 @@
                 .Select(kvp => kvp.Value.TeamSeasonSimulationResult(kvp.Key))
                 .ToArray();
 
-            return new SeasonSimulationResult(teamResults);
+            return new SeasonSimulationResult(seasonSoFar, teamResults);
         }
 
         private class TempSimulationResult

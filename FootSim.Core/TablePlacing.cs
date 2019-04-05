@@ -2,10 +2,11 @@
 {
     public class TablePlacing
     {
-        public TablePlacing(int position, string teamName, int won, int drawn, int lost, int goalsFor, int goalsAgainst, int goalDifference, int points)
+        public TablePlacing(int position, string teamName, int played, int won, int drawn, int lost, int goalsFor, int goalsAgainst, int goalDifference, int points)
         {
             this.Position = position;
             this.TeamName = teamName;
+            this.Played = played;
             this.Won = won;
             this.Drawn = drawn;
             this.Lost = lost;
@@ -18,6 +19,8 @@
         public int Position { get; }
 
         public string TeamName { get; }
+
+        public int Played { get; }
 
         public int Won { get; }
 

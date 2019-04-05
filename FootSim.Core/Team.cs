@@ -23,7 +23,7 @@
 
         public double DefensiveWeakness { get; }
 
-        public static Team Create(string teamName, IReadOnlyList<PastMatch> matches, double averageGoalsScored)
+        public static Team Create(string teamName, IReadOnlyList<ICompletedMatch> matches, double averageGoalsScored)
         {
             var goalsScored = Calculator.GoalsScored(matches, teamName);
             var goalsConceded = Calculator.GoalsConceded(matches, teamName);

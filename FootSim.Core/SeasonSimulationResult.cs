@@ -4,10 +4,15 @@
 
     public class SeasonSimulationResult
     {
-        public SeasonSimulationResult(IReadOnlyList<TeamSeasonSimulationResult> teams)
+        public SeasonSimulationResult(
+            Season seasonSoFar,
+            IReadOnlyList<TeamSeasonSimulationResult> teams)
         {
+            this.SeasonSoFar = seasonSoFar;
             this.Teams = teams;
         }
+
+        public Season SeasonSoFar { get; }
 
         public IReadOnlyList<TeamSeasonSimulationResult> Teams { get; }
     }

@@ -8,7 +8,7 @@
     {
         private readonly List<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
 
-        public void AddColumn(string header, int width, Alignment alignment, Func<TRow, string> getCellValue)
+        public void AddColumn(string header, int width, Alignment alignment, Func<TRow, object> getCellValue)
         {
             this.columnDefinitions.Add(new ColumnDefinition(header, width, alignment, getCellValue));
         }
@@ -39,9 +39,9 @@
             private readonly string header;
             private readonly int width;
             private readonly Alignment alignment;
-            private readonly Func<TRow, string> getCellValue;
+            private readonly Func<TRow, object> getCellValue;
 
-            public ColumnDefinition(string header, int width, Alignment alignment, Func<TRow, string> getCellValue)
+            public ColumnDefinition(string header, int width, Alignment alignment, Func<TRow, object> getCellValue)
             {
                 this.header = header;
                 this.width = width;
@@ -56,7 +56,7 @@
 
             public string GetCellValue(TRow row)
             {
-                return this.Pad(this.getCellValue(row));
+                return this.Pad(this.getCellValue(row).ToString());
             }
 
             private string Pad(string value)

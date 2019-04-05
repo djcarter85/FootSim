@@ -1,6 +1,7 @@
 ﻿namespace FootSim.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
@@ -17,24 +18,26 @@
             Console.WriteLine($"League: {options.League.ForDisplay()}");
             Console.WriteLine($"Season: {options.Season.ForDisplay()}");
             Console.WriteLine();
+            Console.WriteLine("League table:");
+            Console.WriteLine();
+
+            var seasonSoFar = new Season(repository.Matches(options.On));
+
+            Console.WriteLine(CreateLeagueTable(seasonSoFar));
+
+            Console.WriteLine();
             Console.WriteLine($"Simulating {options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var result = seasonSimulator.Simulate(options.Times, options.On);
+            var result = seasonSimulator.Simulate(options.Times, seasonSoFar);
 
             stopwatch.Stop();
 
-            var maxTeamNameLength = result.Teams
-                .Select(t => t.TeamName.Length)
-                .Max();
-
-            var tableBuilder = CreateTableBuilder(maxTeamNameLength);
-
             Console.WriteLine();
-            Console.WriteLine(tableBuilder.Build(result.Teams));
+            Console.WriteLine(CreateSimulationTable(result.Teams));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
@@ -42,13 +45,13 @@
             return ExitCode.Success;
         }
 
-        private static TableBuilder<TeamSeasonSimulationResult> CreateTableBuilder(int maxTeamNameLength)
+        private static string CreateSimulationTable(IReadOnlyList<TeamSeasonSimulationResult> teams)
         {
             var tableBuilder = new TableBuilder<TeamSeasonSimulationResult>();
 
             tableBuilder.AddColumn(
                 "Name",
-                maxTeamNameLength + 3,
+                teams.Select(t => t.TeamName.Length).Max() + 3,
                 Alignment.Left,
                 tssr => tssr.TeamName);
 
@@ -67,17 +70,32 @@
                 Alignment.Right,
                 tssr => tssr.AveragePoints.ToString("N1"));
 
-            return tableBuilder;
+            return tableBuilder.Build(teams);
+        }
+
+        private static string CreateLeagueTable(Season season)
+        {
+            var tableBuilder = new TableBuilder<TablePlacing>();
+
+            tableBuilder.AddColumn("#", 2, Alignment.Right, tp => tp.Position);
+            tableBuilder.AddColumn("Name", season.Table.Max(t => t.TeamName.Length), Alignment.Left, tp => tp.TeamName);
+            tableBuilder.AddColumn("Pld", 4, Alignment.Right, tp => tp.Played);
+            tableBuilder.AddColumn("W", 4, Alignment.Right, tp => tp.Won);
+            tableBuilder.AddColumn("D", 4, Alignment.Right, tp => tp.Drawn);
+            tableBuilder.AddColumn("L", 4, Alignment.Right, tp => tp.Lost);
+            tableBuilder.AddColumn("GD", 4, Alignment.Right, tp => tp.GoalDifference);
+            tableBuilder.AddColumn("Pts", 4, Alignment.Right, tp => tp.Points);
+
+            return tableBuilder.Build(season.Table);
         }
 
         private static string CalculatePercentage(int position, TeamSeasonSimulationResult teamSeasonSimulationResult)
         {
             var positionCount = teamSeasonSimulationResult.PositionCount(position);
-            var percentage = positionCount == 0
+
+            return positionCount == 0
                 ? string.Empty
                 : ((double)positionCount / teamSeasonSimulationResult.Positions.Count * 100).ToString(".0");
-
-            return percentage;
         }
     }
 }
