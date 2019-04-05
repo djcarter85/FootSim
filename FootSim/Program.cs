@@ -9,7 +9,9 @@
     {
         public static async Task<int> Main(string[] args)
         {
-            var exitCode = await Parser.Default.ParseArguments<SimOptions, UpdateOptions>(args)
+            var parser = new Parser(s => s.CaseInsensitiveEnumValues = true);
+
+            var exitCode = await parser.ParseArguments<SimOptions, UpdateOptions>(args)
                 .MapResult(
                     async (SimOptions o) => await SimCommand.RunAsync(o),
                     async (UpdateOptions o) => await UpdateCommand.RunAsync(o),

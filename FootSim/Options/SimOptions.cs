@@ -19,5 +19,8 @@
 
         [Option('s', "season", Required = true, HelpText = "The season to run the simulation for, e.g. \"1819\".")]
         public string Season { get; set; }
+
+        [Option('l', "league", Required = true, HelpText = "The league to run the simulation for. Supports \"epl\" (Premier League), \"champ\" (Championship).")]
+        public League League { get; set; }
     }
 }
