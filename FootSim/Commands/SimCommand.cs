@@ -13,9 +13,12 @@
     {
         public static async Task<ExitCode> RunAsync(SimOptions options)
         {
-            var repository = new Repository(options.Season, options.League.GetCode());
+            var repository = new Repository(options.Season, options.League.ForWeb());
 
-            Console.WriteLine($"Simulating the {options.Season} season {options.Times:N0} times ...");
+            Console.WriteLine($"League: {options.League.ForDisplay()}");
+            Console.WriteLine($"Season: {options.Season}");
+            Console.WriteLine();
+            Console.WriteLine($"Simulating {options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();

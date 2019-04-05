@@ -5,7 +5,7 @@
 
     public static class LeagueExtensions
     {
-        public static string GetCode(this League league)
+        public static string ForWeb(this League league)
         {
             switch (league)
             {
@@ -13,6 +13,19 @@
                     return "E0";
                 case League.Champ:
                     return "E1";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(league), league, null);
+            }
+        }
+
+        public static string ForDisplay(this League league)
+        {
+            switch (league)
+            {
+                case League.Epl:
+                    return "English Premier League";
+                case League.Champ:
+                    return "English Championship";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(league), league, null);
             }
