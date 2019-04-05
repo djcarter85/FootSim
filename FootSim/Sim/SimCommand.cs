@@ -1,6 +1,7 @@
 ﻿namespace FootSim.Sim
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Text;
@@ -23,15 +24,10 @@
 
             stopwatch.Stop();
 
+            var tableBuilder = CreateTableBuilder();
+
             Console.WriteLine();
-            Console.WriteLine(GetHeaderLine());
-
-            foreach (var keyValuePair in results.OrderByDescending(kvp => kvp.Value.AveragePoints))
-            {
-                var teamName = keyValuePair.Key;
-
-                Console.WriteLine($"{teamName,-20} {GetDescription(keyValuePair.Value)}");
-            }
+            Console.WriteLine(tableBuilder.Build(results));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
@@ -41,41 +37,42 @@
             return ExitCode.Success;
         }
 
-        private static string GetDescription(SeasonSimulationResult seasonSimulationResult)
+        private static TableBuilder<KeyValuePair<string, SeasonSimulationResult>> CreateTableBuilder()
         {
-            var stringBuilder = new StringBuilder();
+            var tableBuilder = new TableBuilder<KeyValuePair<string, SeasonSimulationResult>>();
+
+            tableBuilder.AddColumn(
+                "Name",
+                20,
+                Alignment.Left,
+                kvp => kvp.Key);
 
             foreach (var position in Enumerable.Range(1, 20))
             {
-                var positionCount = seasonSimulationResult.PositionCount(position);
-                var percentage = positionCount == 0 ?
-                    string.Empty :
-                    ((double)positionCount / seasonSimulationResult.Positions.Count * 100).ToString(".0");
-
-                stringBuilder.Append($"{percentage,5} ");
+                tableBuilder.AddColumn(
+                    $"#{position}",
+                    5,
+                    Alignment.Right,
+                    kvp => CalculatePercentage(position, kvp.Value));
             }
 
-            var avgPts = seasonSimulationResult.AveragePoints.ToString("N1");
-            stringBuilder.Append($"{avgPts,8}");
+            tableBuilder.AddColumn(
+                "Avg Pts",
+                8,
+                Alignment.Right,
+                kvp => kvp.Value.AveragePoints.ToString("N1"));
 
-            return stringBuilder.ToString();
+            return tableBuilder;
         }
 
-        private static string GetHeaderLine()
+        private static string CalculatePercentage(int position, SeasonSimulationResult seasonSimulationResult)
         {
-            var stringBuilder = new StringBuilder();
+            var positionCount = seasonSimulationResult.PositionCount(position);
+            var percentage = positionCount == 0
+                ? string.Empty
+                : ((double)positionCount / seasonSimulationResult.Positions.Count * 100).ToString(".0");
 
-            stringBuilder.Append($"{"Name",-20} ");
-
-            foreach (var position in Enumerable.Range(1, 20))
-            {
-                var pos = $"#{position}";
-                stringBuilder.Append($"{pos,5} ");
-            }
-
-            stringBuilder.Append(" Avg Pts");
-
-            return stringBuilder.ToString();
+            return percentage;
         }
     }
 }
