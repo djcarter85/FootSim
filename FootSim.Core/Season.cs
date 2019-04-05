@@ -6,12 +6,12 @@
 
     public class Season
     {
-        public Season(IReadOnlyList<PastMatch> matches)
+        public Season(IReadOnlyList<SimulatedMatch> matches)
         {
             this.Matches = matches;
         }
 
-        public IReadOnlyList<PastMatch> Matches { get; }
+        public IReadOnlyList<SimulatedMatch> Matches { get; }
 
         public IReadOnlyList<TablePlacing> Table
         {
@@ -19,22 +19,22 @@
             {
                 var tablePlacings = new Dictionary<string, SettableTablePlacing>();
 
-                foreach (var pastMatch in this.Matches)
+                foreach (var simulatedMatch in this.Matches)
                 {
-                    if (!tablePlacings.ContainsKey(pastMatch.HomeTeamName))
+                    if (!tablePlacings.ContainsKey(simulatedMatch.HomeTeamName))
                     {
-                        tablePlacings[pastMatch.HomeTeamName] = new SettableTablePlacing();
+                        tablePlacings[simulatedMatch.HomeTeamName] = new SettableTablePlacing();
                     }
 
-                    if (!tablePlacings.ContainsKey(pastMatch.AwayTeamName))
+                    if (!tablePlacings.ContainsKey(simulatedMatch.AwayTeamName))
                     {
-                        tablePlacings[pastMatch.AwayTeamName] = new SettableTablePlacing();
+                        tablePlacings[simulatedMatch.AwayTeamName] = new SettableTablePlacing();
                     }
 
-                    var homePlacing = tablePlacings[pastMatch.HomeTeamName];
-                    var awayPlacing = tablePlacings[pastMatch.AwayTeamName];
+                    var homePlacing = tablePlacings[simulatedMatch.HomeTeamName];
+                    var awayPlacing = tablePlacings[simulatedMatch.AwayTeamName];
 
-                    switch (pastMatch.Score.Result)
+                    switch (simulatedMatch.Score.Result)
                     {
                         case Result.HomeWin:
                             homePlacing.Won++;
@@ -52,11 +52,11 @@
                             throw new ArgumentOutOfRangeException();
                     }
 
-                    homePlacing.GoalsFor += pastMatch.Score.Home;
-                    homePlacing.GoalsAgainst += pastMatch.Score.Away;
+                    homePlacing.GoalsFor += simulatedMatch.Score.Home;
+                    homePlacing.GoalsAgainst += simulatedMatch.Score.Away;
 
-                    awayPlacing.GoalsFor += pastMatch.Score.Away;
-                    awayPlacing.GoalsAgainst += pastMatch.Score.Home;
+                    awayPlacing.GoalsFor += simulatedMatch.Score.Away;
+                    awayPlacing.GoalsAgainst += simulatedMatch.Score.Home;
                 }
 
                 return tablePlacings

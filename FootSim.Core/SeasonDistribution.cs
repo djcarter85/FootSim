@@ -21,7 +21,7 @@
         public Season Sample()
         {
             var pastMatches = this.matches
-                .Select(m => new PastMatch(null, m.HomeTeamName, m.AwayTeamName, m.ScoreDistribution.Sample()))
+                .Select(m => new SimulatedMatch(m.HomeTeamName, m.AwayTeamName, m.ScoreDistribution.Sample()))
                 .ToList();
 
             return new Season(pastMatches);
