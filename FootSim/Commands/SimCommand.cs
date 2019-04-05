@@ -36,8 +36,6 @@
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
 
-            Console.ReadLine();
-
             return ExitCode.Success;
         }
 
