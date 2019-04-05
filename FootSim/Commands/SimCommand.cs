@@ -18,20 +18,26 @@
             Console.WriteLine($"League: {options.League.ForDisplay()}");
             Console.WriteLine($"Season: {options.Season.ForDisplay()}");
             Console.WriteLine();
+            Console.WriteLine("League table:");
+            Console.WriteLine();
+
+            var seasonSoFar = new Season(repository.Matches(options.On));
+
+            Console.WriteLine(CreateLeagueTable(seasonSoFar));
+
+            Console.WriteLine();
             Console.WriteLine($"Simulating {options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var results = seasonSimulator.Simulate(options.Times, options.On);
+            var result = seasonSimulator.Simulate(options.Times, seasonSoFar);
 
             stopwatch.Stop();
 
-            var tableBuilder = CreateTableBuilder();
-
             Console.WriteLine();
-            Console.WriteLine(tableBuilder.Build(results));
+            Console.WriteLine(CreateSimulationTable(result.Teams));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
@@ -39,42 +45,54 @@
             return ExitCode.Success;
         }
 
-        private static TableBuilder<KeyValuePair<string, SeasonSimulationResult>> CreateTableBuilder()
+        private static string CreateSimulationTable(IReadOnlyList<TeamSeasonSimulationResult> teams)
         {
-            var tableBuilder = new TableBuilder<KeyValuePair<string, SeasonSimulationResult>>();
+            var tableBuilder = new TableBuilder<TeamSeasonSimulationResult>();
 
             tableBuilder.AddColumn(
                 "Name",
-                20,
                 Alignment.Left,
-                kvp => kvp.Key);
+                tssr => tssr.TeamName);
 
             foreach (var position in Enumerable.Range(1, 20))
             {
                 tableBuilder.AddColumn(
                     $"#{position}",
-                    5,
                     Alignment.Right,
-                    kvp => CalculatePercentage(position, kvp.Value));
+                    tssr => CalculatePercentage(position, tssr));
             }
 
             tableBuilder.AddColumn(
                 "Avg Pts",
-                8,
                 Alignment.Right,
-                kvp => kvp.Value.AveragePoints.ToString("N1"));
+                tssr => tssr.AveragePoints.ToString("N1"));
 
-            return tableBuilder;
+            return tableBuilder.Build(teams);
         }
 
-        private static string CalculatePercentage(int position, SeasonSimulationResult seasonSimulationResult)
+        private static string CreateLeagueTable(Season season)
         {
-            var positionCount = seasonSimulationResult.PositionCount(position);
-            var percentage = positionCount == 0
-                ? string.Empty
-                : ((double)positionCount / seasonSimulationResult.Positions.Count * 100).ToString(".0");
+            var tableBuilder = new TableBuilder<TablePlacing>();
 
-            return percentage;
+            tableBuilder.AddColumn("#", Alignment.Right, tp => tp.Position);
+            tableBuilder.AddColumn("Name", Alignment.Left, tp => tp.TeamName);
+            tableBuilder.AddColumn("Pld", Alignment.Right, tp => tp.Played);
+            tableBuilder.AddColumn("W", Alignment.Right, tp => tp.Won);
+            tableBuilder.AddColumn("D", Alignment.Right, tp => tp.Drawn);
+            tableBuilder.AddColumn("L", Alignment.Right, tp => tp.Lost);
+            tableBuilder.AddColumn("GD", Alignment.Right, tp => tp.GoalDifference);
+            tableBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
+
+            return tableBuilder.Build(season.Table);
+        }
+
+        private static string CalculatePercentage(int position, TeamSeasonSimulationResult teamSeasonSimulationResult)
+        {
+            var positionCount = teamSeasonSimulationResult.PositionCount(position);
+
+            return positionCount == 0
+                ? string.Empty
+                : ((double)positionCount / teamSeasonSimulationResult.Positions.Count * 100).ToString(".0");
         }
     }
 }

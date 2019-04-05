@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using NodaTime;
     using Randomness.Distributions;
 
     public class SeasonSimulator
@@ -14,14 +13,12 @@
             this.repository = repository;
         }
 
-        public IReadOnlyDictionary<string, SeasonSimulationResult> Simulate(int simulations, LocalDate? lastDate)
+        public SeasonSimulationResult Simulate(int simulations, Season seasonSoFar)
         {
-            var matches = this.repository.Matches(lastDate);
-
-            var teams = Calculator.GetTeams(this.repository.TeamNames, matches);
+            var teams = Calculator.GetTeams(this.repository.TeamNames, seasonSoFar);
 
             var distribution = SeasonDistribution.Create(
-                matches,
+                seasonSoFar,
                 teams);
 
             var sampleSeasons = distribution
@@ -45,7 +42,12 @@
                 }
             }
 
-            return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.SeasonSimulationResult);
+            var teamResults = results
+                .Select(kvp => kvp.Value.TeamSeasonSimulationResult(kvp.Key))
+                .OrderBy(tssr => seasonSoFar.Table.Single(tp => tp.TeamName == tssr.TeamName).Position)
+                .ToArray();
+
+            return new SeasonSimulationResult(teamResults);
         }
 
         private class TempSimulationResult
@@ -54,7 +56,7 @@
 
             public List<int> Points { get; } = new List<int>();
 
-            public SeasonSimulationResult SeasonSimulationResult => new SeasonSimulationResult(this.Points, this.Positions);
+            public TeamSeasonSimulationResult TeamSeasonSimulationResult(string teamName) => new TeamSeasonSimulationResult(teamName, this.Points, this.Positions);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace FootSim.Core
 {
-    public class SimulatedMatch
+    public class SimulatedMatch : ICompletedMatch
     {
         public SimulatedMatch(string homeTeamName, string awayTeamName, Score score)
         {

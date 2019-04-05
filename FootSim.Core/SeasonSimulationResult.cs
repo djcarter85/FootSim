@@ -1,22 +1,14 @@
 ﻿namespace FootSim.Core
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     public class SeasonSimulationResult
     {
-        public SeasonSimulationResult(IReadOnlyList<int> points, IReadOnlyList<int> positions)
+        public SeasonSimulationResult(IReadOnlyList<TeamSeasonSimulationResult> teams)
         {
-            this.Points = points;
-            this.Positions = positions;
+            this.Teams = teams;
         }
 
-        public IReadOnlyList<int> Points { get; }
-
-        public IReadOnlyList<int> Positions { get; }
-
-        public double AveragePoints => this.Points.Average();
-
-        public int PositionCount(int position) => this.Positions.Count(p => p == position);
+        public IReadOnlyList<TeamSeasonSimulationResult> Teams { get; }
     }
 }

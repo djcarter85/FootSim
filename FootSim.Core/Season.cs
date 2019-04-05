@@ -6,12 +6,12 @@
 
     public class Season
     {
-        public Season(IReadOnlyList<SimulatedMatch> matches)
+        public Season(IReadOnlyList<ICompletedMatch> matches)
         {
             this.Matches = matches;
         }
 
-        public IReadOnlyList<SimulatedMatch> Matches { get; }
+        public IReadOnlyList<ICompletedMatch> Matches { get; }
 
         public IReadOnlyList<TablePlacing> Table
         {
@@ -86,7 +86,17 @@
             public int Points => 3 * this.Won + this.Drawn;
 
             public TablePlacing TablePlacing(int position, string teamName) =>
-                new TablePlacing(position, teamName, this.Won, this.Drawn, this.Lost, this.GoalsFor, this.GoalsAgainst, this.GoalDifference, this.Points);
+                new TablePlacing(
+                    position,
+                    teamName,
+                    this.Won + this.Drawn + this.Lost,
+                    this.Won,
+                    this.Drawn,
+                    this.Lost,
+                    this.GoalsFor,
+                    this.GoalsAgainst,
+                    this.GoalDifference,
+                    this.Points);
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     using Randomness.Distributions;
 
-    public interface IMatch
+    public interface ISimulatableMatch
     {
         string HomeTeamName { get; }
 
