@@ -11,7 +11,7 @@
     {
         public static async Task<ExitCode> RunAsync(SimOptions options)
         {
-            var repository = new Repository(Constants.CsvFilePath, Constants.Url);
+            var repository = new Repository(options.Season);
 
             Console.WriteLine($"Simulating {options.Simulations:N0} seasons ...");
 

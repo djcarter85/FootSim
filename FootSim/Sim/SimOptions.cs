@@ -16,5 +16,8 @@
 
         [Option('s', "simulations", Required = false, Default = 10_000, HelpText = "The number of simulations to run.")]
         public int Simulations { get; set; }
+
+        [Option("season", Required = true, HelpText = "The season to run the simulation for, e.g. \"1819\".")]
+        public string Season { get; set; }
     }
 }

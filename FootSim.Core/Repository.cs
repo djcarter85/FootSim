@@ -12,17 +12,26 @@
 
     public class Repository
     {
-        private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
+        private static readonly IPattern<LocalDate> Pattern = new CompositePatternBuilder<LocalDate>
+        {
+            {LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy"), ld => true},
+            {LocalDatePattern.CreateWithInvariantCulture("dd/MM/yy"), ld => true}
+        }.Build();
 
         private readonly string csvFilePath;
         private readonly string url;
 
         private readonly Lazy<Data> dataLazy;
 
-        public Repository(string csvFilePath, string url)
+        public Repository(string season)
         {
-            this.csvFilePath = csvFilePath;
-            this.url = url;
+            this.csvFilePath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "FootSim",
+                "epl",
+                season,
+                "data.csv");
+            this.url = $"http://www.football-data.co.uk/mmz4281/{season}/E0.csv";
 
             this.dataLazy = new Lazy<Data>(this.FetchData);
         }
