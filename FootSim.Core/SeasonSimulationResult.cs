@@ -17,7 +17,6 @@
 
         public double AveragePoints => this.Points.Average();
 
-        public double PositionProportion(int position) =>
-            (double)this.Positions.Count(p => p == position) / this.Positions.Count;
+        public int PositionCount(int position) => this.Positions.Count(p => p == position);
     }
 }
