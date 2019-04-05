@@ -13,7 +13,7 @@
         {
             var repository = new Repository(options.Season);
 
-            Console.WriteLine($"Simulating {options.Times:N0} seasons ...");
+            Console.WriteLine($"Simulating the {options.Season} season {options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
