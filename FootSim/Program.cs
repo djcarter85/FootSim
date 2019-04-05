@@ -7,9 +7,9 @@
 
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Parser.Default.ParseArguments<SimOptions, UpdateOptions>(args)
+            await Parser.Default.ParseArguments<SimOptions, UpdateOptions>(args)
                 .MapResult(
                     async (SimOptions o) => { await SimCommand.RunAsync(o); },
                     async (UpdateOptions o) => { await UpdateCommand.RunAsync(o); },
