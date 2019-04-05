@@ -47,7 +47,7 @@
                 .Select(kvp => kvp.Value.TeamSeasonSimulationResult(kvp.Key))
                 .ToArray();
 
-            return new SeasonSimulationResult(seasonSoFar, teamResults);
+            return new SeasonSimulationResult(teamResults);
         }
 
         private class TempSimulationResult
