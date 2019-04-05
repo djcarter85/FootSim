@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FootballPredictor.Core\FootSim.Core.csproj" />
+    <ProjectReference Include="..\FootSim.Core\FootSim.Core.csproj" />
   </ItemGroup>
 
 </Project>
