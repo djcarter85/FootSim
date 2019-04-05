@@ -1,7 +1,7 @@
-﻿namespace FootballPredictor.Update
+﻿namespace FootSim.Update
 {
     using System.Threading.Tasks;
-    using FootballPredictor.Core;
+    using FootSim.Core;
 
     public class UpdateCommand
     {

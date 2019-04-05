@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor.Update
+﻿namespace FootSim.Update
 {
     using CommandLine;
 

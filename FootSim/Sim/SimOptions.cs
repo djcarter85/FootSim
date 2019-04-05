@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor.Sim
+﻿namespace FootSim.Sim
 {
     using CommandLine;
     using NodaTime;

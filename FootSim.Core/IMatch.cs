@@ -1,4 +1,4 @@
-﻿namespace FootballPredictor.Core
+﻿namespace FootSim.Core
 {
     using Randomness.Distributions;
 
