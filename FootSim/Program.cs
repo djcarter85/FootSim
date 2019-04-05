@@ -2,8 +2,8 @@
 {
     using System.Threading.Tasks;
     using CommandLine;
-    using FootSim.Sim;
-    using FootSim.Update;
+    using FootSim.Commands;
+    using FootSim.Options;
 
     public static class Program
     {

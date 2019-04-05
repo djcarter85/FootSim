@@ -1,12 +1,13 @@
-﻿namespace FootSim.Sim
+﻿namespace FootSim.Commands
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using FootSim.Core;
+    using FootSim.Options;
+    using FootSim.Table;
 
     public static class SimCommand
     {

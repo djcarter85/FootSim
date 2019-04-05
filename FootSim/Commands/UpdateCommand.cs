@@ -1,7 +1,8 @@
-﻿namespace FootSim.Update
+﻿namespace FootSim.Commands
 {
     using System.Threading.Tasks;
     using FootSim.Core;
+    using FootSim.Options;
 
     public static class UpdateCommand
     {

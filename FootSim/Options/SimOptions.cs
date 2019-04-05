@@ -1,4 +1,4 @@
-﻿namespace FootSim.Sim
+﻿namespace FootSim.Options
 {
     using CommandLine;
     using NodaTime;

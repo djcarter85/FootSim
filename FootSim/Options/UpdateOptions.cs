@@ -1,4 +1,4 @@
-﻿namespace FootSim.Update
+﻿namespace FootSim.Options
 {
     using CommandLine;
 
