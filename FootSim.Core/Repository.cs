@@ -31,6 +31,8 @@
         {
             var csv = await this.GetCsvDataAsync();
 
+            Directory.CreateDirectory(Path.GetDirectoryName(this.csvFilePath));
+
             await File.WriteAllTextAsync(this.csvFilePath, csv);
         }
 
