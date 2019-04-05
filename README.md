@@ -1,4 +1,4 @@
-# FootballPredictor
+# FootSim
 
 https://twitter.com/chuffymcvasov
 

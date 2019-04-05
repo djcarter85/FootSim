@@ -1,12 +1,11 @@
-﻿namespace FootballPredictor.Sim
+﻿namespace FootSim.Sim
 {
     using System;
     using System.Diagnostics;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using FootballPredictor.Core;
-    using NodaTime;
+    using FootSim.Core;
 
     public static class SimCommand
     {

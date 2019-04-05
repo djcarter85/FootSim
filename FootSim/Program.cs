@@ -1,9 +1,9 @@
-﻿namespace FootballPredictor
+﻿namespace FootSim
 {
     using System.Threading.Tasks;
     using CommandLine;
-    using FootballPredictor.Sim;
-    using FootballPredictor.Update;
+    using FootSim.Sim;
+    using FootSim.Update;
 
     public static class Program
     {
