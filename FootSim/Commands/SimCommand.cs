@@ -24,14 +24,14 @@
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var results = seasonSimulator.Simulate(options.Times, options.On);
+            var result = seasonSimulator.Simulate(options.Times, options.On);
 
             stopwatch.Stop();
 
             var tableBuilder = CreateTableBuilder();
 
             Console.WriteLine();
-            Console.WriteLine(tableBuilder.Build(results));
+            Console.WriteLine(tableBuilder.Build(result.Teams));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");

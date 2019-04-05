@@ -14,7 +14,7 @@
             this.repository = repository;
         }
 
-        public IReadOnlyDictionary<string, TeamSeasonSimulationResult> Simulate(int simulations, LocalDate? lastDate)
+        public SeasonSimulationResult Simulate(int simulations, LocalDate? lastDate)
         {
             var matches = this.repository.Matches(lastDate);
 
@@ -45,7 +45,7 @@
                 }
             }
 
-            return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.TeamSeasonSimulationResult);
+            return new SeasonSimulationResult(results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.TeamSeasonSimulationResult));
         }
 
         private class TempSimulationResult
