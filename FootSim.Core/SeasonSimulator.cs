@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using NodaTime;
     using Randomness.Distributions;
 
     public class SeasonSimulator
@@ -45,6 +44,7 @@
 
             var teamResults = results
                 .Select(kvp => kvp.Value.TeamSeasonSimulationResult(kvp.Key))
+                .OrderBy(tssr => seasonSoFar.Table.Single(tp => tp.TeamName == tssr.TeamName).Position)
                 .ToArray();
 
             return new SeasonSimulationResult(teamResults);
