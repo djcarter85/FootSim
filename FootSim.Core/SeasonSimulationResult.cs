@@ -4,11 +4,11 @@
 
     public class SeasonSimulationResult
     {
-        public SeasonSimulationResult(IReadOnlyDictionary<string, TeamSeasonSimulationResult> teams)
+        public SeasonSimulationResult(IReadOnlyList<TeamSeasonSimulationResult> teams)
         {
             this.Teams = teams;
         }
 
-        public IReadOnlyDictionary<string, TeamSeasonSimulationResult> Teams { get; }
+        public IReadOnlyList<TeamSeasonSimulationResult> Teams { get; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace FootSim.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
@@ -39,15 +38,15 @@
             return ExitCode.Success;
         }
 
-        private static TableBuilder<KeyValuePair<string, TeamSeasonSimulationResult>> CreateTableBuilder()
+        private static TableBuilder<TeamSeasonSimulationResult> CreateTableBuilder()
         {
-            var tableBuilder = new TableBuilder<KeyValuePair<string, TeamSeasonSimulationResult>>();
+            var tableBuilder = new TableBuilder<TeamSeasonSimulationResult>();
 
             tableBuilder.AddColumn(
                 "Name",
                 20,
                 Alignment.Left,
-                kvp => kvp.Key);
+                tssr => tssr.TeamName);
 
             foreach (var position in Enumerable.Range(1, 20))
             {
@@ -55,14 +54,14 @@
                     $"#{position}",
                     5,
                     Alignment.Right,
-                    kvp => CalculatePercentage(position, kvp.Value));
+                    tssr => CalculatePercentage(position, tssr));
             }
 
             tableBuilder.AddColumn(
                 "Avg Pts",
                 8,
                 Alignment.Right,
-                kvp => kvp.Value.AveragePoints.ToString("N1"));
+                tssr => tssr.AveragePoints.ToString("N1"));
 
             return tableBuilder;
         }

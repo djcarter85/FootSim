@@ -45,7 +45,11 @@
                 }
             }
 
-            return new SeasonSimulationResult(results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.TeamSeasonSimulationResult));
+            var teamResults = results
+                .Select(kvp => kvp.Value.TeamSeasonSimulationResult(kvp.Key))
+                .ToArray();
+
+            return new SeasonSimulationResult(teamResults);
         }
 
         private class TempSimulationResult
@@ -54,7 +58,7 @@
 
             public List<int> Points { get; } = new List<int>();
 
-            public TeamSeasonSimulationResult TeamSeasonSimulationResult => new TeamSeasonSimulationResult(this.Points, this.Positions);
+            public TeamSeasonSimulationResult TeamSeasonSimulationResult(string teamName) => new TeamSeasonSimulationResult(teamName, this.Points, this.Positions);
         }
     }
 }
