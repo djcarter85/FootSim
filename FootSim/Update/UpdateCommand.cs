@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
     using FootSim.Core;
 
-    public class UpdateCommand
+    public static class UpdateCommand
     {
         public static async Task<ExitCode> RunAsync(UpdateOptions options)
         {
