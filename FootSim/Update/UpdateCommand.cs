@@ -5,13 +5,13 @@
 
     public class UpdateCommand
     {
-        public static async Task<int> RunAsync(UpdateOptions options)
+        public static async Task<ExitCode> RunAsync(UpdateOptions options)
         {
             var repository = new Repository(Constants.CsvFilePath, Constants.Url);
 
             await repository.RefreshFromWebAsync();
 
-            return 0;
+            return ExitCode.Success;
         }
     }
 }

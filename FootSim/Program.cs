@@ -7,13 +7,15 @@
 
     public static class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            await Parser.Default.ParseArguments<SimOptions, UpdateOptions>(args)
+            var exitCode = await Parser.Default.ParseArguments<SimOptions, UpdateOptions>(args)
                 .MapResult(
-                    async (SimOptions o) => { await SimCommand.RunAsync(o); },
-                    async (UpdateOptions o) => { await UpdateCommand.RunAsync(o); },
-                    errs => Task.FromResult(1));
+                    async (SimOptions o) => await SimCommand.RunAsync(o),
+                    async (UpdateOptions o) => await UpdateCommand.RunAsync(o),
+                    errs => Task.FromResult(ExitCode.Failure));
+
+            return (int)exitCode;
         }
     }
 }

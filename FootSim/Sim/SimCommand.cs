@@ -9,7 +9,7 @@
 
     public static class SimCommand
     {
-        public static async Task<int> RunAsync(SimOptions options)
+        public static async Task<ExitCode> RunAsync(SimOptions options)
         {
             var repository = new Repository(Constants.CsvFilePath, Constants.Url);
 
@@ -38,7 +38,7 @@
 
             Console.ReadLine();
 
-            return 0;
+            return ExitCode.Success;
         }
 
         private static string GetDescription(SeasonSimulationResult seasonSimulationResult)
