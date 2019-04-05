@@ -1,5 +1,6 @@
 ﻿namespace FootSim
 {
+    using System;
     using System.Threading.Tasks;
     using CommandLine;
     using FootSim.Commands;
@@ -9,7 +10,16 @@
     {
         public static async Task<int> Main(string[] args)
         {
-            var parser = new Parser(s => s.CaseInsensitiveEnumValues = true);
+            var parser = new Parser(s =>
+            {
+                s.AutoHelp = true;
+                s.AutoVersion = true;
+                s.CaseInsensitiveEnumValues = true;
+                s.CaseSensitive = false;
+                s.HelpWriter = Console.Out;
+                s.IgnoreUnknownArguments = false;
+                s.MaximumDisplayWidth = 100;
+            });
 
             var exitCode = await parser.ParseArguments<SimOptions, UpdateOptions>(args)
                 .MapResult(
