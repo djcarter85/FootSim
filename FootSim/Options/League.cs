@@ -3,6 +3,9 @@
     public enum League
     {
         Epl,
-        Champ
+        Champ,
+        L1,
+        L2,
+        Conf
     }
 }

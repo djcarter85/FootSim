@@ -13,6 +13,12 @@
                     return "E0";
                 case League.Champ:
                     return "E1";
+                case League.L1:
+                    return "E2";
+                case League.L2:
+                    return "E3";
+                case League.Conf:
+                    return "EC";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(league), league, null);
             }
@@ -26,6 +32,12 @@
                     return "English Premier League";
                 case League.Champ:
                     return "English Championship";
+                case League.L1:
+                    return "English League One";
+                case League.L2:
+                    return "English League Two";
+                case League.Conf:
+                    return "English Conference";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(league), league, null);
             }
