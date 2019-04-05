@@ -51,7 +51,6 @@
 
             tableBuilder.AddColumn(
                 "Name",
-                teams.Select(t => t.TeamName.Length).Max() + 3,
                 Alignment.Left,
                 tssr => tssr.TeamName);
 
@@ -59,14 +58,12 @@
             {
                 tableBuilder.AddColumn(
                     $"#{position}",
-                    5,
                     Alignment.Right,
                     tssr => CalculatePercentage(position, tssr));
             }
 
             tableBuilder.AddColumn(
                 "Avg Pts",
-                8,
                 Alignment.Right,
                 tssr => tssr.AveragePoints.ToString("N1"));
 
@@ -77,14 +74,14 @@
         {
             var tableBuilder = new TableBuilder<TablePlacing>();
 
-            tableBuilder.AddColumn("#", 2, Alignment.Right, tp => tp.Position);
-            tableBuilder.AddColumn("Name", season.Table.Max(t => t.TeamName.Length), Alignment.Left, tp => tp.TeamName);
-            tableBuilder.AddColumn("Pld", 4, Alignment.Right, tp => tp.Played);
-            tableBuilder.AddColumn("W", 4, Alignment.Right, tp => tp.Won);
-            tableBuilder.AddColumn("D", 4, Alignment.Right, tp => tp.Drawn);
-            tableBuilder.AddColumn("L", 4, Alignment.Right, tp => tp.Lost);
-            tableBuilder.AddColumn("GD", 4, Alignment.Right, tp => tp.GoalDifference);
-            tableBuilder.AddColumn("Pts", 4, Alignment.Right, tp => tp.Points);
+            tableBuilder.AddColumn("#", Alignment.Right, tp => tp.Position);
+            tableBuilder.AddColumn("Name", Alignment.Left, tp => tp.TeamName);
+            tableBuilder.AddColumn("Pld", Alignment.Right, tp => tp.Played);
+            tableBuilder.AddColumn("W", Alignment.Right, tp => tp.Won);
+            tableBuilder.AddColumn("D", Alignment.Right, tp => tp.Drawn);
+            tableBuilder.AddColumn("L", Alignment.Right, tp => tp.Lost);
+            tableBuilder.AddColumn("GD", Alignment.Right, tp => tp.GoalDifference);
+            tableBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
 
             return tableBuilder.Build(season.Table);
         }

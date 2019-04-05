@@ -8,13 +8,18 @@
     {
         private readonly List<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
 
-        public void AddColumn(string header, int width, Alignment alignment, Func<TRow, object> getCellValue)
+        public void AddColumn(string header, Alignment alignment, Func<TRow, object> getCellValue)
         {
-            this.columnDefinitions.Add(new ColumnDefinition(header, width, alignment, getCellValue));
+            this.columnDefinitions.Add(new ColumnDefinition(header, alignment, getCellValue));
         }
 
         public string Build(IEnumerable<TRow> rows)
         {
+            foreach (var columnDefinition in this.columnDefinitions)
+            {
+                columnDefinition.SetWidth(rows);
+            }
+
             return rows.Select(this.CreateRow)
                 .Prepend(this.CreateHeader())
                 .Join(Environment.NewLine);
@@ -37,16 +42,23 @@
         private class ColumnDefinition
         {
             private readonly string header;
-            private readonly int width;
             private readonly Alignment alignment;
             private readonly Func<TRow, object> getCellValue;
 
-            public ColumnDefinition(string header, int width, Alignment alignment, Func<TRow, object> getCellValue)
+            private int width;
+
+            public ColumnDefinition(string header, Alignment alignment, Func<TRow, object> getCellValue)
             {
                 this.header = header;
-                this.width = width;
                 this.alignment = alignment;
                 this.getCellValue = getCellValue;
+            }
+
+            public void SetWidth(IEnumerable<TRow> rows)
+            {
+                var cellValueLengths = rows.Select(r => this.getCellValue(r).ToString().Length);
+
+                this.width = cellValueLengths.Append(this.header.Length).Max();
             }
 
             public string GetHeaderValue()
