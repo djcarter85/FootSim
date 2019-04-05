@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class SeasonSimulationResult
+    public class TeamSeasonSimulationResult
     {
-        public SeasonSimulationResult(IReadOnlyList<int> points, IReadOnlyList<int> positions)
+        public TeamSeasonSimulationResult(IReadOnlyList<int> points, IReadOnlyList<int> positions)
         {
             this.Points = points;
             this.Positions = positions;

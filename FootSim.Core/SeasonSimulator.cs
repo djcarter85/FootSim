@@ -14,7 +14,7 @@
             this.repository = repository;
         }
 
-        public IReadOnlyDictionary<string, SeasonSimulationResult> Simulate(int simulations, LocalDate? lastDate)
+        public IReadOnlyDictionary<string, TeamSeasonSimulationResult> Simulate(int simulations, LocalDate? lastDate)
         {
             var matches = this.repository.Matches(lastDate);
 
@@ -45,7 +45,7 @@
                 }
             }
 
-            return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.SeasonSimulationResult);
+            return results.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.TeamSeasonSimulationResult);
         }
 
         private class TempSimulationResult
@@ -54,7 +54,7 @@
 
             public List<int> Points { get; } = new List<int>();
 
-            public SeasonSimulationResult SeasonSimulationResult => new SeasonSimulationResult(this.Points, this.Positions);
+            public TeamSeasonSimulationResult TeamSeasonSimulationResult => new TeamSeasonSimulationResult(this.Points, this.Positions);
         }
     }
 }

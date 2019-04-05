@@ -39,9 +39,9 @@
             return ExitCode.Success;
         }
 
-        private static TableBuilder<KeyValuePair<string, SeasonSimulationResult>> CreateTableBuilder()
+        private static TableBuilder<KeyValuePair<string, TeamSeasonSimulationResult>> CreateTableBuilder()
         {
-            var tableBuilder = new TableBuilder<KeyValuePair<string, SeasonSimulationResult>>();
+            var tableBuilder = new TableBuilder<KeyValuePair<string, TeamSeasonSimulationResult>>();
 
             tableBuilder.AddColumn(
                 "Name",
@@ -67,12 +67,12 @@
             return tableBuilder;
         }
 
-        private static string CalculatePercentage(int position, SeasonSimulationResult seasonSimulationResult)
+        private static string CalculatePercentage(int position, TeamSeasonSimulationResult teamSeasonSimulationResult)
         {
-            var positionCount = seasonSimulationResult.PositionCount(position);
+            var positionCount = teamSeasonSimulationResult.PositionCount(position);
             var percentage = positionCount == 0
                 ? string.Empty
-                : ((double)positionCount / seasonSimulationResult.Positions.Count * 100).ToString(".0");
+                : ((double)positionCount / teamSeasonSimulationResult.Positions.Count * 100).ToString(".0");
 
             return percentage;
         }
