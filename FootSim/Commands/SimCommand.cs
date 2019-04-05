@@ -27,7 +27,11 @@
 
             stopwatch.Stop();
 
-            var tableBuilder = CreateTableBuilder();
+            var maxTeamNameLength = result.Teams
+                .Select(t => t.TeamName.Length)
+                .Max();
+
+            var tableBuilder = CreateTableBuilder(maxTeamNameLength);
 
             Console.WriteLine();
             Console.WriteLine(tableBuilder.Build(result.Teams));
@@ -38,13 +42,13 @@
             return ExitCode.Success;
         }
 
-        private static TableBuilder<TeamSeasonSimulationResult> CreateTableBuilder()
+        private static TableBuilder<TeamSeasonSimulationResult> CreateTableBuilder(int maxTeamNameLength)
         {
             var tableBuilder = new TableBuilder<TeamSeasonSimulationResult>();
 
             tableBuilder.AddColumn(
                 "Name",
-                20,
+                maxTeamNameLength + 3,
                 Alignment.Left,
                 tssr => tssr.TeamName);
 
