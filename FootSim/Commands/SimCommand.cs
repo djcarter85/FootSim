@@ -54,7 +54,7 @@
                 Alignment.Left,
                 tssr => tssr.TeamName);
 
-            foreach (var position in Enumerable.Range(1, 20))
+            foreach (var position in Enumerable.Range(1, teams.Count))
             {
                 tableBuilder.AddColumn(
                     $"#{position}",
