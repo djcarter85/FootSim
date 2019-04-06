@@ -64,17 +64,7 @@
 
         public string Description => $"{this.TierDescription} ({this.Nation})";
 
-        public string EditionDescription
-        {
-            get
-            {
-                var twoDigitSeason = this.StartingYear % 100;
-
-                var startYear = twoDigitSeason > 50 ? 1900 + twoDigitSeason : 2000 + twoDigitSeason;
-
-                return $"{startYear}-{startYear + 1}";
-            }
-        }
+        public string EditionDescription => $"{this.StartingYear}-{this.StartingYear + 1}";
 
         public IEnumerable<PositionGrouping> PositionGroupings => this.positionGroupingsLazy.Value;
 

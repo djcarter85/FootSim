@@ -109,9 +109,7 @@
 
         private static string GetSeasonString(int startingYear)
         {
-            var twoDigitStartingYear = startingYear % 100;
-
-            return $"{twoDigitStartingYear:00}{(twoDigitStartingYear + 1) % 100:00}";
+            return $"{startingYear % 100:00}{(startingYear + 1) % 100:00}";
         }
 
         private static string GetFileName(League league)
