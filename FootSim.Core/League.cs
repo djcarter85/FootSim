@@ -45,28 +45,44 @@
                                 yield return new PositionGrouping("Title", 1);
                                 yield return new PositionGrouping("UCL", 1, 2, 3, 4);
                                 yield return new PositionGrouping("UEL", 5, 6, 7);
-                                yield return new PositionGrouping("Rel.", 18, 19, 20);
+                                yield return new PositionGrouping("Rel", 18, 19, 20);
                                 break;
                             case 1:
                                 yield return new PositionGrouping("Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoff", 3, 4, 5, 6);
-                                yield return new PositionGrouping("Rel.", 22, 23, 24);
+                                yield return new PositionGrouping("PO", 3, 4, 5, 6);
+                                yield return new PositionGrouping("Rel", 22, 23, 24);
                                 break;
                             case 2:
                                 yield return new PositionGrouping("Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoff", 3, 4, 5, 6);
-                                yield return new PositionGrouping("Rel.", 22, 23, 24);
+                                yield return new PositionGrouping("PO", 3, 4, 5, 6);
+                                yield return new PositionGrouping("Rel", 22, 23, 24);
                                 break;
                             case 3:
                                 yield return new PositionGrouping("Top 3", 1, 2, 3);
-                                yield return new PositionGrouping("Playoff", 4, 5, 6, 7);
-                                yield return new PositionGrouping("Rel.", 23, 24);
+                                yield return new PositionGrouping("PO", 4, 5, 6, 7);
+                                yield return new PositionGrouping("Rel", 23, 24);
                                 break;
-
                         }
 
                         break;
                     case Nation.Germany:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                yield return new PositionGrouping("Title", 1);
+                                yield return new PositionGrouping("UCL", 1, 2, 3, 4);
+                                yield return new PositionGrouping("UEL", 5, 6);
+                                yield return new PositionGrouping("Rel PO", 16);
+                                yield return new PositionGrouping("Rel", 17, 18);
+                                break;
+                            case 1:
+                                yield return new PositionGrouping("Top 2", 1, 2);
+                                yield return new PositionGrouping("PO", 3);
+                                yield return new PositionGrouping("Rel PO", 16);
+                                yield return new PositionGrouping("Rel", 17, 18);
+                                break;
+                        }
+
                         break;
                     case Nation.Italy:
                         break;
