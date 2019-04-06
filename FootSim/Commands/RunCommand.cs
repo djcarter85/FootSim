@@ -42,7 +42,7 @@
             stopwatch.Stop();
 
             Console.WriteLine();
-            Console.WriteLine(CreateSimulationGrid(result.Teams));
+            Console.WriteLine(CreateSimulationGrid(result.Teams, this.options.League.PositionGroupings));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
@@ -50,7 +50,9 @@
             return ExitCode.Success;
         }
 
-        private static string CreateSimulationGrid(IReadOnlyList<TeamSeasonSimulationResult> teams)
+        private static string CreateSimulationGrid(
+            IReadOnlyList<TeamSeasonSimulationResult> teams,
+            IEnumerable<PositionGrouping> positionGroupings)
         {
             var gridBuilder = new GridBuilder<TeamSeasonSimulationResult>();
 
@@ -63,16 +65,30 @@
 
             gridBuilder.AddColumn("Avg Pts", Alignment.Right, tssr => tssr.AveragePoints.ToString("N1"));
 
+            foreach (var positionGrouping in positionGroupings)
+            {
+                gridBuilder.AddColumn(positionGrouping.Name, Alignment.Right, tssr => CalculatePercentage(positionGrouping, tssr));
+            }
+
             return gridBuilder.Build(teams);
         }
 
         private static string CalculatePercentage(int position, TeamSeasonSimulationResult teamSeasonSimulationResult)
         {
-            var positionCount = teamSeasonSimulationResult.PositionCount(position);
+            var count = teamSeasonSimulationResult.PositionCount(position);
 
-            return positionCount == 0
+            return count == 0
                 ? string.Empty
-                : ((double)positionCount / teamSeasonSimulationResult.Positions.Count * 100).ToString(".0");
+                : ((double)count / teamSeasonSimulationResult.Positions.Count * 100).ToString(".0");
+        }
+
+        private static string CalculatePercentage(PositionGrouping positionGrouping, TeamSeasonSimulationResult teamSeasonSimulationResult)
+        {
+            var count = teamSeasonSimulationResult.PositionGroupingCount(positionGrouping);
+
+            return count == 0
+                ? string.Empty
+                : ((double)count / teamSeasonSimulationResult.Positions.Count * 100).ToString(".0");
         }
     }
 }

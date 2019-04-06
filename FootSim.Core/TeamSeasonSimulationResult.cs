@@ -21,5 +21,8 @@
         public double AveragePoints => this.Points.Average();
 
         public int PositionCount(int position) => this.Positions.Count(p => p == position);
+
+        public int PositionGroupingCount(PositionGrouping positionGrouping) =>
+            this.Positions.Count(p => positionGrouping.Positions.Contains(p));
     }
 }

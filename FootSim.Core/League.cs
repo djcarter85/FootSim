@@ -1,6 +1,7 @@
 ﻿namespace FootSim.Core
 {
     using System;
+    using System.Collections.Generic;
 
     public class League
     {
@@ -28,6 +29,32 @@
                 var startYear = twoDigitSeason > 50 ? 1900 + twoDigitSeason : 2000 + twoDigitSeason;
 
                 return $"{startYear}-{startYear + 1}";
+            }
+        }
+
+        public IEnumerable<PositionGrouping> PositionGroupings
+        {
+            get
+            {
+                switch (this.Nation)
+                {
+                    case Nation.England:
+                        yield return new PositionGrouping("Title", 1);
+                        yield return new PositionGrouping("UCL", 1, 2, 3, 4);
+                        yield return new PositionGrouping("UEL", 5, 6, 7);
+                        yield return new PositionGrouping("Rel.", 18, 19, 20);
+                        break;
+                    case Nation.Germany:
+                        break;
+                    case Nation.Italy:
+                        break;
+                    case Nation.Spain:
+                        break;
+                    case Nation.France:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 
