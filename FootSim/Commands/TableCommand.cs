@@ -63,7 +63,7 @@
             gridBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
 
             gridBuilder.AddColumn(
-                "Notes",
+                string.Empty,
                 Alignment.Left,
                 tp => season.League.PositionGroupings
                     .Where(pg => pg.Positions.Contains(tp.Position))
