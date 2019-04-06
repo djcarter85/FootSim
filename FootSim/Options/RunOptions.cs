@@ -3,13 +3,10 @@
     using CommandLine;
     using FootSim.Commands;
     using NodaTime;
-    using NodaTime.Text;
 
     [Verb("run", HelpText = "Run the simulation of a season.")]
     public class RunOptions : IOptions
     {
-        private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
-
         [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England), \"FRA\" (France)\", \"GER\" (Germany), \"ITA\" (Italy), \"SPA\" (Spain).")]
         public NationOption Nation { get; set; }
 
@@ -20,9 +17,7 @@
         public int? StartingYear { get; set; }
 
         [Option('o', "on", Required = false, HelpText = "Date on which to perform the simulation. Format yyyy-MM-dd.")]
-        public string OnString { get; set; }
-
-        public LocalDate? On => string.IsNullOrEmpty(this.OnString) ? (LocalDate?)null : Pattern.Parse(this.OnString).GetValueOrThrow();
+        public string On { get; set; }
 
         [Option('t', "times", Required = false, Default = 10_000, HelpText = "The number of times to simulate the season.")]
         public int Times { get; set; }
