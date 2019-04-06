@@ -10,7 +10,7 @@
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
-        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England).")]
+        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England), \"FRA\" (France)\", \"GER\" (Germany), \"ITA\" (Italy), \"SPA\" (Spain).")]
         public NationOption Nation { get; set; }
 
         [Value(1, Required = true, HelpText = "The 0-based index of the league within the nation's football pyramid.")]
@@ -19,7 +19,7 @@
         [Value(2, Required = false, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019. Defaults to the current season.")]
         public int? StartingYear { get; set; }
 
-        [Option('o', "on", Required = false, HelpText = "Date on which to perform the simulation. Format yyyy-MM-dd.")]
+        [Option('o', "on", Required = false, HelpText = "Date on which to view the table. Format yyyy-MM-dd.")]
         public string OnString { get; set; }
 
         public LocalDate? On => string.IsNullOrEmpty(this.OnString) ? (LocalDate?)null : Pattern.Parse(this.OnString).GetValueOrThrow();

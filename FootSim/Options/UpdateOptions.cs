@@ -7,7 +7,7 @@
     [Verb("update", HelpText = "Update the results from www.football-data.co.uk.")]
     public class UpdateOptions : IOptions
     {
-        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England).")]
+        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England), \"FRA\" (France)\", \"GER\" (Germany), \"ITA\" (Italy), \"SPA\" (Spain).")]
         public NationOption Nation { get; set; }
 
         [Value(1, Required = true, HelpText = "The 0-based index of the league within the nation's football pyramid.")]

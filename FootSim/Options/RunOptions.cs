@@ -5,12 +5,12 @@
     using NodaTime;
     using NodaTime.Text;
 
-    [Verb("run", HelpText = "Run the simulation of a season")]
+    [Verb("run", HelpText = "Run the simulation of a season.")]
     public class RunOptions : IOptions
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
-        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England).")]
+        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England), \"FRA\" (France)\", \"GER\" (Germany), \"ITA\" (Italy), \"SPA\" (Spain).")]
         public NationOption Nation { get; set; }
 
         [Value(1, Required = true, HelpText = "The 0-based index of the league within the nation's football pyramid.")]
@@ -27,10 +27,10 @@
         [Option('t', "times", Required = false, Default = 10_000, HelpText = "The number of times to simulate the season.")]
         public int Times { get; set; }
 
-        [Option('u', "update", Required = false, Default = false, HelpText = "Whether to update the results from the server first.")]
+        [Option('u', "update", Required = false, HelpText = "Whether to update the results from the server first.")]
         public bool Update { get; set; }
 
-        [Option('c', "csv", Required = false, HelpText = "A CSV file to output the results to.")]
+        [Option('c', "csv", Required = false, HelpText = "If specified, the file path to output the results to in CSV format.")]
         public string Csv { get; set; }
 
         public ICommand CreateCommand() => new RunCommand(this, SystemClock.Instance);
