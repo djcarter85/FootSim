@@ -42,7 +42,6 @@
                         switch (this.Tier)
                         {
                             case 0:
-                                yield return new PositionGrouping("Title", 1);
                                 yield return new PositionGrouping("UCL", 1, 2, 3, 4);
                                 yield return new PositionGrouping("UEL", 5, 6, 7);
                                 yield return new PositionGrouping("Rel", 18, 19, 20);
@@ -69,7 +68,6 @@
                         switch (this.Tier)
                         {
                             case 0:
-                                yield return new PositionGrouping("Title", 1);
                                 yield return new PositionGrouping("UCL", 1, 2, 3, 4);
                                 yield return new PositionGrouping("UEL", 5, 6);
                                 yield return new PositionGrouping("Rel PO", 16);
