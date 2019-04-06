@@ -3,9 +3,12 @@
     using System;
     using FootSim.Core;
     using FootSim.Options;
+    using NodaTime;
 
     public static class Conversions
     {
+        private static readonly DateTimeZone UkTimeZone = DateTimeZoneProviders.Tzdb["Europe/London"];
+
         public static Nation ToNation(NationOption nationOption)
         {
             switch (nationOption)
@@ -25,11 +28,38 @@
             }
         }
 
-        public static int ToStartingYear(int startingYearOption)
+        public static int ToStartingYear(int? startingYearOption, IClock clock)
         {
-            var twoDigitStartingYear = startingYearOption % 100;
+            if (startingYearOption == null)
+            {
+                var currentDate = clock.GetCurrentInstant().InZone(UkTimeZone).LocalDateTime.Date;
+                const int august = 8;
+                if (currentDate.Month < august)
+                {
+                    return currentDate.Year - 1;
+                }
+                else
+                {
+                    return currentDate.Year;
+                }
+            }
 
-            return twoDigitStartingYear > 50 ? 1900 + twoDigitStartingYear : 2000 + twoDigitStartingYear;
+            if (startingYearOption.Value < 0)
+            {
+                throw new ArgumentException(nameof(startingYearOption.Value));
+            }
+
+            if (startingYearOption.Value < 90)
+            {
+                return 2000 + startingYearOption.Value;
+            }
+
+            if (startingYearOption.Value < 100)
+            {
+                return 1900 + startingYearOption.Value;
+            }
+
+            return startingYearOption.Value;
         }
     }
 }

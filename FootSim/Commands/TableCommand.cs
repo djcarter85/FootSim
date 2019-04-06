@@ -15,15 +15,22 @@
             NodaTime.Text.LocalDatePattern.CreateWithCurrentCulture("dd MMM yyyy");
 
         private readonly TableOptions options;
+        private readonly IClock clock;
 
-        public TableCommand(TableOptions options)
+        public TableCommand(TableOptions options, IClock clock)
         {
             this.options = options;
+            this.clock = clock;
         }
 
         public Task<ExitCode> ExecuteAsync()
         {
-            CalculateAndDisplayLeagueTable(this.options.League, this.options.On);
+            var league = new League(
+                Conversions.ToNation(this.options.Nation),
+                this.options.Tier,
+                Conversions.ToStartingYear(this.options.StartingYear, this.clock));
+
+            CalculateAndDisplayLeagueTable(league, this.options.On);
 
             return Task.FromResult(ExitCode.Success);
         }
