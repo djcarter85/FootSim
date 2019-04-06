@@ -44,15 +44,19 @@
                                 return "Premier League";
                             case 1:
                                 return "Championship";
-                            default:
-                                return this.GenericTierDescription;
+                            case 2:
+                                return "League One";
+                            case 3:
+                                return "League Two";
+                            case 4:
+                                return "National League";
                         }
-                    default:
-                        throw new ArgumentOutOfRangeException();
+
+                        break;
                 }
+
+                throw new ArgumentOutOfRangeException();
             }
         }
-
-        private string GenericTierDescription => $"Tier {this.Tier}";
     }
 }
