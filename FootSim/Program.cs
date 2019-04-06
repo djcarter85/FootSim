@@ -21,10 +21,10 @@
                 s.MaximumDisplayWidth = 100;
             });
 
-            var exitCode = await parser.ParseArguments<SimOptions, UpdateOptions>(args)
+            var exitCode = await parser.ParseArguments<RunOptions, UpdateOptions>(args)
                 .MapResult(
-                    async (SimOptions o) => await SimCommand.RunAsync(o),
-                    async (UpdateOptions o) => await UpdateCommand.RunAsync(o),
+                    async (RunOptions o) => await RunCommand.ExecuteAsync(o),
+                    async (UpdateOptions o) => await UpdateCommand.ExecuteAsync(o),
                     errs => Task.FromResult(ExitCode.Failure));
 
             return (int)exitCode;

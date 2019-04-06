@@ -9,9 +9,9 @@
     using FootSim.Options;
     using FootSim.Table;
 
-    public static class SimCommand
+    public static class RunCommand
     {
-        public static async Task<ExitCode> RunAsync(SimOptions options)
+        public static async Task<ExitCode> ExecuteAsync(RunOptions options)
         {
             var repository = new Repository(options.Season.ForWeb(), options.League.ForWeb());
 

@@ -4,8 +4,8 @@
     using NodaTime;
     using NodaTime.Text;
 
-    [Verb("sim", HelpText = "Run the simulation of a season")]
-    public class SimOptions
+    [Verb("run", HelpText = "Run the simulation of a season")]
+    public class RunOptions
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
