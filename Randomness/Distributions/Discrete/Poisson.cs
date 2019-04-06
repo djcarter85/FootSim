@@ -1,29 +1,29 @@
 ﻿namespace Randomness.Distributions.Discrete
 {
-    using static System.Math;
-    using SCU = Continuous.StandardContinuousUniform;
+    using System;
+    using Randomness.Distributions.Continuous;
 
     public class Poisson : IDistribution<int>
     {
+        private readonly double lambda;
+
         private Poisson(double lambda)
         {
-            this.Lambda = lambda;
+            this.lambda = lambda;
         }
-
-        public double Lambda { get; }
 
         public static Poisson Distribution(double lambda) => new Poisson(lambda);
 
         public int Sample()
         {
-            var l = Exp(-this.Lambda);
+            var l = Math.Exp(-this.lambda);
             var k = 0;
             double p = 1;
 
             do
             {
                 k++;
-                var u = SCU.Distribution.Sample();
+                var u = StandardContinuousUniform.Distribution.Sample();
                 p *= u;
 
             } while (p > l);

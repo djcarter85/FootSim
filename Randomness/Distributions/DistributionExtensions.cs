@@ -5,25 +5,20 @@
 
     public static class DistributionExtensions
     {
-        public static IEnumerable<T> Samples<T>(this IDistribution<T> distribution)
+        public static IEnumerable<T> TakeSamples<T>(this IDistribution<T> distribution, int samples)
         {
-            while (true)
+            for (var i = 0; i < samples; i++)
             {
                 yield return distribution.Sample();
             }
         }
 
-        public static IDistribution<R> Select<A, R>(this IDistribution<A> distribution, Func<A, R> projection)
+        public static IDistribution<TResult> SelectMany<TSource, TLikelihood, TResult>(
+            this IDistribution<TSource> prior,
+            Func<TSource, IDistribution<TLikelihood>> likelihood,
+            Func<TSource, TLikelihood, TResult> projection)
         {
-            return Projected<A, R>.Distribution(distribution, projection);
-        }
-
-        public static IDistribution<C> SelectMany<A, B, C>(
-            this IDistribution<A> prior,
-            Func<A, IDistribution<B>> likelihood,
-            Func<A, B, C> projection)
-        {
-            return Combined<A, B, C>.Distribution(prior, likelihood, projection);
+            return Combined<TSource, TLikelihood, TResult>.Distribution(prior, likelihood, projection);
         }
     }
 }
