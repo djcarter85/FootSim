@@ -99,7 +99,7 @@
 
         private static string GetFolder(League league)
         {
-            return $@"{league.Nation}\{league.Tier}\{league.StartingYear}";
+            return $@"{league.Nation.DisplayName}\{league.Tier}\{league.StartingYear}";
         }
 
         private static string GetUrl(League league)

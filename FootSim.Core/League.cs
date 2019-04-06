@@ -29,7 +29,7 @@
 
         public int StartingYear { get; }
 
-        public string Description => $"{this.LeagueName} ({this.Nation})";
+        public string Description => $"{this.LeagueName} ({this.Nation.DisplayName})";
 
         public string EditionDescription => $"{this.StartingYear}-{this.StartingYear + 1}";
 
@@ -49,7 +49,7 @@
                     {
                         return csvReader.GetRecords<CsvPositionGrouping>()
                             .Where(cpg =>
-                                cpg.Nation == this.Nation.ToString() &&
+                                cpg.Nation == this.Nation.Representation &&
                                 cpg.Tier == this.Tier &&
                                 cpg.StartingYear == this.StartingYear)
                             .Select(cpg => new PositionGrouping(cpg.LongName, cpg.ShortName, cpg.Min, cpg.Max))
@@ -69,7 +69,7 @@
                     {
                         var csvLeagueName = csvReader.GetRecords<CsvLeagueName>()
                             .SingleOrDefault(cln =>
-                                cln.Nation == this.Nation.ToString() &&
+                                cln.Nation == this.Nation.Representation &&
                                 cln.Tier == this.Tier &&
                                 cln.Contains(this.StartingYear));
 
@@ -89,7 +89,7 @@
                     {
                         var csvFileName = csvReader.GetRecords<CsvFileName>()
                             .Single(cfn =>
-                                cfn.Nation == this.Nation.ToString() &&
+                                cfn.Nation == this.Nation.Representation &&
                                 cfn.Tier == this.Tier);
 
                         return csvFileName.FileName;
