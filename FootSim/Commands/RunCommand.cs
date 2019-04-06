@@ -38,7 +38,7 @@
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var seasonSimulator = new SeasonSimulator(repository);
+            var seasonSimulator = new SeasonSimulator();
             var result = seasonSimulator.Simulate(this.options.Times, seasonSoFar);
 
             stopwatch.Stop();

@@ -6,16 +6,9 @@
 
     public class SeasonSimulator
     {
-        private readonly Repository repository;
-
-        public SeasonSimulator(Repository repository)
-        {
-            this.repository = repository;
-        }
-
         public SeasonSimulationResult Simulate(int simulations, Season seasonSoFar)
         {
-            var teams = Calculator.GetTeams(this.repository.TeamNames, seasonSoFar);
+            var teams = Calculator.GetTeams(seasonSoFar);
 
             var distribution = SeasonDistribution.Create(
                 seasonSoFar,

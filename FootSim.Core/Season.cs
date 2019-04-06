@@ -13,6 +13,11 @@
 
         public IReadOnlyList<ICompletedMatch> Matches { get; }
 
+        public IReadOnlyList<string> TeamNames => this.Matches
+            .SelectMany(m => new[] { m.HomeTeamName, m.AwayTeamName })
+            .Distinct()
+            .ToArray();
+
         public IReadOnlyList<TablePlacing> Table
         {
             get
