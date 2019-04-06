@@ -99,37 +99,17 @@
 
         private static string GetFolder(League league)
         {
-            return $@"{league.Nation}\{league.Tier}\{league.StartingYear}";
+            return $@"{league.Nation.DisplayName}\{league.Tier}\{league.StartingYear}";
         }
 
         private static string GetUrl(League league)
         {
-            return $"http://www.football-data.co.uk/mmz4281/{GetSeasonString(league.StartingYear)}/{GetFileName(league)}.csv";
+            return $"http://www.football-data.co.uk/mmz4281/{GetSeasonString(league.StartingYear)}/{league.FileName}.csv";
         }
 
         private static string GetSeasonString(int startingYear)
         {
             return $"{startingYear % 100:00}{(startingYear + 1) % 100:00}";
-        }
-
-        private static string GetFileName(League league)
-        {
-            switch (league.Nation)
-            {
-                case Nation.England:
-                    var tierDescription = league.Tier == 4 ? "C" : league.Tier.ToString();
-                    return $"E{tierDescription}";
-                case Nation.Germany:
-                    return $"D{league.Tier + 1}";
-                case Nation.Italy:
-                    return $"I{league.Tier + 1}";
-                case Nation.Spain:
-                    return $"SP{league.Tier + 1}";
-                case Nation.France:
-                    return $"F{league.Tier + 1}";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(league), league, null);
-            }
         }
 
         private class CsvMatch
