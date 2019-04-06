@@ -63,6 +63,16 @@
                         }
 
                         break;
+                    case Nation.Italy:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "Serie A";
+                            case 1:
+                                return "Serie B";
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
