@@ -30,6 +30,9 @@
         [Option('t', "times", Required = false, Default = 10_000, HelpText = "The number of times to simulate the season.")]
         public int Times { get; set; }
 
+        [Option('u', "update", Required = false, Default = false, HelpText = "Whether to update the results from the server first.")]
+        public bool Update { get; set; }
+
         public ICommand CreateCommand() => new RunCommand(this);
     }
 }
