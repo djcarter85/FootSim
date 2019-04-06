@@ -1,4 +1,4 @@
-﻿namespace FootSim.Table
+﻿namespace FootSim.Grid
 {
     public enum Alignment
     {

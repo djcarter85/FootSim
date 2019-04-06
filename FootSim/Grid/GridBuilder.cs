@@ -1,10 +1,10 @@
-﻿namespace FootSim.Table
+﻿namespace FootSim.Grid
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class TableBuilder<TRow>
+    public class GridBuilder<TRow>
     {
         private readonly List<ColumnDefinition> columnDefinitions = new List<ColumnDefinition>();
 
