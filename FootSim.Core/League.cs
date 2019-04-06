@@ -83,6 +83,16 @@
                         }
 
                         break;
+                    case Nation.France:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "Ligue 1";
+                            case 1:
+                                return "Ligue 2";
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

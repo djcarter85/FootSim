@@ -5,6 +5,7 @@
         Eng,
         Ger,
         Ita,
-        Spa
+        Spa,
+        Fra
     }
 }

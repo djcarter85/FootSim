@@ -125,6 +125,8 @@
                     return $"I{league.Tier + 1}";
                 case Nation.Spain:
                     return $"SP{league.Tier + 1}";
+                case Nation.France:
+                    return $"F{league.Tier + 1}";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(league), league, null);
             }

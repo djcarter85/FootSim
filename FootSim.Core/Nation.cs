@@ -5,6 +5,7 @@
         England,
         Germany,
         Italy,
-        Spain
+        Spain,
+        France
     }
 }

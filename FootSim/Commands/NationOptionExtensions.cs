@@ -18,6 +18,8 @@
                     return Nation.Italy;
                 case NationOption.Spa:
                     return Nation.Spain;
+                case NationOption.Fra:
+                    return Nation.France;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(nationOption), nationOption, null);
             }
