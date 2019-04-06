@@ -117,7 +117,16 @@
             switch (league.Nation)
             {
                 case Nation.England:
-                    return $"E{league.Tier}";
+                    var tierDescription = league.Tier == 4 ? "C" : league.Tier.ToString();
+                    return $"E{tierDescription}";
+                case Nation.Germany:
+                    return $"D{league.Tier + 1}";
+                case Nation.Italy:
+                    return $"I{league.Tier + 1}";
+                case Nation.Spain:
+                    return $"SP{league.Tier + 1}";
+                case Nation.France:
+                    return $"F{league.Tier + 1}";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(league), league, null);
             }

@@ -2,6 +2,10 @@
 {
     public enum Nation
     {
-        England
+        England,
+        Germany,
+        Italy,
+        Spain,
+        France
     }
 }

@@ -44,15 +44,61 @@
                                 return "Premier League";
                             case 1:
                                 return "Championship";
-                            default:
-                                return this.GenericTierDescription;
+                            case 2:
+                                return "League One";
+                            case 3:
+                                return "League Two";
+                            case 4:
+                                return "National League";
                         }
+
+                        break;
+                    case Nation.Germany:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "Bundesliga 1";
+                            case 1:
+                                return "Bundesliga 2";
+                        }
+
+                        break;
+                    case Nation.Italy:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "Serie A";
+                            case 1:
+                                return "Serie B";
+                        }
+
+                        break;
+                    case Nation.Spain:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "La Liga Primera";
+                            case 1:
+                                return "La Liga Segunda";
+                        }
+
+                        break;
+                    case Nation.France:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "Ligue 1";
+                            case 1:
+                                return "Ligue 2";
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
+                throw new ArgumentOutOfRangeException();
             }
         }
-
-        private string GenericTierDescription => $"Tier {this.Tier}";
     }
 }
