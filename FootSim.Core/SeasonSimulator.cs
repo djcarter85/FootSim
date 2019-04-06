@@ -15,8 +15,7 @@
                 teams);
 
             var sampleSeasons = distribution
-                .Samples()
-                .Take(simulations)
+                .TakeSamples(simulations)
                 .ToArray();
 
             var results = new Dictionary<string, TempSimulationResult>();

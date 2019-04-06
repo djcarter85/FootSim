@@ -5,9 +5,9 @@
 
     public static class DistributionExtensions
     {
-        public static IEnumerable<T> Samples<T>(this IDistribution<T> distribution)
+        public static IEnumerable<T> TakeSamples<T>(this IDistribution<T> distribution, int samples)
         {
-            while (true)
+            for (var i = 0; i < samples; i++)
             {
                 yield return distribution.Sample();
             }
