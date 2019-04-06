@@ -4,11 +4,18 @@
     using FootSim.Core;
     using FootSim.Options;
 
-    public static class UpdateCommand
+    public class UpdateCommand : ICommand
     {
-        public static async Task<ExitCode> ExecuteAsync(UpdateOptions options)
+        private readonly UpdateOptions options;
+
+        public UpdateCommand(UpdateOptions options)
         {
-            var repository = new Repository(options.Season.ForWeb(), options.League.ForWeb());
+            this.options = options;
+        }
+
+        public async Task<ExitCode> ExecuteAsync()
+        {
+            var repository = new Repository(this.options.Season.ForWeb(), this.options.League.ForWeb());
 
             await repository.RefreshFromWebAsync();
 

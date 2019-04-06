@@ -1,11 +1,12 @@
 ﻿namespace FootSim.Options
 {
     using CommandLine;
+    using FootSim.Commands;
     using NodaTime;
     using NodaTime.Text;
 
     [Verb("run", HelpText = "Run the simulation of a season")]
-    public class RunOptions
+    public class RunOptions : IOptions
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
@@ -23,5 +24,7 @@
 
         [Option('t', "times", Required = false, Default = 10_000, HelpText = "The number of times to simulate the season.")]
         public int Times { get; set; }
+
+        public ICommand CreateCommand() => new RunCommand(this);
     }
 }

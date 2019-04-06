@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using CommandLine;
-    using FootSim.Commands;
     using FootSim.Options;
 
     public static class Program
@@ -21,13 +20,23 @@
                 s.MaximumDisplayWidth = 100;
             });
 
-            var exitCode = await parser.ParseArguments<RunOptions, UpdateOptions>(args)
-                .MapResult(
-                    async (RunOptions o) => await RunCommand.ExecuteAsync(o),
-                    async (UpdateOptions o) => await UpdateCommand.ExecuteAsync(o),
-                    errs => Task.FromResult(ExitCode.Failure));
+            var parserResult = parser.ParseArguments<RunOptions, UpdateOptions>(args);
+
+            var exitCode = await ExecuteCommand(parserResult);
 
             return (int)exitCode;
+        }
+
+        private static async Task<ExitCode> ExecuteCommand(ParserResult<object> parserResult)
+        {
+            var parsed = parserResult as Parsed<object>;
+
+            if (parsed?.Value is IOptions options)
+            {
+                return await options.CreateCommand().ExecuteAsync();
+            }
+
+            return ExitCode.Failure;
         }
     }
 }

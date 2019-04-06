@@ -9,30 +9,37 @@
     using FootSim.Options;
     using FootSim.Table;
 
-    public static class RunCommand
+    public class RunCommand : ICommand
     {
-        public static async Task<ExitCode> ExecuteAsync(RunOptions options)
-        {
-            var repository = new Repository(options.Season.ForWeb(), options.League.ForWeb());
+        private readonly RunOptions options;
 
-            Console.WriteLine($"League: {options.League.ForDisplay()}");
-            Console.WriteLine($"Season: {options.Season.ForDisplay()}");
+        public RunCommand(RunOptions options)
+        {
+            this.options = options;
+        }
+
+        public async Task<ExitCode> ExecuteAsync()
+        {
+            var repository = new Repository(this.options.Season.ForWeb(), this.options.League.ForWeb());
+
+            Console.WriteLine($"League: {this.options.League.ForDisplay()}");
+            Console.WriteLine($"Season: {this.options.Season.ForDisplay()}");
             Console.WriteLine();
             Console.WriteLine("League table:");
             Console.WriteLine();
 
-            var seasonSoFar = new Season(repository.Matches(options.On));
+            var seasonSoFar = new Season(repository.Matches(this.options.On));
 
             Console.WriteLine(CreateLeagueTable(seasonSoFar));
 
             Console.WriteLine();
-            Console.WriteLine($"Simulating {options.Times:N0} times ...");
+            Console.WriteLine($"Simulating {this.options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var seasonSimulator = new SeasonSimulator(repository);
-            var result = seasonSimulator.Simulate(options.Times, seasonSoFar);
+            var result = seasonSimulator.Simulate(this.options.Times, seasonSoFar);
 
             stopwatch.Stop();
 
