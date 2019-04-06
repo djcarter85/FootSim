@@ -53,6 +53,18 @@
                         }
 
                         break;
+                    case Nation.Germany:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "Bundesliga 1";
+                            case 1:
+                                return "Bundesliga 2";
+                        }
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
                 throw new ArgumentOutOfRangeException();

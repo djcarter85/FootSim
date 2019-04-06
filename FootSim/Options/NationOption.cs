@@ -2,6 +2,7 @@
 {
     public enum NationOption
     {
-        Eng
+        Eng,
+        Ger
     }
 }
