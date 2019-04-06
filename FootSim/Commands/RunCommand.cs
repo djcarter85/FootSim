@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CsvHelper;
     using FootSim.Core;
     using FootSim.Grid;
     using FootSim.Options;
@@ -47,12 +49,43 @@
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
 
+            if (this.options.Csv != null)
+            {
+                await OutputToCsv(result.Teams, this.options.League.PositionGroupings, this.options.Csv);
+
+                Console.WriteLine();
+                Console.WriteLine($"Results output to {this.options.Csv}");
+            }
+
             return ExitCode.Success;
+        }
+
+        private static async Task OutputToCsv(
+            IReadOnlyList<TeamSeasonSimulationResult> teams,
+            IEnumerable<PositionGrouping> positionGroupings,
+            string csvFilePath)
+        {
+            var gridBuilder = CreateSimulationGridBuilder(teams, positionGroupings);
+
+            using (var streamWriter = new StreamWriter(csvFilePath))
+            {
+                using (var csvWriter = new CsvWriter(streamWriter))
+                {
+                    await gridBuilder.WriteToCsv(csvWriter, teams);
+                }
+            }
         }
 
         private static string CreateSimulationGrid(
             IReadOnlyList<TeamSeasonSimulationResult> teams,
             IEnumerable<PositionGrouping> positionGroupings)
+        {
+            var gridBuilder = CreateSimulationGridBuilder(teams, positionGroupings);
+
+            return gridBuilder.Build(teams);
+        }
+
+        private static GridBuilder<TeamSeasonSimulationResult> CreateSimulationGridBuilder(IReadOnlyList<TeamSeasonSimulationResult> teams, IEnumerable<PositionGrouping> positionGroupings)
         {
             var gridBuilder = new GridBuilder<TeamSeasonSimulationResult>();
 
@@ -68,12 +101,12 @@
 
             foreach (var positionGrouping in positionGroupings)
             {
-                gridBuilder.AddColumn(positionGrouping.ShortName, Alignment.Right, tssr => CalculatePercentage(positionGrouping, tssr));
+                gridBuilder.AddColumn(positionGrouping.ShortName, Alignment.Right,
+                    tssr => CalculatePercentage(positionGrouping, tssr));
             }
 
             gridBuilder.AddColumn("Name", Alignment.Left, tssr => tssr.TeamName);
-
-            return gridBuilder.Build(teams);
+            return gridBuilder;
         }
 
         private static string CalculatePercentage(int position, TeamSeasonSimulationResult teamSeasonSimulationResult)
