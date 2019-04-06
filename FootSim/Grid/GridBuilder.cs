@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using CsvHelper;
 
     public class GridBuilder<TRow>
     {
@@ -23,6 +25,26 @@
             return rows.Select(this.CreateRow)
                 .Prepend(this.CreateHeader())
                 .Join(Environment.NewLine);
+        }
+
+        public async Task WriteToCsv(CsvWriter csvWriter, IEnumerable<TRow> rows)
+        {
+            foreach (var columnDefinition in this.columnDefinitions)
+            {
+                csvWriter.WriteField(columnDefinition.GetHeaderValue());
+            }
+
+            await csvWriter.NextRecordAsync();
+
+            foreach (var row in rows)
+            {
+                foreach (var columnDefinition in this.columnDefinitions)
+                {
+                    csvWriter.WriteField(columnDefinition.GetCellValue(row));
+                }
+
+                await csvWriter.NextRecordAsync();
+            }
         }
 
         private string CreateHeader()

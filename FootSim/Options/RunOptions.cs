@@ -33,6 +33,9 @@
         [Option('u', "update", Required = false, Default = false, HelpText = "Whether to update the results from the server first.")]
         public bool Update { get; set; }
 
+        [Option('c', "csv", Required = false, HelpText = "A CSV file to output the results to.")]
+        public string Csv { get; set; }
+
         public ICommand CreateCommand() => new RunCommand(this);
     }
 }
