@@ -36,7 +36,7 @@
                 Console.WriteLine();
             }
 
-            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(league, this.options.On);
+            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(league, Conversions.ToDate(this.options.On));
 
             Console.WriteLine();
             Console.WriteLine($"Simulating {this.options.Times:N0} times ...");

@@ -4,9 +4,11 @@
     using FootSim.Core;
     using FootSim.Options;
     using NodaTime;
+    using NodaTime.Text;
 
     public static class Conversions
     {
+        private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
         private static readonly DateTimeZone UkTimeZone = DateTimeZoneProviders.Tzdb["Europe/London"];
 
         public static Nation ToNation(NationOption nationOption)
@@ -60,6 +62,16 @@
             }
 
             return startingYearOption.Value;
+        }
+
+        public static LocalDate? ToDate(string dateString)
+        {
+            if (string.IsNullOrEmpty(dateString))
+            {
+                return null;
+            }
+
+            return Pattern.Parse(dateString).GetValueOrThrow();
         }
     }
 }

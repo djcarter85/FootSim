@@ -30,7 +30,7 @@
                 this.options.Tier,
                 Conversions.ToStartingYear(this.options.StartingYear, this.clock));
 
-            CalculateAndDisplayLeagueTable(league, this.options.On);
+            CalculateAndDisplayLeagueTable(league, Conversions.ToDate(this.options.On));
 
             return Task.FromResult(ExitCode.Success);
         }
