@@ -2,32 +2,32 @@
 {
     using System;
 
-    public sealed class Combined<A, B, C> : IDistribution<C>
+    public sealed class Combined<TSource, TLikelihood, TResult> : IDistribution<TResult>
     {
-        private readonly IDistribution<A> prior;
-        private readonly Func<A, IDistribution<B>> likelihood;
-        private readonly Func<A, B, C> projection;
+        private readonly IDistribution<TSource> prior;
+        private readonly Func<TSource, IDistribution<TLikelihood>> likelihood;
+        private readonly Func<TSource, TLikelihood, TResult> projection;
 
-        public static IDistribution<C> Distribution(
-            IDistribution<A> prior,
-            Func<A, IDistribution<B>> likelihood,
-            Func<A, B, C> projection) =>
-            new Combined<A, B, C>(prior, likelihood, projection);
+        public static IDistribution<TResult> Distribution(
+            IDistribution<TSource> prior,
+            Func<TSource, IDistribution<TLikelihood>> likelihood,
+            Func<TSource, TLikelihood, TResult> projection) =>
+            new Combined<TSource, TLikelihood, TResult>(prior, likelihood, projection);
 
         private Combined(
-            IDistribution<A> prior,
-            Func<A, IDistribution<B>> likelihood,
-            Func<A, B, C> projection)
+            IDistribution<TSource> prior,
+            Func<TSource, IDistribution<TLikelihood>> likelihood,
+            Func<TSource, TLikelihood, TResult> projection)
         {
             this.prior = prior;
             this.likelihood = likelihood;
             this.projection = projection;
         }
 
-        public C Sample()
+        public TResult Sample()
         {
-            A a = this.prior.Sample();
-            B b = this.likelihood(a).Sample();
+            TSource a = this.prior.Sample();
+            TLikelihood b = this.likelihood(a).Sample();
             return this.projection(a, b);
         }
     }

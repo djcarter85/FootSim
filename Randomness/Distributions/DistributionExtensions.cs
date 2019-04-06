@@ -13,12 +13,12 @@
             }
         }
 
-        public static IDistribution<C> SelectMany<A, B, C>(
-            this IDistribution<A> prior,
-            Func<A, IDistribution<B>> likelihood,
-            Func<A, B, C> projection)
+        public static IDistribution<TResult> SelectMany<TSource, TLikelihood, TResult>(
+            this IDistribution<TSource> prior,
+            Func<TSource, IDistribution<TLikelihood>> likelihood,
+            Func<TSource, TLikelihood, TResult> projection)
         {
-            return Combined<A, B, C>.Distribution(prior, likelihood, projection);
+            return Combined<TSource, TLikelihood, TResult>.Distribution(prior, likelihood, projection);
         }
     }
 }

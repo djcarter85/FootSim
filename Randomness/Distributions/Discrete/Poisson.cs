@@ -5,18 +5,18 @@
 
     public class Poisson : IDistribution<int>
     {
+        private readonly double lambda;
+
         private Poisson(double lambda)
         {
-            this.Lambda = lambda;
+            this.lambda = lambda;
         }
-
-        public double Lambda { get; }
 
         public static Poisson Distribution(double lambda) => new Poisson(lambda);
 
         public int Sample()
         {
-            var l = Math.Exp(-this.Lambda);
+            var l = Math.Exp(-this.lambda);
             var k = 0;
             double p = 1;
 
