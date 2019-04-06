@@ -20,7 +20,7 @@
                 s.MaximumDisplayWidth = 100;
             });
 
-            var parserResult = parser.ParseArguments<RunOptions, UpdateOptions>(args);
+            var parserResult = parser.ParseArguments<RunOptions, UpdateOptions, TableOptions>(args);
 
             var exitCode = await ExecuteCommand(parserResult);
 
