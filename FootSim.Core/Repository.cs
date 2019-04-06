@@ -53,15 +53,15 @@
             }
         }
 
-        public IReadOnlyList<PastMatch> Matches(LocalDate? lastDate)
+        public Season Season(LocalDate? lastDate)
         {
             if (lastDate == null)
             {
-                return this.dataLazy.Value.Matches;
+                return new Season(this.dataLazy.Value.Matches);
             }
             else
             {
-                return this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray();
+                return new Season(this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray());
             }
         }
 

@@ -28,7 +28,7 @@
             Console.WriteLine("League table:");
             Console.WriteLine();
 
-            var seasonSoFar = new Season(repository.Matches(this.options.On));
+            var seasonSoFar = repository.Season(this.options.On);
 
             Console.WriteLine(CreateLeagueTable(seasonSoFar));
 
