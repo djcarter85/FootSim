@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="LeagueNames.csv" />
     <None Remove="PositionGroupings.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="PositionGroupings.csv" />
+    <EmbeddedResource Include="LeagueNames.csv" />
   </ItemGroup>
 
   <ItemGroup>
