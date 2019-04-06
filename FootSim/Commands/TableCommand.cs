@@ -20,11 +20,11 @@
             this.options = options;
         }
 
-        public async Task<ExitCode> ExecuteAsync()
+        public Task<ExitCode> ExecuteAsync()
         {
             CalculateAndDisplayLeagueTable(this.options.League, this.options.Season, this.options.On);
 
-            return ExitCode.Success;
+            return Task.FromResult(ExitCode.Success);
         }
 
         public static Season CalculateAndDisplayLeagueTable(League league, int season, LocalDate? on)

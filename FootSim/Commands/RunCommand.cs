@@ -18,7 +18,7 @@
             this.options = options;
         }
 
-        public async Task<ExitCode> ExecuteAsync()
+        public Task<ExitCode> ExecuteAsync()
         {
             var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(this.options.League, this.options.Season, this.options.On);
 
@@ -39,7 +39,7 @@
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
 
-            return ExitCode.Success;
+            return Task.FromResult(ExitCode.Success);
         }
 
         private static string CreateSimulationGrid(IReadOnlyList<TeamSeasonSimulationResult> teams)
