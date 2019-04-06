@@ -2,14 +2,58 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using CsvHelper;
 
     public class League
     {
+        private readonly Lazy<IReadOnlyList<PositionGrouping>> positionGroupingsLazy;
+
+        private IReadOnlyList<PositionGrouping> FetchPositionGroupings()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FootSim.Core.PositionGroupings.csv"))
+            {
+                using (var textReader = new StreamReader(stream))
+                {
+                    using (var csvReader = new CsvReader(textReader))
+                    {
+                        return csvReader.GetRecords<CsvPositionGrouping>()
+                            .Where(cpg =>
+                                cpg.Nation == this.Nation.ToString() && cpg.Tier == this.Tier &&
+                                cpg.StartingYear == this.StartingYear)
+                            .Select(cpg => new PositionGrouping(cpg.LongName, cpg.ShortName, cpg.Min, cpg.Max))
+                            .ToArray();
+                    }
+                }
+            }
+        }
+
+        private class CsvPositionGrouping
+        {
+            public string Nation { get; set; }
+
+            public int Tier { get; set; }
+
+            public int StartingYear { get; set; }
+
+            public string LongName { get; set; }
+
+            public string ShortName { get; set; }
+
+            public int Min { get; set; }
+
+            public int Max { get; set; }
+        }
+
         public League(Nation nation, int tier, int startingYear)
         {
             this.Nation = nation;
             this.Tier = tier;
             this.StartingYear = startingYear;
+
+            this.positionGroupingsLazy = new Lazy<IReadOnlyList<PositionGrouping>>(this.FetchPositionGroupings);
         }
 
         public Nation Nation { get; }
@@ -32,67 +76,7 @@
             }
         }
 
-        public IEnumerable<PositionGrouping> PositionGroupings
-        {
-            get
-            {
-                switch (this.Nation)
-                {
-                    case Nation.England:
-                        switch (this.Tier)
-                        {
-                            case 0:
-                                yield return new PositionGrouping("Champions League", "UCL", 1, 4);
-                                yield return new PositionGrouping("Europa League", "UEL", 5, 7);
-                                yield return new PositionGrouping("Relegation", "Rel", 18, 20);
-                                break;
-                            case 1:
-                                yield return new PositionGrouping("Automatic promotion", "Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoffs", "PO", 3, 6);
-                                yield return new PositionGrouping("Relegation", "Rel", 22, 24);
-                                break;
-                            case 2:
-                                yield return new PositionGrouping("Automatic promotion", "Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoffs", "PO", 3, 6);
-                                yield return new PositionGrouping("Relegation", "Rel", 22, 24);
-                                break;
-                            case 3:
-                                yield return new PositionGrouping("Automatic promotion", "Top 3", 1, 3);
-                                yield return new PositionGrouping("Playoffs", "PO", 4, 7);
-                                yield return new PositionGrouping("Relegation", "Rel", 23, 24);
-                                break;
-                        }
-
-                        break;
-                    case Nation.Germany:
-                        switch (this.Tier)
-                        {
-                            case 0:
-                                yield return new PositionGrouping("Champions League", "UCL", 1, 4);
-                                yield return new PositionGrouping("Europa League", "UEL", 5, 6);
-                                yield return new PositionGrouping("Relegation playoff", "Rel PO", 16, 16);
-                                yield return new PositionGrouping("Relegation", "Rel", 17, 18);
-                                break;
-                            case 1:
-                                yield return new PositionGrouping("Automatic promotion", "Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoff", "PO", 3, 3);
-                                yield return new PositionGrouping("Relegation playoff", "Rel PO", 16, 16);
-                                yield return new PositionGrouping("Relegation", "Rel", 17, 18);
-                                break;
-                        }
-
-                        break;
-                    case Nation.Italy:
-                        break;
-                    case Nation.Spain:
-                        break;
-                    case Nation.France:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        }
+        public IEnumerable<PositionGrouping> PositionGroupings => this.positionGroupingsLazy.Value;
 
         private string TierDescription
         {
