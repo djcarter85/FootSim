@@ -4,13 +4,16 @@
 
     public class PositionGrouping
     {
-        public PositionGrouping(string name, params int[] positions)
+        public PositionGrouping(string longName, string shortName, params int[] positions)
         {
-            this.Name = name;
+            this.LongName = longName;
+            this.ShortName = shortName;
             this.Positions = positions;
         }
 
-        public string Name { get; }
+        public string LongName { get; }
+
+        public string ShortName { get; }
 
         public IReadOnlyList<int> Positions { get; }
     }

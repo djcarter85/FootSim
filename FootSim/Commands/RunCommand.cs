@@ -68,7 +68,7 @@
 
             foreach (var positionGrouping in positionGroupings)
             {
-                gridBuilder.AddColumn(positionGrouping.Name, Alignment.Right, tssr => CalculatePercentage(positionGrouping, tssr));
+                gridBuilder.AddColumn(positionGrouping.ShortName, Alignment.Right, tssr => CalculatePercentage(positionGrouping, tssr));
             }
 
             gridBuilder.AddColumn("Name", Alignment.Left, tssr => tssr.TeamName);

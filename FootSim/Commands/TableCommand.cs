@@ -67,7 +67,7 @@
                 Alignment.Left,
                 tp => season.League.PositionGroupings
                     .Where(pg => pg.Positions.Contains(tp.Position))
-                    .Select(pg => pg.Name)
+                    .Select(pg => pg.LongName)
                     .Join(", "));
 
             return gridBuilder.Build(season.Table);
