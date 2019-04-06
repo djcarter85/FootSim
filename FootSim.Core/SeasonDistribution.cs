@@ -7,16 +7,18 @@
 
     public class SeasonDistribution : IDistribution<Season>
     {
+        private readonly League league;
         private readonly IReadOnlyList<ISimulatableMatch> matches;
 
-        private SeasonDistribution(IReadOnlyList<ISimulatableMatch> matches)
+        private SeasonDistribution(League league, IReadOnlyList<ISimulatableMatch> matches)
         {
+            this.league = league;
             this.matches = matches;
         }
 
         public static SeasonDistribution Create(Season seasonSoFar, IReadOnlyList<Team> teams)
         {
-            return new SeasonDistribution(CreateMatches(seasonSoFar, teams));
+            return new SeasonDistribution(seasonSoFar.League, CreateMatches(seasonSoFar, teams));
         }
 
         public Season Sample()
@@ -25,7 +27,7 @@
                 .Select(m => new SimulatedMatch(m.HomeTeamName, m.AwayTeamName, m.ScoreDistribution.Sample()))
                 .ToList();
 
-            return new Season(pastMatches);
+            return new Season(this.league, pastMatches);
         }
 
         private static IReadOnlyList<ISimulatableMatch> CreateMatches(Season seasonSoFar, IReadOnlyList<Team> teams)
@@ -65,7 +67,7 @@
 
             var expectedScore = Calculator.CalculateExpectedScore(homeTeam, awayTeam, averageHomeGoals, averageAwayGoals);
 
-            var scoreDistribution = 
+            var scoreDistribution =
                 from homeGoals in Poisson.Distribution(expectedScore.Home)
                 from awayGoals in Poisson.Distribution(expectedScore.Away)
                 select new Score(homeGoals, awayGoals);

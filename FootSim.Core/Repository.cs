@@ -20,11 +20,13 @@
 
         private readonly string csvFilePath;
         private readonly string url;
+        private readonly League league;
 
         private readonly Lazy<Data> dataLazy;
 
         public Repository(League league)
         {
+            this.league = league;
             this.csvFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "FootSim",
@@ -56,11 +58,11 @@
         {
             if (lastDate == null)
             {
-                return new Season(this.dataLazy.Value.Matches);
+                return new Season(this.league, this.dataLazy.Value.Matches);
             }
             else
             {
-                return new Season(this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray());
+                return new Season(this.league, this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray());
             }
         }
 
