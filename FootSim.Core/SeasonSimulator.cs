@@ -36,8 +36,8 @@
             }
 
             var teamResults = results
-                .Select(kvp => kvp.Value.TeamSeasonSimulationResult(kvp.Key))
-                .OrderBy(tssr => seasonSoFar.Table.Single(tp => tp.TeamName == tssr.TeamName).Position)
+                .OrderBy(kvp => seasonSoFar.Table.Single(tp => tp.TeamName == kvp.Key).Position)
+                .Select((kvp, i) => kvp.Value.TeamSeasonSimulationResult(i + 1, kvp.Key))
                 .ToArray();
 
             return new SeasonSimulationResult(teamResults);
@@ -49,7 +49,8 @@
 
             public List<int> Points { get; } = new List<int>();
 
-            public TeamSeasonSimulationResult TeamSeasonSimulationResult(string teamName) => new TeamSeasonSimulationResult(teamName, this.Points, this.Positions);
+            public TeamSeasonSimulationResult TeamSeasonSimulationResult(int currentPosition, string teamName) =>
+                new TeamSeasonSimulationResult(currentPosition, teamName, this.Points, this.Positions);
         }
     }
 }

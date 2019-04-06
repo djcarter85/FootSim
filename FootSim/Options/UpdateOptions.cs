@@ -16,7 +16,7 @@
         [Value(2, Required = true, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019.")]
         public int StartingYear { get; set; }
 
-        public League League => new League(this.Nation.ToNation(), this.Tier, this.StartingYear);
+        public League League => new League(Conversions.ToNation(this.Nation), this.Tier, Conversions.ToStartingYear(this.StartingYear));
 
         public ICommand CreateCommand() => new UpdateCommand(this);
     }

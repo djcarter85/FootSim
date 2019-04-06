@@ -1,6 +1,7 @@
 ﻿namespace FootSim.Commands
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using FootSim.Core;
     using FootSim.Grid;
@@ -60,6 +61,14 @@
             gridBuilder.AddColumn("L", Alignment.Right, tp => tp.Lost);
             gridBuilder.AddColumn("GD", Alignment.Right, tp => tp.GoalDifference);
             gridBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
+
+            gridBuilder.AddColumn(
+                string.Empty,
+                Alignment.Left,
+                tp => season.League.PositionGroupings
+                    .Where(pg => pg.Contains(tp.Position))
+                    .Select(pg => pg.LongName)
+                    .Join(", "));
 
             return gridBuilder.Build(season.Table);
         }

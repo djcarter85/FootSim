@@ -1,14 +1,59 @@
 ﻿namespace FootSim.Core
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using CsvHelper;
 
     public class League
     {
+        private readonly Lazy<IReadOnlyList<PositionGrouping>> positionGroupingsLazy;
+
+        private IReadOnlyList<PositionGrouping> FetchPositionGroupings()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FootSim.Core.PositionGroupings.csv"))
+            {
+                using (var textReader = new StreamReader(stream))
+                {
+                    using (var csvReader = new CsvReader(textReader))
+                    {
+                        return csvReader.GetRecords<CsvPositionGrouping>()
+                            .Where(cpg =>
+                                cpg.Nation == this.Nation.ToString() && cpg.Tier == this.Tier &&
+                                cpg.StartingYear == this.StartingYear)
+                            .Select(cpg => new PositionGrouping(cpg.LongName, cpg.ShortName, cpg.Min, cpg.Max))
+                            .ToArray();
+                    }
+                }
+            }
+        }
+
+        private class CsvPositionGrouping
+        {
+            public string Nation { get; set; }
+
+            public int Tier { get; set; }
+
+            public int StartingYear { get; set; }
+
+            public string LongName { get; set; }
+
+            public string ShortName { get; set; }
+
+            public int Min { get; set; }
+
+            public int Max { get; set; }
+        }
+
         public League(Nation nation, int tier, int startingYear)
         {
             this.Nation = nation;
             this.Tier = tier;
             this.StartingYear = startingYear;
+
+            this.positionGroupingsLazy = new Lazy<IReadOnlyList<PositionGrouping>>(this.FetchPositionGroupings);
         }
 
         public Nation Nation { get; }
@@ -19,17 +64,9 @@
 
         public string Description => $"{this.TierDescription} ({this.Nation})";
 
-        public string EditionDescription
-        {
-            get
-            {
-                var twoDigitSeason = this.StartingYear % 100;
+        public string EditionDescription => $"{this.StartingYear}-{this.StartingYear + 1}";
 
-                var startYear = twoDigitSeason > 50 ? 1900 + twoDigitSeason : 2000 + twoDigitSeason;
-
-                return $"{startYear}-{startYear + 1}";
-            }
-        }
+        public IEnumerable<PositionGrouping> PositionGroupings => this.positionGroupingsLazy.Value;
 
         private string TierDescription
         {

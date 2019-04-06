@@ -20,7 +20,7 @@
         [Value(2, Required = true, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019.")]
         public int StartingYear { get; set; }
 
-        public League League => new League(this.Nation.ToNation(), this.Tier, this.StartingYear);
+        public League League => new League(Conversions.ToNation(this.Nation), this.Tier, Conversions.ToStartingYear(this.StartingYear));
 
         [Option('o', "on", Required = false, HelpText = "Date on which to perform the simulation. Format yyyy-MM-dd.")]
         public string OnString { get; set; }

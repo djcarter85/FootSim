@@ -5,12 +5,15 @@
 
     public class TeamSeasonSimulationResult
     {
-        public TeamSeasonSimulationResult(string teamName, IReadOnlyList<int> points, IReadOnlyList<int> positions)
+        public TeamSeasonSimulationResult(int currentPosition, string teamName, IReadOnlyList<int> points, IReadOnlyList<int> positions)
         {
+            this.CurrentPosition = currentPosition;
             this.TeamName = teamName;
             this.Points = points;
             this.Positions = positions;
         }
+
+        public int CurrentPosition { get; }
 
         public string TeamName { get; }
 
@@ -21,5 +24,8 @@
         public double AveragePoints => this.Points.Average();
 
         public int PositionCount(int position) => this.Positions.Count(p => p == position);
+
+        public int PositionGroupingCount(PositionGrouping positionGrouping) =>
+            this.Positions.Count(p => positionGrouping.Contains(p));
     }
 }

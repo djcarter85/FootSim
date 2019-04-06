@@ -4,9 +4,9 @@
     using FootSim.Core;
     using FootSim.Options;
 
-    public static class NationOptionExtensions
+    public static class Conversions
     {
-        public static Nation ToNation(this NationOption nationOption)
+        public static Nation ToNation(NationOption nationOption)
         {
             switch (nationOption)
             {
@@ -23,6 +23,13 @@
                 default:
                     throw new ArgumentOutOfRangeException(nameof(nationOption), nationOption, null);
             }
+        }
+
+        public static int ToStartingYear(int startingYearOption)
+        {
+            var twoDigitStartingYear = startingYearOption % 100;
+
+            return twoDigitStartingYear > 50 ? 1900 + twoDigitStartingYear : 2000 + twoDigitStartingYear;
         }
     }
 }

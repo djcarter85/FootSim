@@ -6,10 +6,13 @@
 
     public class Season
     {
-        public Season(IReadOnlyList<ICompletedMatch> matches)
+        public Season(League league, IReadOnlyList<ICompletedMatch> matches)
         {
+            this.League = league;
             this.Matches = matches;
         }
+
+        public League League { get; }
 
         public IReadOnlyList<ICompletedMatch> Matches { get; }
 
