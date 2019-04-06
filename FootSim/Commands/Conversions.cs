@@ -28,11 +28,11 @@
             }
         }
 
-        public static int ToStartingYear(int? startingYearOption)
+        public static int ToStartingYear(int? startingYearOption, IClock clock)
         {
             if (startingYearOption == null)
             {
-                var currentDate = SystemClock.Instance.GetCurrentInstant().InZone(UkTimeZone).LocalDateTime.Date;
+                var currentDate = clock.GetCurrentInstant().InZone(UkTimeZone).LocalDateTime.Date;
                 const int august = 8;
                 if (currentDate.Month < august)
                 {

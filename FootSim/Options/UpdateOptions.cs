@@ -2,7 +2,7 @@
 {
     using CommandLine;
     using FootSim.Commands;
-    using FootSim.Core;
+    using NodaTime;
 
     [Verb("update", HelpText = "Update the results from www.football-data.co.uk.")]
     public class UpdateOptions : IOptions
@@ -16,8 +16,6 @@
         [Value(2, Required = false, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019. Defaults to the current season.")]
         public int? StartingYear { get; set; }
 
-        public League League => new League(Conversions.ToNation(this.Nation), this.Tier, Conversions.ToStartingYear(this.StartingYear));
-
-        public ICommand CreateCommand() => new UpdateCommand(this);
+        public ICommand CreateCommand() => new UpdateCommand(this, SystemClock.Instance);
     }
 }

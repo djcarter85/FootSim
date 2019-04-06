@@ -4,19 +4,27 @@
     using System.Threading.Tasks;
     using FootSim.Core;
     using FootSim.Options;
+    using NodaTime;
 
     public class UpdateCommand : ICommand
     {
         private readonly UpdateOptions options;
+        private readonly IClock clock;
 
-        public UpdateCommand(UpdateOptions options)
+        public UpdateCommand(UpdateOptions options, IClock clock)
         {
             this.options = options;
+            this.clock = clock;
         }
 
         public async Task<ExitCode> ExecuteAsync()
         {
-            await UpdateFromServer(this.options.League);
+            var league = new League(
+                Conversions.ToNation(this.options.Nation),
+                this.options.Tier,
+                Conversions.ToStartingYear(this.options.StartingYear, this.clock));
+
+            await UpdateFromServer(league);
 
             return ExitCode.Success;
         }

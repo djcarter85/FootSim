@@ -2,7 +2,6 @@
 {
     using CommandLine;
     using FootSim.Commands;
-    using FootSim.Core;
     using NodaTime;
     using NodaTime.Text;
 
@@ -20,8 +19,6 @@
         [Value(2, Required = false, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019. Defaults to the current season.")]
         public int? StartingYear { get; set; }
 
-        public League League => new League(Conversions.ToNation(this.Nation), this.Tier, Conversions.ToStartingYear(this.StartingYear));
-
         [Option('o', "on", Required = false, HelpText = "Date on which to perform the simulation. Format yyyy-MM-dd.")]
         public string OnString { get; set; }
 
@@ -36,6 +33,6 @@
         [Option('c', "csv", Required = false, HelpText = "A CSV file to output the results to.")]
         public string Csv { get; set; }
 
-        public ICommand CreateCommand() => new RunCommand(this);
+        public ICommand CreateCommand() => new RunCommand(this, SystemClock.Instance);
     }
 }

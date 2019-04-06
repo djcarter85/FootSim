@@ -10,27 +10,33 @@
     using FootSim.Core;
     using FootSim.Grid;
     using FootSim.Options;
+    using NodaTime;
 
     public class RunCommand : ICommand
     {
         private readonly RunOptions options;
+        private readonly IClock clock;
 
-        public RunCommand(RunOptions options)
+        public RunCommand(RunOptions options, IClock clock)
         {
             this.options = options;
+            this.clock = clock;
         }
 
         public async Task<ExitCode> ExecuteAsync()
         {
+            var league = new League(
+                Conversions.ToNation(this.options.Nation),
+                this.options.Tier,
+                Conversions.ToStartingYear(this.options.StartingYear, this.clock));
+
             if (this.options.Update)
             {
-                await UpdateCommand.UpdateFromServer(this.options.League);
+                await UpdateCommand.UpdateFromServer(league);
                 Console.WriteLine();
             }
 
-            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(
-                this.options.League,
-                this.options.On);
+            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(league, this.options.On);
 
             Console.WriteLine();
             Console.WriteLine($"Simulating {this.options.Times:N0} times ...");
@@ -44,14 +50,14 @@
             stopwatch.Stop();
 
             Console.WriteLine();
-            Console.WriteLine(CreateSimulationGrid(result.Teams, this.options.League.PositionGroupings));
+            Console.WriteLine(CreateSimulationGrid(result.Teams, league.PositionGroupings));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
 
             if (this.options.Csv != null)
             {
-                await OutputToCsv(result.Teams, this.options.League.PositionGroupings, this.options.Csv);
+                await OutputToCsv(result.Teams, league.PositionGroupings, this.options.Csv);
 
                 Console.WriteLine();
                 Console.WriteLine($"Results output to {this.options.Csv}");
