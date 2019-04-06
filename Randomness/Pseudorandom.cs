@@ -5,10 +5,8 @@
 
     public static class Pseudorandom
     {
-        private static readonly ThreadLocal<Random> prng = new ThreadLocal<Random>(() => new Random(BetterRandom.NextInt()));
+        private static readonly ThreadLocal<Random> Random = new ThreadLocal<Random>(() => new Random(BetterRandom.NextInt()));
 
-        public static int NextInt() => prng.Value.Next();
-
-        public static double NextDouble() => prng.Value.NextDouble();
+        public static double NextDouble() => Random.Value.NextDouble();
     }
 }

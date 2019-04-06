@@ -13,11 +13,6 @@
             }
         }
 
-        public static IDistribution<R> Select<A, R>(this IDistribution<A> distribution, Func<A, R> projection)
-        {
-            return Projected<A, R>.Distribution(distribution, projection);
-        }
-
         public static IDistribution<C> SelectMany<A, B, C>(
             this IDistribution<A> prior,
             Func<A, IDistribution<B>> likelihood,

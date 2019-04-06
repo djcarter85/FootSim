@@ -1,7 +1,7 @@
 ﻿namespace Randomness.Distributions.Discrete
 {
-    using static System.Math;
-    using SCU = Continuous.StandardContinuousUniform;
+    using System;
+    using Randomness.Distributions.Continuous;
 
     public class Poisson : IDistribution<int>
     {
@@ -16,14 +16,14 @@
 
         public int Sample()
         {
-            var l = Exp(-this.Lambda);
+            var l = Math.Exp(-this.Lambda);
             var k = 0;
             double p = 1;
 
             do
             {
                 k++;
-                var u = SCU.Distribution.Sample();
+                var u = StandardContinuousUniform.Distribution.Sample();
                 p *= u;
 
             } while (p > l);
