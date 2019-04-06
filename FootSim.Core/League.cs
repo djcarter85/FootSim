@@ -42,23 +42,23 @@
                         switch (this.Tier)
                         {
                             case 0:
-                                yield return new PositionGrouping("Champions League", "UCL", 1, 2, 3, 4);
-                                yield return new PositionGrouping("Europa League", "UEL", 5, 6, 7);
-                                yield return new PositionGrouping("Relegation", "Rel", 18, 19, 20);
+                                yield return new PositionGrouping("Champions League", "UCL", 1, 4);
+                                yield return new PositionGrouping("Europa League", "UEL", 5, 7);
+                                yield return new PositionGrouping("Relegation", "Rel", 18, 20);
                                 break;
                             case 1:
                                 yield return new PositionGrouping("Automatic promotion", "Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoffs", "PO", 3, 4, 5, 6);
-                                yield return new PositionGrouping("Relegation", "Rel", 22, 23, 24);
+                                yield return new PositionGrouping("Playoffs", "PO", 3, 6);
+                                yield return new PositionGrouping("Relegation", "Rel", 22, 24);
                                 break;
                             case 2:
                                 yield return new PositionGrouping("Automatic promotion", "Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoffs", "PO", 3, 4, 5, 6);
-                                yield return new PositionGrouping("Relegation", "Rel", 22, 23, 24);
+                                yield return new PositionGrouping("Playoffs", "PO", 3, 6);
+                                yield return new PositionGrouping("Relegation", "Rel", 22, 24);
                                 break;
                             case 3:
-                                yield return new PositionGrouping("Automatic promotion", "Top 3", 1, 2, 3);
-                                yield return new PositionGrouping("Playoffs", "PO", 4, 5, 6, 7);
+                                yield return new PositionGrouping("Automatic promotion", "Top 3", 1, 3);
+                                yield return new PositionGrouping("Playoffs", "PO", 4, 7);
                                 yield return new PositionGrouping("Relegation", "Rel", 23, 24);
                                 break;
                         }
@@ -68,15 +68,15 @@
                         switch (this.Tier)
                         {
                             case 0:
-                                yield return new PositionGrouping("Champions League", "UCL", 1, 2, 3, 4);
+                                yield return new PositionGrouping("Champions League", "UCL", 1, 4);
                                 yield return new PositionGrouping("Europa League", "UEL", 5, 6);
-                                yield return new PositionGrouping("Relegation playoff", "Rel PO", 16);
+                                yield return new PositionGrouping("Relegation playoff", "Rel PO", 16, 16);
                                 yield return new PositionGrouping("Relegation", "Rel", 17, 18);
                                 break;
                             case 1:
                                 yield return new PositionGrouping("Automatic promotion", "Top 2", 1, 2);
-                                yield return new PositionGrouping("Playoff", "PO", 3);
-                                yield return new PositionGrouping("Relegation playoff", "Rel PO", 16);
+                                yield return new PositionGrouping("Playoff", "PO", 3, 3);
+                                yield return new PositionGrouping("Relegation playoff", "Rel PO", 16, 16);
                                 yield return new PositionGrouping("Relegation", "Rel", 17, 18);
                                 break;
                         }

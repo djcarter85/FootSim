@@ -26,6 +26,6 @@
         public int PositionCount(int position) => this.Positions.Count(p => p == position);
 
         public int PositionGroupingCount(PositionGrouping positionGrouping) =>
-            this.Positions.Count(p => positionGrouping.Positions.Contains(p));
+            this.Positions.Count(p => positionGrouping.Contains(p));
     }
 }

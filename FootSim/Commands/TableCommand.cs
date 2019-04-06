@@ -66,7 +66,7 @@
                 string.Empty,
                 Alignment.Left,
                 tp => season.League.PositionGroupings
-                    .Where(pg => pg.Positions.Contains(tp.Position))
+                    .Where(pg => pg.Contains(tp.Position))
                     .Select(pg => pg.LongName)
                     .Join(", "));
 
