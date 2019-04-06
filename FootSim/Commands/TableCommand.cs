@@ -22,17 +22,17 @@
 
         public Task<ExitCode> ExecuteAsync()
         {
-            CalculateAndDisplayLeagueTable(this.options.League, this.options.Season, this.options.On);
+            CalculateAndDisplayLeagueTable(this.options.League, this.options.On);
 
             return Task.FromResult(ExitCode.Success);
         }
 
-        public static Season CalculateAndDisplayLeagueTable(League league, int season, LocalDate? on)
+        public static Season CalculateAndDisplayLeagueTable(League league, LocalDate? on)
         {
-            var repository = new Repository(season.ForWeb(), league.ForWeb());
+            var repository = new Repository(league);
 
-            Console.WriteLine($"League: {league.ForDisplay()}");
-            Console.WriteLine($"Season: {season.ForDisplay()}");
+            Console.WriteLine($"League: {league.Description}");
+            Console.WriteLine($"Edition: {league.EditionDescription}");
 
             if (on != null)
             {

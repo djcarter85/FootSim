@@ -2,6 +2,7 @@
 {
     using CommandLine;
     using FootSim.Commands;
+    using FootSim.Core;
     using NodaTime;
     using NodaTime.Text;
 
@@ -10,12 +11,16 @@
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
-        [Option('l', "league", Required = true,
-            HelpText = "The league to run the simulation for. Supports \"epl\" (English Premier League), \"champ\" (English Championship), \"l1\" (English League One), \"l2\" (English League Two), \"conf\" (English Conference).")]
-        public League League { get; set; }
+        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England).")]
+        public NationOption Nation { get; set; }
 
-        [Option('s', "season", Required = true, HelpText = "The season to run the simulation for. Denoted by the year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019.")]
-        public int Season { get; set; }
+        [Value(1, Required = true, HelpText = "The 0-based index of the league within the nation's football pyramid.")]
+        public int Tier { get; set; }
+
+        [Value(2, Required = true, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019.")]
+        public int StartingYear { get; set; }
+
+        public League League => new League(this.Nation.ToNation(), this.Tier, this.StartingYear);
 
         [Option('o', "on", Required = false, HelpText = "Date on which to perform the simulation. Format yyyy-MM-dd.")]
         public string OnString { get; set; }

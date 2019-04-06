@@ -23,20 +23,19 @@
 
         private readonly Lazy<Data> dataLazy;
 
-        public Repository(string season, string league)
+        public Repository(League league)
         {
             this.csvFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "FootSim",
-                league,
-                season,
+                GetFolder(league),
                 "data.csv");
-            this.url = $"http://www.football-data.co.uk/mmz4281/{season}/{league}.csv";
+            this.url = GetUrl(league);
 
             this.dataLazy = new Lazy<Data>(this.FetchData);
         }
 
-        public async Task RefreshFromWebAsync()
+        public async Task UpdateFromServerAsync()
         {
             var csv = await this.GetCsvDataAsync();
 
@@ -94,6 +93,34 @@
                  .ToList();
 
             return new Data(matches);
+        }
+
+        private static string GetFolder(League league)
+        {
+            return $@"{league.Nation}\{league.Tier}\{league.StartingYear}";
+        }
+
+        private static string GetUrl(League league)
+        {
+            return $"http://www.football-data.co.uk/mmz4281/{GetSeasonString(league.StartingYear)}/{GetFileName(league)}.csv";
+        }
+
+        private static string GetSeasonString(int startingYear)
+        {
+            var twoDigitStartingYear = startingYear % 100;
+
+            return $"{twoDigitStartingYear:00}{(twoDigitStartingYear + 1) % 100:00}";
+        }
+
+        private static string GetFileName(League league)
+        {
+            switch (league.Nation)
+            {
+                case Nation.England:
+                    return $"E{league.Tier}";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(league), league, null);
+            }
         }
 
         private class CsvMatch

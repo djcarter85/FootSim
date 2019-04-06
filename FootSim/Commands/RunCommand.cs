@@ -20,7 +20,9 @@
 
         public Task<ExitCode> ExecuteAsync()
         {
-            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(this.options.League, this.options.Season, this.options.On);
+            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(
+                this.options.League,
+                this.options.On);
 
             Console.WriteLine();
             Console.WriteLine($"Simulating {this.options.Times:N0} times ...");

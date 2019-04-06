@@ -2,15 +2,21 @@
 {
     using CommandLine;
     using FootSim.Commands;
+    using FootSim.Core;
 
     [Verb("update", HelpText = "Update the results from www.football-data.co.uk.")]
     public class UpdateOptions : IOptions
     {
-        [Option('s', "season", Required = true, HelpText = "The season to update the data for. Denoted by the year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019.")]
-        public int Season { get; set; }
+        [Value(0, Required = true, HelpText = "The nation of the league. Supports \"ENG\" (England).")]
+        public NationOption Nation { get; set; }
 
-        [Option('l', "league", Required = true, HelpText = "The league to update the data for. Supports \"epl\" (Premier League), \"champ\" (Championship).")]
-        public League League { get; set; }
+        [Value(1, Required = true, HelpText = "The 0-based index of the league within the nation's football pyramid.")]
+        public int Tier { get; set; }
+
+        [Value(2, Required = true, HelpText = "The year in which the season starts, e.g. \"2018\" or \"18\" for 2018-2019.")]
+        public int StartingYear { get; set; }
+
+        public League League => new League(this.Nation.ToNation(), this.Tier, this.StartingYear);
 
         public ICommand CreateCommand() => new UpdateCommand(this);
     }
