@@ -12,6 +12,33 @@
         private readonly Lazy<string> leagueNameLazy;
         private readonly Lazy<string> fileNameLazy;
 
+        public League(Nation nation, int tier, int startingYear)
+        {
+            this.Nation = nation;
+            this.Tier = tier;
+            this.StartingYear = startingYear;
+
+            this.positionGroupingsLazy = new Lazy<IReadOnlyList<PositionGrouping>>(this.FetchPositionGroupings);
+            this.leagueNameLazy = new Lazy<string>(this.FetchLeagueName);
+            this.fileNameLazy = new Lazy<string>(this.FetchFileName);
+        }
+
+        public Nation Nation { get; }
+
+        public int Tier { get; }
+
+        public int StartingYear { get; }
+
+        public string Description => $"{this.LeagueName} ({this.Nation})";
+
+        public string EditionDescription => $"{this.StartingYear}-{this.StartingYear + 1}";
+
+        public IEnumerable<PositionGrouping> PositionGroupings => this.positionGroupingsLazy.Value;
+
+        public string FileName => this.fileNameLazy.Value;
+
+        private string LeagueName => this.leagueNameLazy.Value;
+
         private IReadOnlyList<PositionGrouping> FetchPositionGroupings()
         {
             using (Stream stream = CsvEmbeddedResources.GetStream("PositionGroupings.csv"))
@@ -112,32 +139,5 @@
 
             public string FileName { get; set; }
         }
-
-        public League(Nation nation, int tier, int startingYear)
-        {
-            this.Nation = nation;
-            this.Tier = tier;
-            this.StartingYear = startingYear;
-
-            this.positionGroupingsLazy = new Lazy<IReadOnlyList<PositionGrouping>>(this.FetchPositionGroupings);
-            this.leagueNameLazy = new Lazy<string>(this.FetchLeagueName);
-            this.fileNameLazy = new Lazy<string>(this.FetchFileName);
-        }
-
-        public Nation Nation { get; }
-
-        public int Tier { get; }
-
-        public int StartingYear { get; }
-
-        public string Description => $"{this.LeagueName} ({this.Nation})";
-
-        public string EditionDescription => $"{this.StartingYear}-{this.StartingYear + 1}";
-
-        public IEnumerable<PositionGrouping> PositionGroupings => this.positionGroupingsLazy.Value;
-
-        public string FileName => this.fileNameLazy.Value;
-
-        private string LeagueName => this.leagueNameLazy.Value;
     }
 }
