@@ -6,38 +6,35 @@
     using System.Linq;
     using System.Threading.Tasks;
     using FootSim.Core;
+    using FootSim.Grid;
     using FootSim.Options;
-    using FootSim.Table;
 
-    public static class RunCommand
+    public class RunCommand : ICommand
     {
-        public static async Task<ExitCode> ExecuteAsync(RunOptions options)
+        private readonly RunOptions options;
+
+        public RunCommand(RunOptions options)
         {
-            var repository = new Repository(options.Season.ForWeb(), options.League.ForWeb());
+            this.options = options;
+        }
 
-            Console.WriteLine($"League: {options.League.ForDisplay()}");
-            Console.WriteLine($"Season: {options.Season.ForDisplay()}");
-            Console.WriteLine();
-            Console.WriteLine("League table:");
-            Console.WriteLine();
-
-            var seasonSoFar = new Season(repository.Matches(options.On));
-
-            Console.WriteLine(CreateLeagueTable(seasonSoFar));
+        public async Task<ExitCode> ExecuteAsync()
+        {
+            var seasonSoFar = TableCommand.CalculateAndDisplayLeagueTable(this.options.League, this.options.Season, this.options.On);
 
             Console.WriteLine();
-            Console.WriteLine($"Simulating {options.Times:N0} times ...");
+            Console.WriteLine($"Simulating {this.options.Times:N0} times ...");
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var seasonSimulator = new SeasonSimulator(repository);
-            var result = seasonSimulator.Simulate(options.Times, seasonSoFar);
+            var seasonSimulator = new SeasonSimulator();
+            var result = seasonSimulator.Simulate(this.options.Times, seasonSoFar);
 
             stopwatch.Stop();
 
             Console.WriteLine();
-            Console.WriteLine(CreateSimulationTable(result.Teams));
+            Console.WriteLine(CreateSimulationGrid(result.Teams));
 
             Console.WriteLine();
             Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
@@ -45,45 +42,20 @@
             return ExitCode.Success;
         }
 
-        private static string CreateSimulationTable(IReadOnlyList<TeamSeasonSimulationResult> teams)
+        private static string CreateSimulationGrid(IReadOnlyList<TeamSeasonSimulationResult> teams)
         {
-            var tableBuilder = new TableBuilder<TeamSeasonSimulationResult>();
+            var gridBuilder = new GridBuilder<TeamSeasonSimulationResult>();
 
-            tableBuilder.AddColumn(
-                "Name",
-                Alignment.Left,
-                tssr => tssr.TeamName);
+            gridBuilder.AddColumn("Name", Alignment.Left, tssr => tssr.TeamName);
 
             foreach (var position in Enumerable.Range(1, teams.Count))
             {
-                tableBuilder.AddColumn(
-                    $"#{position}",
-                    Alignment.Right,
-                    tssr => CalculatePercentage(position, tssr));
+                gridBuilder.AddColumn($"#{position}", Alignment.Right, tssr => CalculatePercentage(position, tssr));
             }
 
-            tableBuilder.AddColumn(
-                "Avg Pts",
-                Alignment.Right,
-                tssr => tssr.AveragePoints.ToString("N1"));
+            gridBuilder.AddColumn("Avg Pts", Alignment.Right, tssr => tssr.AveragePoints.ToString("N1"));
 
-            return tableBuilder.Build(teams);
-        }
-
-        private static string CreateLeagueTable(Season season)
-        {
-            var tableBuilder = new TableBuilder<TablePlacing>();
-
-            tableBuilder.AddColumn("#", Alignment.Right, tp => tp.Position);
-            tableBuilder.AddColumn("Name", Alignment.Left, tp => tp.TeamName);
-            tableBuilder.AddColumn("Pld", Alignment.Right, tp => tp.Played);
-            tableBuilder.AddColumn("W", Alignment.Right, tp => tp.Won);
-            tableBuilder.AddColumn("D", Alignment.Right, tp => tp.Drawn);
-            tableBuilder.AddColumn("L", Alignment.Right, tp => tp.Lost);
-            tableBuilder.AddColumn("GD", Alignment.Right, tp => tp.GoalDifference);
-            tableBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
-
-            return tableBuilder.Build(season.Table);
+            return gridBuilder.Build(teams);
         }
 
         private static string CalculatePercentage(int position, TeamSeasonSimulationResult teamSeasonSimulationResult)

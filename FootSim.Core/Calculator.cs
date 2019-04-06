@@ -50,8 +50,10 @@
             return matches.Average(m => m.Score.Away);
         }
 
-        public static IReadOnlyList<Team> GetTeams(IReadOnlyList<string> teamNames, Season seasonSoFar)
+        public static IReadOnlyList<Team> GetTeams(Season seasonSoFar)
         {
+            var teamNames = seasonSoFar.TeamNames;
+
             var totalGoalsScored = CalculateTotalGoalsScored(seasonSoFar.Matches);
             var averageGoalsScored = totalGoalsScored / teamNames.Count;
 

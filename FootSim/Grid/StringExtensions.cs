@@ -1,4 +1,4 @@
-﻿namespace FootSim.Table
+﻿namespace FootSim.Grid
 {
     using System.Collections.Generic;
 

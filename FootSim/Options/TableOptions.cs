@@ -5,8 +5,8 @@
     using NodaTime;
     using NodaTime.Text;
 
-    [Verb("run", HelpText = "Run the simulation of a season")]
-    public class RunOptions : IOptions
+    [Verb("table", HelpText = "Display the league table for a season.")]
+    public class TableOptions : IOptions
     {
         private static readonly LocalDatePattern Pattern = LocalDatePattern.Iso;
 
@@ -22,9 +22,6 @@
 
         public LocalDate? On => string.IsNullOrEmpty(this.OnString) ? (LocalDate?)null : Pattern.Parse(this.OnString).GetValueOrThrow();
 
-        [Option('t', "times", Required = false, Default = 10_000, HelpText = "The number of times to simulate the season.")]
-        public int Times { get; set; }
-
-        public ICommand CreateCommand() => new RunCommand(this);
+        public ICommand CreateCommand() => new TableCommand(this);
     }
 }

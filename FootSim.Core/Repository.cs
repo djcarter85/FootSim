@@ -53,17 +53,15 @@
             }
         }
 
-        public IReadOnlyList<string> TeamNames => this.dataLazy.Value.TeamNames;
-
-        public IReadOnlyList<PastMatch> Matches(LocalDate? lastDate)
+        public Season Season(LocalDate? lastDate)
         {
             if (lastDate == null)
             {
-                return this.dataLazy.Value.Matches;
+                return new Season(this.dataLazy.Value.Matches);
             }
             else
             {
-                return this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray();
+                return new Season(this.dataLazy.Value.Matches.Where(m => m.Date <= lastDate).ToArray());
             }
         }
 
@@ -95,12 +93,7 @@
                      new Score(csvMatch.FTHG, csvMatch.FTAG)))
                  .ToList();
 
-            var teamNames = matches
-                .SelectMany(m => new[] { m.HomeTeamName, m.AwayTeamName })
-                .Distinct()
-                .ToList();
-
-            return new Data(teamNames, matches);
+            return new Data(matches);
         }
 
         private class CsvMatch
@@ -118,13 +111,10 @@
 
         private class Data
         {
-            public Data(IReadOnlyList<string> teamNames, IReadOnlyList<PastMatch> matches)
+            public Data(IReadOnlyList<PastMatch> matches)
             {
-                this.TeamNames = teamNames;
                 this.Matches = matches;
             }
-
-            public IReadOnlyList<string> TeamNames { get; }
 
             public IReadOnlyList<PastMatch> Matches { get; }
         }
