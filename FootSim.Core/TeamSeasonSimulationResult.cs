@@ -5,12 +5,15 @@
 
     public class TeamSeasonSimulationResult
     {
-        public TeamSeasonSimulationResult(string teamName, IReadOnlyList<int> points, IReadOnlyList<int> positions)
+        public TeamSeasonSimulationResult(int currentPosition, string teamName, IReadOnlyList<int> points, IReadOnlyList<int> positions)
         {
+            this.CurrentPosition = currentPosition;
             this.TeamName = teamName;
             this.Points = points;
             this.Positions = positions;
         }
+
+        public int CurrentPosition { get; }
 
         public string TeamName { get; }
 

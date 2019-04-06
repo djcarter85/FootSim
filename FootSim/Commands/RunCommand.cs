@@ -56,6 +56,7 @@
         {
             var gridBuilder = new GridBuilder<TeamSeasonSimulationResult>();
 
+            gridBuilder.AddColumn("#", Alignment.Right, tssr => tssr.CurrentPosition);
             gridBuilder.AddColumn("Name", Alignment.Left, tssr => tssr.TeamName);
 
             foreach (var position in Enumerable.Range(1, teams.Count))
