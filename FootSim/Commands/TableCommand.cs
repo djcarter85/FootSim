@@ -6,9 +6,13 @@
     using FootSim.Grid;
     using FootSim.Options;
     using NodaTime;
+    using NodaTime.Text;
 
     public class TableCommand : ICommand
     {
+        private static readonly IPattern<LocalDate> LocalDatePattern =
+            NodaTime.Text.LocalDatePattern.CreateWithCurrentCulture("dd MMM yyyy");
+
         private readonly TableOptions options;
 
         public TableCommand(TableOptions options)
@@ -29,8 +33,12 @@
 
             Console.WriteLine($"League: {league.ForDisplay()}");
             Console.WriteLine($"Season: {season.ForDisplay()}");
-            Console.WriteLine();
-            Console.WriteLine("League table:");
+
+            if (on != null)
+            {
+                Console.WriteLine($"On: {LocalDatePattern.Format(on.Value)}");
+            }
+
             Console.WriteLine();
 
             var seasonSoFar = repository.Season(on);
