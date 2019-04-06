@@ -4,6 +4,7 @@
     {
         Eng,
         Ger,
-        Ita
+        Ita,
+        Spa
     }
 }

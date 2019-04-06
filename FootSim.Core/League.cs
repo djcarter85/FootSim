@@ -73,6 +73,16 @@
                         }
 
                         break;
+                    case Nation.Spain:
+                        switch (this.Tier)
+                        {
+                            case 0:
+                                return "La Liga Primera";
+                            case 1:
+                                return "La Liga Segunda";
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
