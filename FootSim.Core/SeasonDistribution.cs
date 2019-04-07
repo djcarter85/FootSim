@@ -16,9 +16,9 @@
             this.matches = matches;
         }
 
-        public static SeasonDistribution Create(Season seasonSoFar, IReadOnlyList<Team> teams)
+        public static SeasonDistribution Create(Season seasonSoFar)
         {
-            return new SeasonDistribution(seasonSoFar.League, CreateMatches(seasonSoFar, teams));
+            return new SeasonDistribution(seasonSoFar.League, CreateMatches(seasonSoFar));
         }
 
         public Season Sample()
@@ -30,16 +30,16 @@
             return new Season(this.league, pastMatches);
         }
 
-        private static IReadOnlyList<ISimulatableMatch> CreateMatches(Season seasonSoFar, IReadOnlyList<Team> teams)
+        private static IReadOnlyList<ISimulatableMatch> CreateMatches(Season seasonSoFar)
         {
             var averageHomeGoals = Calculator.AverageHomeGoals(seasonSoFar.Matches);
             var averageAwayGoals = Calculator.AverageAwayGoals(seasonSoFar.Matches);
 
             var matches = new List<ISimulatableMatch>();
 
-            foreach (var homeTeam in teams)
+            foreach (var homeTeam in seasonSoFar.Table)
             {
-                foreach (var awayTeam in teams)
+                foreach (var awayTeam in seasonSoFar.Table)
                 {
                     if (homeTeam != awayTeam)
                     {
@@ -53,12 +53,12 @@
 
         private static ISimulatableMatch CreateMatch(
             Season seasonSoFar,
-            Team homeTeam,
-            Team awayTeam,
+            TablePlacing homeTeam,
+            TablePlacing awayTeam,
             double averageHomeGoals,
             double averageAwayGoals)
         {
-            var pastMatch = seasonSoFar.Matches.SingleOrDefault(m => m.HomeTeamName == homeTeam.Name && m.AwayTeamName == awayTeam.Name);
+            var pastMatch = seasonSoFar.Matches.SingleOrDefault(m => m.HomeTeamName == homeTeam.TeamName && m.AwayTeamName == awayTeam.TeamName);
 
             if (pastMatch != null)
             {
@@ -72,7 +72,7 @@
                 from awayGoals in Poisson.Distribution(expectedScore.Away)
                 select new Score(homeGoals, awayGoals);
 
-            return new SimulatableMatch(homeTeam.Name, awayTeam.Name, scoreDistribution);
+            return new SimulatableMatch(homeTeam.TeamName, awayTeam.TeamName, scoreDistribution);
         }
 
         private class SimulatableMatch : ISimulatableMatch

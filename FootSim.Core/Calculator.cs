@@ -50,19 +50,9 @@
             return matches.Average(m => m.Score.Away);
         }
 
-        public static IReadOnlyList<Team> GetTeams(Season seasonSoFar)
-        {
-            var teamNames = seasonSoFar.TeamNames;
-
-            var totalGoalsScored = CalculateTotalGoalsScored(seasonSoFar.Matches);
-            var averageGoalsScored = totalGoalsScored / teamNames.Count;
-
-            return teamNames.Select(t => Team.Create(t, seasonSoFar.Matches, averageGoalsScored)).ToArray();
-        }
-
         public static ExpectedScore CalculateExpectedScore(
-            Team homeTeam,
-            Team awayTeam,
+            TablePlacing homeTeam,
+            TablePlacing awayTeam,
             double averageHomeGoals,
             double averageAwayGoals)
         {
