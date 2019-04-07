@@ -103,7 +103,10 @@
                 gridBuilder.AddColumn($"#{position}", Alignment.Right, tssr => CalculatePercentage(position, tssr));
             }
 
-            gridBuilder.AddColumn("Avg Pts", Alignment.Right, tssr => tssr.AveragePoints.ToString("N1"));
+            gridBuilder.AddColumn("Avg GF", Alignment.Right, tssr => tssr.GoalsFors.Average().ToString("N1"));
+            gridBuilder.AddColumn("Avg GA", Alignment.Right, tssr => tssr.GoalsAgainsts.Average().ToString("N1"));
+            gridBuilder.AddColumn("Avg GD", Alignment.Right, tssr => tssr.GoalDifferences.Average().ToString("N1"));
+            gridBuilder.AddColumn("Avg Pts", Alignment.Right, tssr => tssr.Points.Average().ToString("N1"));
 
             foreach (var positionGrouping in positionGroupings)
             {
