@@ -70,6 +70,8 @@
             gridBuilder.AddColumn("GA", Alignment.Right, tp => tp.GoalsAgainst);
             gridBuilder.AddColumn("GD", Alignment.Right, tp => tp.GoalDifference);
             gridBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
+            gridBuilder.AddColumn("AS", Alignment.Right, tp => tp.AttackingStrength.ToString("N2"));
+            gridBuilder.AddColumn("DW", Alignment.Right, tp => tp.DefensiveWeakness.ToString("N2"));
 
             gridBuilder.AddColumn(
                 string.Empty,
