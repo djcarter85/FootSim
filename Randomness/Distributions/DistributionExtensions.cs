@@ -1,6 +1,5 @@
 ﻿namespace Randomness.Distributions
 {
-    using System;
     using System.Collections.Generic;
 
     public static class DistributionExtensions
@@ -11,14 +10,6 @@
             {
                 yield return distribution.Sample();
             }
-        }
-
-        public static IDistribution<TResult> SelectMany<TSource, TLikelihood, TResult>(
-            this IDistribution<TSource> prior,
-            Func<TSource, IDistribution<TLikelihood>> likelihood,
-            Func<TSource, TLikelihood, TResult> projection)
-        {
-            return Combined<TSource, TLikelihood, TResult>.Distribution(prior, likelihood, projection);
         }
     }
 }
