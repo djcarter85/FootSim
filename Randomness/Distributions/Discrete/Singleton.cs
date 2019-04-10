@@ -1,15 +1,18 @@
 ﻿namespace Randomness.Distributions.Discrete
 {
-    public sealed class Singleton<T> : IDistribution<T>
+    public static class Singleton
     {
-        private readonly T t;
+        public static IDistribution<T> Distribution<T>(T t) => new SingletonDistribution<T>(t);
 
-        private Singleton(T t) => this.t = t;
+        private sealed class SingletonDistribution<T> : IDistribution<T>
+        {
+            private readonly T t;
 
-        public static Singleton<T> Distribution(T t) => new Singleton<T>(t);
+            public SingletonDistribution(T t) => this.t = t;
 
-        public T Sample() => this.t;
+            public T Sample() => this.t;
 
-        public override string ToString() => $"Singleton[{this.t}]";
+            public override string ToString() => $"Singleton[{this.t}]";
+        }
     }
 }

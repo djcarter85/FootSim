@@ -62,7 +62,7 @@
 
             if (pastMatch != null)
             {
-                return new SimulatableMatch(pastMatch.HomeTeamName, pastMatch.AwayTeamName, Singleton<Score>.Distribution(pastMatch.Score));
+                return new SimulatableMatch(pastMatch.HomeTeamName, pastMatch.AwayTeamName, Singleton.Distribution(pastMatch.Score));
             }
 
             var expectedScore = Calculator.CalculateExpectedScore(homeTeam, awayTeam, averageHomeGoals, averageAwayGoals);
