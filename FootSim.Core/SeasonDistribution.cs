@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using Randomness.Distributions;
-    using Randomness.Distributions.Discrete;
 
     public class SeasonDistribution : IDistribution<Season>
     {

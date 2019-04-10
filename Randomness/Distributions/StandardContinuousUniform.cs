@@ -1,4 +1,4 @@
-﻿namespace Randomness.Distributions.Continuous
+﻿namespace Randomness.Distributions
 {
     public sealed class StandardContinuousUniform : IDistribution<double>
     {

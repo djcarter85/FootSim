@@ -1,4 +1,4 @@
-﻿namespace Randomness.Distributions.Discrete
+﻿namespace Randomness.Distributions
 {
     public static class Singleton
     {

@@ -1,7 +1,6 @@
-﻿namespace Randomness.Distributions.Discrete
+﻿namespace Randomness.Distributions
 {
     using System;
-    using Randomness.Distributions.Continuous;
 
     public class Poisson : IDistribution<int>
     {
