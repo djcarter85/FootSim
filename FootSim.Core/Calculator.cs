@@ -1,5 +1,6 @@
 ﻿namespace FootSim.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -40,24 +41,42 @@
             return goalsScoredAtHome + goalsScoredAway;
         }
 
-        public static double AverageHomeGoals(IReadOnlyList<ICompletedMatch> matches)
+        public static double CalculateHomeConstant(Season seasonSoFar)
         {
-            return matches.Average(m => m.Score.Home);
+            return CalculateConstant(seasonSoFar, m => m.Score.Home);
         }
 
-        public static double AverageAwayGoals(IReadOnlyList<ICompletedMatch> matches)
+        public static double CalculateAwayConstant(Season seasonSoFar)
         {
-            return matches.Average(m => m.Score.Away);
+            return CalculateConstant(seasonSoFar, m => m.Score.Away);
+        }
+
+        private static double CalculateConstant(Season seasonSoFar, Func<ICompletedMatch, int> getGoalsScoredPerMatch)
+        {
+            var numberOfTeams = seasonSoFar.Table.Count;
+
+            var goalsScoredSoFar = seasonSoFar.Matches.Sum(getGoalsScoredPerMatch);
+
+            var endOfSeasonTotalMatches = numberOfTeams * (numberOfTeams - 1);
+
+            var matchesPlayedSoFar = seasonSoFar.Matches.Count;
+
+            var expectedEndOfSeasonGoalsScored =
+                (double)goalsScoredSoFar * endOfSeasonTotalMatches / matchesPlayedSoFar;
+
+            var x = seasonSoFar.Table.Sum(tp => tp.AttackingStrength * tp.DefensiveWeakness);
+
+            return expectedEndOfSeasonGoalsScored / (numberOfTeams * numberOfTeams - x);
         }
 
         public static ExpectedScore CalculateExpectedScore(
             TablePlacing homeTeam,
             TablePlacing awayTeam,
-            double averageHomeGoals,
-            double averageAwayGoals)
+            double homeConstant,
+            double awayConstant)
         {
-            var expectedHomeGoals = averageHomeGoals * homeTeam.AttackingStrength * awayTeam.DefensiveWeakness;
-            var expectedAwayGoals = averageAwayGoals * awayTeam.AttackingStrength * homeTeam.DefensiveWeakness;
+            var expectedHomeGoals = homeConstant * homeTeam.AttackingStrength * awayTeam.DefensiveWeakness;
+            var expectedAwayGoals = awayConstant * awayTeam.AttackingStrength * homeTeam.DefensiveWeakness;
 
             return new ExpectedScore(expectedHomeGoals, expectedAwayGoals);
         }

@@ -31,8 +31,8 @@
 
         private static IReadOnlyList<ISimulatableMatch> CreateMatches(Season seasonSoFar)
         {
-            var averageHomeGoals = Calculator.AverageHomeGoals(seasonSoFar.Matches);
-            var averageAwayGoals = Calculator.AverageAwayGoals(seasonSoFar.Matches);
+            var homeConstant = Calculator.CalculateHomeConstant(seasonSoFar);
+            var awayConstant = Calculator.CalculateAwayConstant(seasonSoFar);
 
             var matches = new List<ISimulatableMatch>();
 
@@ -42,7 +42,7 @@
                 {
                     if (homeTeam != awayTeam)
                     {
-                        matches.Add(CreateMatch(seasonSoFar, homeTeam, awayTeam, averageHomeGoals, averageAwayGoals));
+                        matches.Add(CreateMatch(seasonSoFar, homeTeam, awayTeam, homeConstant, awayConstant));
                     }
                 }
             }
@@ -54,8 +54,8 @@
             Season seasonSoFar,
             TablePlacing homeTeam,
             TablePlacing awayTeam,
-            double averageHomeGoals,
-            double averageAwayGoals)
+            double homeConstant,
+            double awayConstant)
         {
             var pastMatch = seasonSoFar.Matches.SingleOrDefault(m => m.HomeTeamName == homeTeam.TeamName && m.AwayTeamName == awayTeam.TeamName);
 
@@ -64,7 +64,7 @@
                 return SimulatableMatch.CreateFromCompletedMatch(pastMatch);
             }
 
-            var expectedScore = Calculator.CalculateExpectedScore(homeTeam, awayTeam, averageHomeGoals, averageAwayGoals);
+            var expectedScore = Calculator.CalculateExpectedScore(homeTeam, awayTeam, homeConstant, awayConstant);
 
             return SimulatableMatch.CreateFromExpectedScore(homeTeam.TeamName, awayTeam.TeamName, expectedScore);
         }
