@@ -6,9 +6,9 @@
 
     public class SeasonSimulator
     {
-        public SeasonSimulationResult Simulate(int simulations, Season seasonSoFar)
+        public SeasonSimulationResult Simulate(bool resim, int simulations, Season seasonSoFar)
         {
-            var distribution = SeasonDistribution.Create(seasonSoFar);
+            var distribution = SeasonDistribution.Create(resim, seasonSoFar);
 
             var sampleSeasons = distribution
                 .TakeSamples(simulations)

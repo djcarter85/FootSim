@@ -28,6 +28,9 @@
         [Option('c', "csv", Required = false, HelpText = "If specified, the file path to output the results to in CSV format.")]
         public string Csv { get; set; }
 
+        [Option('r', "resim", Default = false, HelpText = "Whether to resimulate games already played.")]
+        public bool Resim { get; set; }
+
         public ICommand CreateCommand() => new RunCommand(this, SystemClock.Instance);
     }
 }
