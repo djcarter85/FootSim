@@ -66,8 +66,12 @@
             gridBuilder.AddColumn("W", Alignment.Right, tp => tp.Won);
             gridBuilder.AddColumn("D", Alignment.Right, tp => tp.Drawn);
             gridBuilder.AddColumn("L", Alignment.Right, tp => tp.Lost);
+            gridBuilder.AddColumn("GF", Alignment.Right, tp => tp.GoalsFor);
+            gridBuilder.AddColumn("GA", Alignment.Right, tp => tp.GoalsAgainst);
             gridBuilder.AddColumn("GD", Alignment.Right, tp => tp.GoalDifference);
             gridBuilder.AddColumn("Pts", Alignment.Right, tp => tp.Points);
+            gridBuilder.AddColumn("AS", Alignment.Right, tp => tp.AttackingStrength.ToString("N2"));
+            gridBuilder.AddColumn("DW", Alignment.Right, tp => tp.DefensiveWeakness.ToString("N2"));
 
             gridBuilder.AddColumn(
                 string.Empty,

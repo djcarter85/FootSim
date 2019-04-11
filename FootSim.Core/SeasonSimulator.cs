@@ -8,11 +8,7 @@
     {
         public SeasonSimulationResult Simulate(int simulations, Season seasonSoFar)
         {
-            var teams = Calculator.GetTeams(seasonSoFar);
-
-            var distribution = SeasonDistribution.Create(
-                seasonSoFar,
-                teams);
+            var distribution = SeasonDistribution.Create(seasonSoFar);
 
             var sampleSeasons = distribution
                 .TakeSamples(simulations)
@@ -29,6 +25,9 @@
                         results[tablePlacing.TeamName] = new TempSimulationResult();
                     }
 
+                    results[tablePlacing.TeamName].GoalsFors.Add(tablePlacing.GoalsFor);
+                    results[tablePlacing.TeamName].GoalsAgainsts.Add(tablePlacing.GoalsAgainst);
+                    results[tablePlacing.TeamName].GoalDifferences.Add(tablePlacing.GoalDifference);
                     results[tablePlacing.TeamName].Positions.Add(tablePlacing.Position);
                     results[tablePlacing.TeamName].Points.Add(tablePlacing.Points);
                 }
@@ -44,12 +43,24 @@
 
         private class TempSimulationResult
         {
+            public List<int> GoalsFors { get; } = new List<int>();
+
+            public List<int> GoalsAgainsts { get; } = new List<int>();
+
+            public List<int> GoalDifferences { get; } = new List<int>();
+
             public List<int> Positions { get; } = new List<int>();
 
             public List<int> Points { get; } = new List<int>();
 
             public TeamSeasonSimulationResult TeamSeasonSimulationResult(int currentPosition, string teamName) =>
-                new TeamSeasonSimulationResult(currentPosition, teamName, this.Points, this.Positions);
+                new TeamSeasonSimulationResult(
+                    currentPosition, teamName,
+                    this.GoalsFors,
+                    this.GoalsAgainsts,
+                    this.GoalDifferences,
+                    this.Points,
+                    this.Positions);
         }
     }
 }
