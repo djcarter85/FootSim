@@ -8,11 +8,7 @@
     {
         public SeasonSimulationResult Simulate(int simulations, Season seasonSoFar)
         {
-            var teams = Calculator.GetTeams(seasonSoFar);
-
-            var distribution = SeasonDistribution.Create(
-                seasonSoFar,
-                teams);
+            var distribution = SeasonDistribution.Create(seasonSoFar);
 
             var sampleSeasons = distribution
                 .TakeSamples(simulations)
