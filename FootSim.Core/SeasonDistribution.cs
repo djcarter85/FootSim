@@ -15,9 +15,9 @@
             this.matches = matches;
         }
 
-        public static SeasonDistribution Create(Season seasonSoFar)
+        public static SeasonDistribution Create(bool resim, Season seasonSoFar)
         {
-            return new SeasonDistribution(seasonSoFar.League, CreateMatches(seasonSoFar));
+            return new SeasonDistribution(seasonSoFar.League, CreateMatches(resim, seasonSoFar));
         }
 
         public Season Sample()
@@ -29,7 +29,7 @@
             return new Season(this.league, pastMatches);
         }
 
-        private static IReadOnlyList<ISimulatableMatch> CreateMatches(Season seasonSoFar)
+        private static IReadOnlyList<ISimulatableMatch> CreateMatches(bool resim, Season seasonSoFar)
         {
             var homeConstant = Calculator.CalculateHomeConstant(seasonSoFar);
             var awayConstant = Calculator.CalculateAwayConstant(seasonSoFar);
@@ -42,7 +42,7 @@
                 {
                     if (homeTeam != awayTeam)
                     {
-                        matches.Add(CreateMatch(seasonSoFar, homeTeam, awayTeam, homeConstant, awayConstant));
+                        matches.Add(CreateMatch(resim, seasonSoFar, homeTeam, awayTeam, homeConstant, awayConstant));
                     }
                 }
             }
@@ -51,17 +51,21 @@
         }
 
         private static ISimulatableMatch CreateMatch(
+            bool resim,
             Season seasonSoFar,
             TablePlacing homeTeam,
             TablePlacing awayTeam,
             double homeConstant,
             double awayConstant)
         {
-            var pastMatch = seasonSoFar.Matches.SingleOrDefault(m => m.HomeTeamName == homeTeam.TeamName && m.AwayTeamName == awayTeam.TeamName);
-
-            if (pastMatch != null)
+            if (!resim)
             {
-                return SimulatableMatch.CreateFromCompletedMatch(pastMatch);
+                var pastMatch = seasonSoFar.Matches.SingleOrDefault(m => m.HomeTeamName == homeTeam.TeamName && m.AwayTeamName == awayTeam.TeamName);
+
+                if (pastMatch != null)
+                {
+                    return SimulatableMatch.CreateFromCompletedMatch(pastMatch);
+                }
             }
 
             var expectedScore = Calculator.CalculateExpectedScore(homeTeam, awayTeam, homeConstant, awayConstant);
