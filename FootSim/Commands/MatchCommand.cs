@@ -69,7 +69,7 @@
                 count++;
             }
 
-            return dict.ToDictionary(kvp => kvp.Key, kvp => (double) kvp.Value / count);
+            return dict.ToDictionary(kvp => kvp.Key, kvp => (double)kvp.Value * 100 / count);
         }
     }
 }
