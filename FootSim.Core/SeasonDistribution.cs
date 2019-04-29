@@ -72,52 +72,5 @@
 
             return SimulatableMatch.CreateFromExpectedScore(homeTeam.TeamName, awayTeam.TeamName, expectedScore);
         }
-
-        private class SimulatableMatch : ISimulatableMatch
-        {
-            private SimulatableMatch(string homeTeamName, string awayTeamName, IDistribution<Score> scoreDistribution)
-            {
-                this.HomeTeamName = homeTeamName;
-                this.AwayTeamName = awayTeamName;
-                this.ScoreDistribution = scoreDistribution;
-            }
-
-            public string HomeTeamName { get; }
-
-            public string AwayTeamName { get; }
-
-            public IDistribution<Score> ScoreDistribution { get; }
-
-            public static ISimulatableMatch CreateFromCompletedMatch(ICompletedMatch completedMatch)
-            {
-                return new SimulatableMatch(
-                    completedMatch.HomeTeamName,
-                    completedMatch.AwayTeamName,
-                    Singleton.Distribution(completedMatch.Score));
-            }
-
-            public static ISimulatableMatch CreateFromExpectedScore(string homeTeamName, string awayTeamName, ExpectedScore expectedScore)
-            {
-                return new SimulatableMatch(homeTeamName, awayTeamName, new ExpectedScoreDistribution(expectedScore));
-            }
-
-            private class ExpectedScoreDistribution : IDistribution<Score>
-            {
-                private readonly ExpectedScore expectedScore;
-
-                public ExpectedScoreDistribution(ExpectedScore expectedScore)
-                {
-                    this.expectedScore = expectedScore;
-                }
-
-                public Score Sample()
-                {
-                    var homeGoals = Poisson.Distribution(this.expectedScore.Home).Sample();
-                    var awayGoals = Poisson.Distribution(this.expectedScore.Away).Sample();
-
-                    return new Score(homeGoals, awayGoals);
-                }
-            }
-        }
     }
 }
