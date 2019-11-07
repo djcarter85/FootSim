@@ -21,6 +21,18 @@
             this.clock = clock;
         }
 
+        public class ScoreFrequency
+        {
+            public Score Score { get; }
+            public int Count { get; }
+
+            public ScoreFrequency(Score score, int count)
+            {
+                this.Score = score;
+                this.Count = count;
+            }
+        }
+
         public Task<ExitCode> ExecuteAsync()
         {
             var league = new League(
@@ -47,13 +59,27 @@
             var distribution = new ExpectedScoreDistribution(expectedScore);
 
             var sampleScores = distribution
-                .TakeSamples(this.options.Times);
+                .TakeSamples(this.options.Times)
+                .ToList();
 
             var probabilities = CalculateProbabilities(sampleScores);
 
             Console.WriteLine($"{homeTablePlacing.TeamName}: {probabilities[Result.HomeWin]:N2}%");
             Console.WriteLine($"Draw: {probabilities[Result.Draw]:N2}%");
             Console.WriteLine($"{awayTablePlacing.TeamName}: {probabilities[Result.AwayWin]:N2}%");
+            Console.WriteLine();
+
+            var scoreFrequencies = sampleScores
+                .GroupBy(s => s, Score.Comparer)
+                .Select(g => new ScoreFrequency(g.Key, g.Count()))
+                .OrderByDescending(sf => sf.Count)
+                .ThenBy(sf => sf.Score.Home)
+                .ThenBy(sf => sf.Score.Away);
+
+            foreach (var scoreFrequency in scoreFrequencies)
+            {
+                Console.WriteLine($"{scoreFrequency.Score.Home}-{scoreFrequency.Score.Away}: {scoreFrequency.Count}");
+            }
 
             return Task.FromResult(ExitCode.Success);
         }
