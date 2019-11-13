@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.InteropServices.ComTypes;
     using System.Threading.Tasks;
     using FootSim.Core;
     using FootSim.Options;
@@ -24,12 +23,12 @@
         public class ScoreFrequency
         {
             public Score Score { get; }
-            public int Count { get; }
+            public Percentage Percentage { get; }
 
-            public ScoreFrequency(Score score, int count)
+            public ScoreFrequency(Score score, Percentage percentage)
             {
                 this.Score = score;
-                this.Count = count;
+                this.Percentage = percentage;
             }
         }
 
@@ -64,27 +63,27 @@
 
             var probabilities = CalculateProbabilities(sampleScores);
 
-            Console.WriteLine($"{homeTablePlacing.TeamName}: {probabilities[Result.HomeWin]:N2}%");
-            Console.WriteLine($"Draw: {probabilities[Result.Draw]:N2}%");
-            Console.WriteLine($"{awayTablePlacing.TeamName}: {probabilities[Result.AwayWin]:N2}%");
+            Console.WriteLine($"{homeTablePlacing.TeamName}: {probabilities[Result.HomeWin]}");
+            Console.WriteLine($"Draw: {probabilities[Result.Draw]}");
+            Console.WriteLine($"{awayTablePlacing.TeamName}: {probabilities[Result.AwayWin]}");
             Console.WriteLine();
 
             var scoreFrequencies = sampleScores
                 .GroupBy(s => s, Score.Comparer)
-                .Select(g => new ScoreFrequency(g.Key, g.Count()))
-                .OrderByDescending(sf => sf.Count)
+                .Select(g => new ScoreFrequency(g.Key, Percentage.FromFraction(g.Count(), sampleScores.Count)))
+                .OrderByDescending(sf => sf.Percentage)
                 .ThenBy(sf => sf.Score.Home)
                 .ThenBy(sf => sf.Score.Away);
 
             foreach (var scoreFrequency in scoreFrequencies)
             {
-                Console.WriteLine($"{scoreFrequency.Score.Home}-{scoreFrequency.Score.Away}: {scoreFrequency.Count}");
+                Console.WriteLine($"{scoreFrequency.Score.Home}-{scoreFrequency.Score.Away}: {scoreFrequency.Percentage}");
             }
 
             return Task.FromResult(ExitCode.Success);
         }
 
-        private static IReadOnlyDictionary<Result, double> CalculateProbabilities(IEnumerable<Score> sampleScores)
+        private static IReadOnlyDictionary<Result, Percentage> CalculateProbabilities(IEnumerable<Score> sampleScores)
         {
             var dict = new Dictionary<Result, int> { { Result.HomeWin, 0 }, { Result.Draw, 0 }, { Result.AwayWin, 0 } };
 
@@ -95,7 +94,7 @@
                 count++;
             }
 
-            return dict.ToDictionary(kvp => kvp.Key, kvp => (double)kvp.Value * 100 / count);
+            return dict.ToDictionary(kvp => kvp.Key, kvp => Percentage.FromFraction(kvp.Value, count));
         }
     }
 }
