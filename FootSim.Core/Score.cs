@@ -42,5 +42,10 @@
                 this.Home < this.Away ?
                     Result.AwayWin :
                     Result.Draw;
+
+        public override string ToString()
+        {
+            return $"{this.Home}-{this.Away}";
+        }
     }
 }

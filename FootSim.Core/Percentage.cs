@@ -8,22 +8,22 @@
         {
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;
-            return this.percentage.CompareTo(other.percentage);
+            return this.Proportion.CompareTo(other.Proportion);
         }
 
-        private readonly decimal percentage;
-
-        private Percentage(decimal percentage)
+        private Percentage(decimal proportion)
         {
-            this.percentage = percentage;
+            this.Proportion = proportion;
         }
+
+        public decimal Proportion { get; }
 
         public static Percentage FromFraction(int numerator, int denominator) =>
-            new Percentage((decimal)numerator / denominator * 100);
+            new Percentage((decimal)numerator / denominator);
 
         public override string ToString()
         {
-            return $"{this.percentage:N2}%";
+            return $"{this.Proportion *100:N2}%";
         }
     }
 }

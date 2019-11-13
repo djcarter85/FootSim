@@ -14,6 +14,8 @@
         private readonly MatchOptions options;
         private readonly IClock clock;
 
+        private readonly IPointsCalculator pointsCalculator = new WcpPointsCalculator();
+
         public MatchCommand(MatchOptions options, IClock clock)
         {
             this.options = options;
@@ -29,6 +31,18 @@
             {
                 this.Score = score;
                 this.Percentage = percentage;
+            }
+        }
+
+        public class ScoreExpectedPoints
+        {
+            public Score Score { get; }
+            public decimal ExpectedPoints { get; }
+
+            public ScoreExpectedPoints(Score score, decimal expectedPoints)
+            {
+                this.Score = score;
+                this.ExpectedPoints = expectedPoints;
             }
         }
 
@@ -68,19 +82,38 @@
             Console.WriteLine($"{awayTablePlacing.TeamName}: {probabilities[Result.AwayWin]}");
             Console.WriteLine();
 
-            var scoreFrequencies = sampleScores
+            var scoreFrequencies = CalculateScoreFrequencies(sampleScores);
+
+            var expectedPoints = scoreFrequencies
+                .Select(sf => sf.Score)
+                .Select(s => new ScoreExpectedPoints(s, this.CalculateExpectedPoints(s, scoreFrequencies)))
+                .OrderByDescending(sep => sep.ExpectedPoints)
+                .ToList();
+
+            foreach (var scoreFrequency in scoreFrequencies.Take(5))
+            {
+                Console.WriteLine($"{scoreFrequency.Score}: {scoreFrequency.Percentage}");
+            }
+
+            Console.WriteLine();
+
+            foreach (var exp in expectedPoints.Take(5))
+            {
+                Console.WriteLine($"{exp.Score}: {exp.ExpectedPoints:N2}");
+            }
+
+            return Task.FromResult(ExitCode.Success);
+        }
+
+        private static IReadOnlyList<ScoreFrequency> CalculateScoreFrequencies(IReadOnlyList<Score> sampleScores)
+        {
+            return sampleScores
                 .GroupBy(s => s, Score.Comparer)
                 .Select(g => new ScoreFrequency(g.Key, Percentage.FromFraction(g.Count(), sampleScores.Count)))
                 .OrderByDescending(sf => sf.Percentage)
                 .ThenBy(sf => sf.Score.Home)
-                .ThenBy(sf => sf.Score.Away);
-
-            foreach (var scoreFrequency in scoreFrequencies)
-            {
-                Console.WriteLine($"{scoreFrequency.Score.Home}-{scoreFrequency.Score.Away}: {scoreFrequency.Percentage}");
-            }
-
-            return Task.FromResult(ExitCode.Success);
+                .ThenBy(sf => sf.Score.Away)
+                .ToList();
         }
 
         private static IReadOnlyDictionary<Result, Percentage> CalculateProbabilities(IEnumerable<Score> sampleScores)
@@ -95,6 +128,12 @@
             }
 
             return dict.ToDictionary(kvp => kvp.Key, kvp => Percentage.FromFraction(kvp.Value, count));
+        }
+
+        private decimal CalculateExpectedPoints(Score predictedScore, IEnumerable<ScoreFrequency> scoreFrequencies)
+        {
+            return scoreFrequencies
+                .Sum(sf => sf.Percentage.Proportion * this.pointsCalculator.CalculatePoints(predictedScore, sf.Score));
         }
     }
 }
